@@ -83,7 +83,7 @@
     "spaced-comment": 2, // Force one whitespace after "//" comment
     "no-useless-return": 2, // Forbid all explicit returns that serve not purpose
     "no-irregular-whitespace": 2, // Silent guard from weird whitespace clashes in code
-    "dot-notation": 2, // Force dot notation wheter possible - Object['string'] results to object.string
+    "dot-notation": 2, // Force dot notation whether possible - Object['string'] results to object.string
     "no-nested-ternary": 2, // Forbid nesting of optional chaining which hinders readability
     "no-unsafe-optional-chaining": 2, // Forbid optional chaining when it could cause TypeError
     "yoda": 2, // Forbid yoda conditions - if (1 === x) results to if (x === 1)
@@ -91,7 +91,7 @@
     "jsx-a11y/anchor-is-valid": 0, // Force anchor tag to have valid href attribute
 
     "react/display-name": 0, // Force displayName to be used for components
-    "react/jsx-boolean-value": 2, // <Component someFlag={true} /> results to <Componet someFlag />
+    "react/jsx-boolean-value": 2, // <Component someFlag={true} /> results to <Component someFlag />
     "react/self-closing-comp": 2, // Empty JSX tags will collapse. <div></div> results to <div/>
     "react/jsx-curly-brace-presence": 2, // Avoid having useless curly braces for string props
 
