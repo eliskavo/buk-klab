@@ -1,0 +1,77 @@
+@use '../../../styles/variables' as var;
+@use '../../../styles/mixins' as mix;
+
+.welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 4rem 6rem 14rem 6rem;
+}
+
+.welcome-section-left {
+  max-width: 40%;
+  padding-left: 6rem;
+}
+
+.welcome-section-elements {
+  display: inline-block;
+}
+
+.welcome-description {
+  max-width: 100%;
+  font-weight: var.$semibold;
+  padding-top: 1.5rem;
+}
+
+.welcome-section-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  font-weight: var.$extrabold;
+  @include mix.heading1;
+  font-size: 3rem;
+}
+
+.heading1 {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0.2em; // control overlap with text
+    left: -2.5%;
+    width: 105%;
+    height: 0.4em; // thickness of the underline
+    background-color: var.$secondary-color;
+    z-index: -1;
+  }
+}
+
+.welcome-button {
+  background-color: var.$secondary-color;
+  border: none;
+  margin-top: 2rem;
+  font-weight: var.$extrabold;
+}
+
+@media screen and (max-width: 1024px) {
+  .welcome {
+    padding: 4rem 4rem 14rem 4rem;
+    flex-direction: column;
+  }
+
+  .welcome-section-left {
+    max-width: 100%;
+    padding-left: 0;
+  }
+
+  .welcome-section-right {
+    width: 100%;
+    text-align: center;
+  }
+}

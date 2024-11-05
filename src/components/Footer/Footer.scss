@@ -1,0 +1,11 @@
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mix;
+
+.footer {
+  flex-shrink: 0; /* Udrží footer dole */
+  padding: 1rem;
+  background-color: var.$secondary-color;
+  text-align: center;
+  @include mix.heading3;
+  position: relative;
+}
