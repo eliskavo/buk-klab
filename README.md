@@ -15,8 +15,8 @@ Buk klab allows users to explore book details, rate books, and join the reading 
 
 ### Prerequisites
 Make sure you have the following installed on your machine:
-- [Node.js](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/)
+   - Node.js 18.x
+   - yarn 1.x
 
 ### Installation
 1. Clone the repository:
