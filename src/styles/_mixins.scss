@@ -18,9 +18,9 @@
 
 @mixin button {
   border:
-    var.$primary-color,
+    var.$secondary-color,
     1.5px solid;
-  color: var.$primary-color;
+  color: var.$secondary-color;
   text-align: center;
   text-decoration: none;
   padding: 0.0625rem 1rem;

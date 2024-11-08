@@ -1,7 +1,7 @@
-import './Testimonials.scss';
+import style from './Testimonials.module.scss';
 
 export const Testimonials = () => (
-  <div className="testimonials-section">
+  <div className={style.section}>
     <h2 className="heading2">testimonials</h2>
   </div>
 );

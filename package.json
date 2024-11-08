@@ -10,6 +10,11 @@
     "lintfix": "eslint . --fix && prettier --write \"**\"",
     "prepare": "husky"
   },
+
+  "engines": {
+    "node": "^18.17.0"
+  },
+
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

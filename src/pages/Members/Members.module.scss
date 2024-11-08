@@ -1,28 +1,28 @@
 @use '../../styles/variables' as var;
 @use '../../styles/mixins' as mix;
 
-.members-section {
+.section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 4rem 6rem 8rem 6rem;
 
-  .members-section-left {
+  .sectionLeft {
     max-width: 50%;
     padding-left: 4rem;
   }
-  .members-section-right {
+  .sectionRight {
     width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .members-illustration {
+  .illustration {
     width: 40%;
   }
 
-  .members-description {
+  .description {
     max-width: 100%;
     font-weight: var.$semibold;
     padding-top: 3rem;
@@ -37,10 +37,10 @@
   &::after {
     content: '';
     position: absolute;
-    bottom: 0.2em; // control overlap with text
+    bottom: 0.2em;
     left: -2.5%;
     width: 105%;
-    height: 0.4em; // thickness of the underline
+    height: 0.4em;
     background-color: var.$secondary-color;
     z-index: -1;
   }

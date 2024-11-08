@@ -10,22 +10,22 @@
   padding: 4rem 6rem 14rem 6rem;
 }
 
-.welcome-section-left {
+.leftSection {
   max-width: 40%;
   padding-left: 6rem;
 }
 
-.welcome-section-elements {
+.elementsSection {
   display: inline-block;
 }
 
-.welcome-description {
+.description {
   max-width: 100%;
   font-weight: var.$semibold;
   padding-top: 1.5rem;
 }
 
-.welcome-section-right {
+.rightSection {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,17 +43,17 @@
   &::after {
     content: '';
     position: absolute;
-    bottom: 0.2em; // control overlap with text
+    bottom: 0.2em;
     left: -2.5%;
     width: 105%;
-    height: 0.4em; // thickness of the underline
-    background-color: var.$secondary-color;
+    height: 0.4em;
+    background-color: var.$primary-color;
     z-index: -1;
   }
 }
 
-.welcome-button {
-  background-color: var.$secondary-color;
+.welcomeButton {
+  background-color: var.$primary-color;
   border: none;
   margin-top: 2rem;
   font-weight: var.$extrabold;
@@ -65,12 +65,12 @@
     flex-direction: column;
   }
 
-  .welcome-section-left {
+  .LeftSection {
     max-width: 100%;
     padding-left: 0;
   }
 
-  .welcome-section-right {
+  .RightSection {
     width: 100%;
     text-align: center;
   }

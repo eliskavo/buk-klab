@@ -2,10 +2,10 @@
 @use '../../styles/mixins' as mix;
 
 .footer {
-  flex-shrink: 0; /* Udrží footer dole */
+  position: relative;
+  flex-shrink: 0;
   padding: 1rem;
-  background-color: var.$secondary-color;
+  background-color: var.$primary-color;
   text-align: center;
   @include mix.heading3;
-  position: relative;
 }

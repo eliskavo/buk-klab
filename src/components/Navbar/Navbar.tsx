@@ -1,11 +1,10 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Navbar.scss';
+import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => (
-  <nav className="nav">
-    <div className="logo">
+  <nav className={style.nav}>
+    <div className={style.logo}>
       <Link to="/">buk klab</Link>
     </div>
     <ul>

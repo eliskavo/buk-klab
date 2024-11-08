@@ -1,7 +1,7 @@
-import './HowDoesItWork.scss';
+import style from './HowDoesItWork.module.scss';
 
 export const HowDoesItWork = () => (
-  <div className="how-does-it-work-section">
+  <div className={style.section}>
     <h2 className="heading2">how does it work?</h2>
   </div>
 );
