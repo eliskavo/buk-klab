@@ -1,25 +1,31 @@
+import { Link } from 'react-router-dom';
+
+import { Title, Heading1, Heading3 } from '../../Headings/Heading';
+import { Button } from '../../Button/Button';
 import style from './Welcome.module.scss';
 
 export const Welcome = () => (
   <div className={style.welcome}>
     <section className={style.leftSection}>
       <div className={style.elementsSection}>
-        <div className="heading3">Welcome to</div>
-        <h1 className="heading1">
+        <Heading3>Welcome to</Heading3>
+        <Title>
           buk klab
           <span />
-        </h1>
+        </Title>
         <p className={style.description}>
           buk klab is a place where you can read books, discuss them with
           others, and meet new friends. We are a community of book lovers who
           are passionate about reading and sharing our thoughts with others.
           Join us today and start your reading journey with us!
         </p>
-        <button type="button" className={style.welcomeButton}>
-          join buk klab
-        </button>
+        <Link to="/join">
+          <Button>join buk klab</Button>
+        </Link>
       </div>
     </section>
-    <div className={style.rightSection}>písmenka</div>
+    <div className={style.rightSection}>
+      <Heading1>písmenka</Heading1>
+    </div>
   </div>
 );

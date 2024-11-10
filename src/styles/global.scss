@@ -1,5 +1,30 @@
-@use 'variables' as var;
-@use 'mixins' as mix;
+font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
 
 *,
 *::before,
@@ -47,41 +72,7 @@ p {
   text-wrap: pretty;
 }
 
-.page-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.content {
-  flex: 1;
-}
-
-.page-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  height: 70vh;
-}
-
 #root,
 #__next {
   isolation: isolate;
-}
-
-.button {
-  @include mix.button;
-}
-
-.heading1 {
-  @include mix.heading1;
-}
-
-.heading2 {
-  @include mix.heading2;
-}
-
-.heading3 {
-  @include mix.heading3;
 }

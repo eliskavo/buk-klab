@@ -1,47 +1,48 @@
-@use '../../styles/variables' as var;
-@use '../../styles/mixins' as mix;
-
 .section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 4rem 6rem 8rem 6rem;
-
-  .sectionLeft {
-    max-width: 50%;
-    padding-left: 4rem;
-  }
-  .sectionRight {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .illustration {
-    width: 40%;
-  }
-
-  .description {
-    max-width: 100%;
-    font-weight: var.$semibold;
-    padding-top: 3rem;
-  }
 }
 
-.heading2-underlined {
-  @include mix.heading2;
+.sectionLeft {
+  max-width: 50%;
+  padding-left: 4rem;
+}
+
+.sectionRight {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.illustration {
+  width: 40%;
+}
+
+.description {
+  max-width: 100%;
+  font-weight: $semibold;
+  padding-top: 3rem;
+}
+
+.underlined {
   position: relative;
   display: inline-block;
+  font-weight: $extrabold;
+  font-size: 2rem;
+  text-align: center;
 
   &::after {
     content: '';
     position: absolute;
     bottom: 0.2em;
-    left: -2.5%;
-    width: 105%;
+    left: -1%;
+    width: 102%;
     height: 0.4em;
-    background-color: var.$secondary-color;
+    background-color: $primary-color;
     z-index: -1;
   }
 }

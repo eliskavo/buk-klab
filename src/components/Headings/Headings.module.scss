@@ -1,0 +1,36 @@
+.Title {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  font-size: 5rem;
+  font-weight: $extrabold;
+  text-align: center;
+  white-space: nowrap;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25em;
+    left: -2.5%;
+    width: 105%;
+    height: 0.3em;
+    background-color: $primary-color;
+    z-index: -1;
+  }
+}
+
+.heading1 {
+  font-weight: $extrabold;
+  font-size: 3rem;
+  position: relative;
+}
+.heading2 {
+  font-weight: $extrabold;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.heading3 {
+  font-weight: $semibold;
+  font-size: 1.125rem;
+}

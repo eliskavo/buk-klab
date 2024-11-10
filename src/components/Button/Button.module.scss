@@ -1,0 +1,15 @@
+.button {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.2rem 1rem;
+  margin: 2rem 0;
+  border: 1.5px solid $secondary-color;
+  border-radius: 40px;
+  background-color: transparent;
+  color: $secondary-color;
+  font-family: $primary-font;
+  font-size: 1.125rem;
+  font-weight: $semibold;
+  text-decoration: none;
+}

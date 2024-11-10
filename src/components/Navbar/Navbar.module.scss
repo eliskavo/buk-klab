@@ -1,34 +1,49 @@
-@use '../../styles/variables' as var;
-@use '../../styles/mixins' as mix;
-
-.nav {
+.navbar {
   position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var.$secondary-color;
+  color: $secondary-color;
   padding: 1rem 2rem;
+}
 
-  ul {
-    display: flex;
-    gap: 1.25rem;
-    list-style: none;
-    align-items: center;
-    justify-content: flex-end;
-  }
+.navbarList {
+  display: flex;
+  gap: 1.25rem;
+  list-style: none;
+  align-items: center;
+  justify-content: flex-end;
+}
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+.navbarLink {
+  color: inherit;
+  text-decoration: none;
+}
 
-  li {
-    @include mix.heading3;
-  }
+.navbarItem {
+  font-weight: $semibold;
+  font-size: 1.125rem;
 }
 
 .logo {
   font-size: 2.25rem;
-  font-weight: var.$extrabold;
+  font-weight: 800; // Use numeric value directly
+  white-space: nowrap; // Prevent line break Handle overflow text
+  position: relative; // Required for pseudo-element positioning
+}
+
+.navbarButton {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.2rem 1rem;
+  border: 1.5px solid $secondary-color;
+  border-radius: 40px;
+  background-color: transparent;
+  color: $secondary-color;
+  font-family: $primary-font;
+  font-size: 1.125rem;
+  font-weight: $semibold;
+  text-decoration: none;
 }

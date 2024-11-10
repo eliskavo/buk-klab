@@ -1,6 +1,3 @@
-@use '../../../styles/variables' as var;
-@use '../../../styles/mixins' as mix;
-
 .welcome {
   display: flex;
   justify-content: space-between;
@@ -8,11 +5,21 @@
   width: 100%;
   height: 100vh;
   padding: 4rem 6rem 14rem 6rem;
+
+  @media screen and (max-width: 1024px) {
+    padding: 4rem 4rem 14rem 4rem;
+    flex-direction: column;
+  }
 }
 
 .leftSection {
   max-width: 40%;
   padding-left: 6rem;
+
+  @media screen and (max-width: 1024px) {
+    max-width: 100%;
+    padding-left: 0;
+  }
 }
 
 .elementsSection {
@@ -21,7 +28,7 @@
 
 .description {
   max-width: 100%;
-  font-weight: var.$semibold;
+  font-weight: $semibold;
   padding-top: 1.5rem;
 }
 
@@ -30,47 +37,10 @@
   justify-content: center;
   align-items: center;
   width: 50%;
-  font-weight: var.$extrabold;
-  @include mix.heading1;
+  font-weight: $extrabold;
   font-size: 3rem;
-}
 
-.heading1 {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0.2em;
-    left: -2.5%;
-    width: 105%;
-    height: 0.4em;
-    background-color: var.$primary-color;
-    z-index: -1;
-  }
-}
-
-.welcomeButton {
-  background-color: var.$primary-color;
-  border: none;
-  margin-top: 2rem;
-  font-weight: var.$extrabold;
-}
-
-@media screen and (max-width: 1024px) {
-  .welcome {
-    padding: 4rem 4rem 14rem 4rem;
-    flex-direction: column;
-  }
-
-  .LeftSection {
-    max-width: 100%;
-    padding-left: 0;
-  }
-
-  .RightSection {
+  @media screen and (max-width: 1024px) {
     width: 100%;
     text-align: center;
   }

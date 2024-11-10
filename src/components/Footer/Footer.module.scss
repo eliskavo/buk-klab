@@ -1,11 +1,9 @@
-@use '../../styles/variables' as var;
-@use '../../styles/mixins' as mix;
-
 .footer {
   position: relative;
   flex-shrink: 0;
   padding: 1rem;
-  background-color: var.$primary-color;
+  background-color: $primary-color;
   text-align: center;
-  @include mix.heading3;
+  font-weight: $semibold;
+  font-size: 1.125rem;
 }

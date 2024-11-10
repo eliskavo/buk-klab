@@ -3,26 +3,40 @@ import { Link } from 'react-router-dom';
 import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => (
-  <nav className={style.nav}>
+  <nav className={style.navbar}>
     <div className={style.logo}>
-      <Link to="/">buk klab</Link>
+      <Link to="/" className={style.navbarLink}>
+        buk klab
+      </Link>
     </div>
-    <ul>
-      <li>
-        <Link to="/books">books</Link>
+    <ul className={style.navbarList}>
+      <li className={style.navbarItem}>
+        <Link to="/books" className={style.navbarLink}>
+          books
+        </Link>
       </li>
-      <li>
-        <Link to="/members">members</Link>
+      <li className={style.navbarItem}>
+        <Link to="/members" className={style.navbarLink}>
+          members
+        </Link>
       </li>
-      <li>
-        <Link to="/about">about</Link>
+      <li className={style.navbarItem}>
+        <Link to="/about" className={style.navbarLink}>
+          about
+        </Link>
       </li>
-      <li>
-        <Link to="/signin">sign in</Link>
+      <li className={style.navbarItem}>
+        <Link to="/signin" className={style.navbarLink}>
+          sign in
+        </Link>
       </li>
-      <button type="button" className="button">
-        join buk klab
-      </button>
+      <li className={style.navbarItem}>
+        <Link to="/join" className={style.navbarLink}>
+          <button type="button" className={style.navbarButton}>
+            join buk klab
+          </button>
+        </Link>
+      </li>
     </ul>
   </nav>
 );
