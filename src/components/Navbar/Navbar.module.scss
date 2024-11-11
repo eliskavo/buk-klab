@@ -28,22 +28,7 @@
 
 .logo {
   font-size: 2.25rem;
-  font-weight: 800; // Use numeric value directly
-  white-space: nowrap; // Prevent line break Handle overflow text
-  position: relative; // Required for pseudo-element positioning
-}
-
-.navbarButton {
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
-  padding: 0.2rem 1rem;
-  border: 1.5px solid $secondary-color;
-  border-radius: 40px;
-  background-color: transparent;
-  color: $secondary-color;
-  font-family: $primary-font;
-  font-size: 1.125rem;
-  font-weight: $semibold;
-  text-decoration: none;
+  font-weight: 800;
+  white-space: nowrap;
+  position: relative;
 }

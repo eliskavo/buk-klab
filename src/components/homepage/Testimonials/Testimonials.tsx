@@ -1,8 +1,8 @@
 import { Heading2 } from '../../Headings/Heading';
-import style from './Testimonials.module.scss';
+import { HomepageSection } from '../HomepageSection/HomepageSection';
 
 export const Testimonials = () => (
-  <div className={style.section}>
+  <HomepageSection>
     <Heading2>testimonials</Heading2>
-  </div>
+  </HomepageSection>
 );

@@ -9,7 +9,6 @@ export default defineConfig({
       scss: {
         additionalData: `
           @import "${path.resolve(__dirname, 'src/styles/constants.scss')}";
-          @import "${path.resolve(__dirname, 'src/styles/mixins.scss')}";
           @import "${path.resolve(__dirname, 'src/styles/breakpoints.scss')}";
         `,
       },

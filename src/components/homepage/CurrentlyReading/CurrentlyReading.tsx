@@ -1,8 +1,8 @@
 import { Heading2 } from '../../Headings/Heading';
-import style from './CurrentlyReading.module.scss';
+import { HomepageSection } from '../HomepageSection/HomepageSection';
 
 export const CurrentlyReading = () => (
-  <div className={style.section}>
+  <HomepageSection>
     <Heading2>what are we currently reading?</Heading2>
-  </div>
+  </HomepageSection>
 );

@@ -1,12 +1,9 @@
 import { Navbar } from '../Navbar/Navbar';
 import { Footer } from '../Footer/Footer';
+import { ChildrenFC } from '../../utils/type';
 import style from './Layout.module.scss';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export const Layout: React.FC<LayoutProps> = ({ children }) => (
+export const Layout: ChildrenFC = ({ children }) => (
   <div className={style.pageContainer}>
     <Navbar />
     <div className={style.content}>{children}</div>

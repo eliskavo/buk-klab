@@ -10,17 +10,16 @@
     "lintfix": "eslint . --fix && prettier --write \"**\"",
     "prepare": "husky"
   },
-
   "engines": {
     "node": "^18.17.0"
   },
-
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0"
   },
   "devDependencies": {
+    "@types/node": "^22.9.0",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "8.11.0",

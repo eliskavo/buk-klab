@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { LinkButton } from '../LinkButton/LinkButton';
 import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => (
@@ -20,22 +21,11 @@ export const Navbar: React.FC = () => (
           members
         </Link>
       </li>
+
       <li className={style.navbarItem}>
-        <Link to="/about" className={style.navbarLink}>
-          about
-        </Link>
-      </li>
-      <li className={style.navbarItem}>
-        <Link to="/signin" className={style.navbarLink}>
-          sign in
-        </Link>
-      </li>
-      <li className={style.navbarItem}>
-        <Link to="/join" className={style.navbarLink}>
-          <button type="button" className={style.navbarButton}>
-            join buk klab
-          </button>
-        </Link>
+        <LinkButton to="/join" className={style.navbarLink}>
+          join buk klab
+        </LinkButton>
       </li>
     </ul>
   </nav>
