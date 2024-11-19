@@ -4,31 +4,115 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: $secondary-color;
   padding: 1rem 2rem;
+  color: $secondary-color;
+  z-index: 3;
+}
+
+.hamburger {
+  display: block;
+  position: relative;
+  background: none;
+  border: none;
+  color: $secondary-color;
+  cursor: pointer;
+  z-index: 4;
+
+  @media (min-width: $screen-lg-min) {
+    display: none;
+  }
 }
 
 .navbarList {
-  display: flex;
+  position: fixed;
+  display: none;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   gap: 1.25rem;
+  padding: 1rem 0;
+  background-color: $primary-color;
+  opacity: 0.95;
   list-style: none;
-  align-items: center;
-  justify-content: flex-end;
+  z-index: 2;
+
+  &.open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: $screen-lg-min) {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: auto;
+    gap: 1.25rem;
+    padding: 0;
+    background: none;
+    opacity: 1;
+    align-items: center;
+    justify-content: flex-end;
+  }
 }
 
 .navbarLink {
+  position: relative;
   color: inherit;
   text-decoration: none;
+
+  &:hover {
+    font-weight: $extrabold;
+  }
+
+  @media (min-width: $screen-lg-min) {
+    &:hover {
+      font-weight: $semibold;
+    }
+
+    &:hover:not(.navbarButton)::after,
+    &.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0.2em;
+      left: -2.5%;
+      width: 105%;
+      height: 0.3em;
+      background-color: $primary-color;
+      z-index: -2;
+    }
+  }
 }
 
 .navbarItem {
-  font-weight: $semibold;
   font-size: 1.125rem;
+  font-weight: $semibold;
 }
 
 .logo {
+  position: relative;
   font-size: 2.25rem;
   font-weight: 800;
+  color: $secondary-color;
+  text-decoration: none;
   white-space: nowrap;
-  position: relative;
+  z-index: 3;
+
+  &:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25em;
+    left: -2.5%;
+    width: 105%;
+    height: 0.3em;
+    background-color: $primary-color;
+    z-index: -2;
+  }
+}
+
+.navbarButton {
+  z-index: 1;
 }
