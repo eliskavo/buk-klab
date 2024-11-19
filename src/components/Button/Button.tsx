@@ -1,4 +1,5 @@
 import { ComponentProps } from 'react';
+import clsx from 'clsx';
 
 import { ChildrenFC } from '../../utils/type';
 import style from './Button.module.scss';
@@ -11,11 +12,11 @@ type ButtonProps = {
 export const Button: ChildrenFC<ButtonProps> = ({
   children,
   onClick,
-  className = '',
+  className,
   ...props
 }) => (
   <button
-    className={`${style.button} ${className}`}
+    className={clsx(style.button, className)}
     onClick={onClick}
     type="button"
     {...props}

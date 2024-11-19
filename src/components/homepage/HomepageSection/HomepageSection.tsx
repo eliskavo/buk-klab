@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import { ChildrenFC } from '../../../utils/type';
 import style from './HomepageSection.module.scss';
 
@@ -7,7 +9,7 @@ type HomepageSectionProps = {
 
 export const HomepageSection: ChildrenFC<HomepageSectionProps> = ({
   children,
-  className = '',
+  className,
 }) => (
-  <section className={`${style.container} ${className}`}>{children}</section>
+  <section className={clsx(style.container, className)}>{children}</section>
 );

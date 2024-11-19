@@ -6,6 +6,7 @@
   font-weight: $extrabold;
   text-align: center;
   white-space: nowrap;
+  z-index: -1;
 
   &::after {
     content: '';
@@ -15,7 +16,7 @@
     width: 105%;
     height: 0.3em;
     background-color: $primary-color;
-    z-index: -1;
+    z-index: -2;
   }
 
   @media (min-width: $screen-md-min) {
@@ -27,6 +28,7 @@
   font-weight: $extrabold;
   font-size: 3rem;
   position: relative;
+  z-index: -1;
 }
 .heading2 {
   font-weight: $extrabold;
