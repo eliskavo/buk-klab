@@ -32,5 +32,3 @@ Make sure you have the following installed on your machine:
   yarn dev
 ```
 The server will be available at http://localhost:5173.
-
-
