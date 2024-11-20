@@ -1,30 +1,34 @@
-# React + TypeScript + Vite
+# buk klab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for the buk klab project, a book club that connects book enthusiasts to share insights and opinions on the books they read together.
 
-Currently, two official plugins are available:
+## Technologies Used
+- **TypeScript**
+- **React**
+- **Vite**
+- **Yarn**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Overview
+Buk klab allows users to explore book details, rate books, and join the reading club. The application features a dynamic layout with React components styled using SCSS, and book data is fetched via an external API.
 
-````
+## Getting Started
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Prerequisites
+Make sure you have the following installed on your machine:
+   - Node.js 18.x
+   - yarn 1.x
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
-
-export default tseslint.config({
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    react,
-  },
-  rules: {
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-});
-````
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <project-directory>
+2. Install the project dependencies
+   ```bash
+   yarn install
+   
+## Running the Project
+  ```bash
+  yarn dev
+```
+The server will be available at http://localhost:5173.
