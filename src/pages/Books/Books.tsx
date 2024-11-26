@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import clsx from 'clsx';
 
 import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
@@ -29,33 +30,35 @@ export const Books: React.FC = () => {
     <Layout>
       <div className={style.pageSection}>
         <h2 className={style.currentReadingTitle}>We are currently reading:</h2>
-        {currentlyReadingBook && (
-          <div>
-            <CurrentBookCard books={books} />
-          </div>
-        )}
+        {currentlyReadingBook && <CurrentBookCard books={books} />}
         <div className={style.searchSection}>
           <div className={style.searchHeader}>
             <h2>discover our books</h2>
+
             {!isSearchOpen && (
-              <button className={style.searchIcon} onClick={toggleSearch}>
+              <button
+                className={style.searchIcon}
+                onClick={toggleSearch}
+                aria-label="search books"
+              >
                 <SearchRoundedIcon sx={{ fontSize: 28 }} />
               </button>
             )}
             <input
               type="text"
               placeholder="search books..."
-              className={`${style.searchInput} ${isSearchOpen ? style.searchInputOpen : ''}`}
+              className={clsx(style.searchInput, {
+                [style.searchInputOpen]: isSearchOpen,
+              })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
             />
           </div>
+
           <div className={style.bookGrid}>
             {filteredBooks.map((book) => (
-              <div>
-                <BookCard book={book} />
-              </div>
+              <BookCard key={book.id} book={book} />
             ))}
           </div>
         </div>

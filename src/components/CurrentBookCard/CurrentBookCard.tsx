@@ -12,6 +12,7 @@ export const CurrentBookCard: React.FC<CurrentBookProps> = ({ books }) => {
   const currentBook = books.find((book) => book.isCurrentlyReading);
 
   const navigate = useNavigate();
+
   const goToCurrentBookDetail = () => {
     if (currentBook) {
       navigate(`/books/${currentBook.id}`);

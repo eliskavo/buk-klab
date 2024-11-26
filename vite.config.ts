@@ -7,9 +7,10 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern',
         additionalData: `
-          @import "${path.resolve(__dirname, 'src/styles/constants.scss')}";
-          @import "${path.resolve(__dirname, 'src/styles/breakpoints.scss')}";
+          @use "${path.resolve(__dirname, 'src/styles/constants.scss')}" as *;
+          @use "${path.resolve(__dirname, 'src/styles/breakpoints.scss')}" as *;
         `,
       },
     },

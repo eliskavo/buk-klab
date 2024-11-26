@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
@@ -6,50 +6,30 @@ import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import mockbooks from '../../data/mockbooks.json';
 import reviews from '../../data/reviews.json';
-import { Book, Review } from '../../../types/types';
+import { Book } from '../../../types/types';
 import style from './BookDetail.module.scss';
 
-export const BookDetail: React.FC = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [book, setBook] = useState<Book | null>(null);
-  const [bookReviews, setBookReviews] = useState<Review[]>([]);
-  const books: Book[] = mockbooks;
+const Stars = ({ rating }: { rating: number }) => {
+  const roundedRating = Math.round(rating * 2) / 2;
 
-  useEffect(() => {
-    const foundBook = books.find((b) => b.id === Number(id));
-    if (foundBook) {
-      setBook(foundBook);
-      const bookSpecificReviews = reviews.filter(
-        (review) => review.bookId === Number(id),
-      );
-      setBookReviews(bookSpecificReviews);
-    }
-  }, [id]);
+  return [...Array(5)].map((_, index) => (
+    <span
+      key={index}
+      className={`${style.star} ${index < roundedRating ? style.filled : style.empty}`}
+    >
+      ★
+    </span>
+  ));
+};
+
+const books: Book[] = mockbooks;
+
+export const BookDetail: React.FC = () => {
+  const { id: queryId } = useParams();
+  const navigate = useNavigate();
 
   const goBackToBooks = () => {
     navigate('/books');
-  };
-
-  const goToBookDetail = (bookId: number) => {
-    navigate(`/books/${bookId}`);
-  };
-
-  if (!book) {
-    return <div>Book not found</div>;
-  }
-
-  const renderStars = (rating: number) => {
-    const roundedRating = Math.round(rating * 2) / 2;
-
-    return [...Array(5)].map((_, index) => (
-      <span
-        key={index}
-        className={`${style.star} ${index < roundedRating ? style.filled : style.empty}`}
-      >
-        ★
-      </span>
-    ));
   };
 
   const formatDate = (dateString: string) =>
@@ -59,6 +39,25 @@ export const BookDetail: React.FC = () => {
       day: 'numeric',
     });
 
+  const book = useMemo(
+    () => books.find((b) => b.id === Number(queryId)),
+    [queryId],
+  );
+
+  const bookReviews = useMemo(
+    () =>
+      book?.id
+        ? reviews.filter((review) => review.bookId === Number(book.id))
+        : [],
+    [book?.id],
+  );
+
+  if (!book) {
+    return <div>Book not found</div>;
+  }
+
+  const { id, title, author, cover, description, year, pages, rating } = book;
+
   return (
     <Layout>
       <div className={style.pageSection}>
@@ -67,18 +66,18 @@ export const BookDetail: React.FC = () => {
         </button>
         <div className={style.bookInfo}>
           <div className={style.bookCover}>
-            <img src={book.cover} alt={book.title} />
+            <img src={cover} alt={title} />
           </div>
-          <div className={style.bookContent}>
-            <h1 className={style.title}>{book.title}</h1>
-            <h2 className={style.author}>{book.author}</h2>
+          <div>
+            <h1 className={style.bookContentTitle}>{title}</h1>
+            <h2 className={style.bookContentAuthor}>{author}</h2>
             <div className={style.rating}>
-              {book.rating !== undefined && renderStars(book.rating)}
+              {rating !== undefined && <Stars rating={rating} />}
             </div>
-            <p className={style.description}>{book.description}</p>
+            <p className={style.description}>{description}</p>
             <div className={style.meta}>
-              <span>First published: {book.year}</span>
-              <span>{book.pages} Pages: </span>
+              <span>First published: {year}</span>
+              <span>{pages} Pages: </span>
             </div>
           </div>
         </div>
@@ -98,7 +97,7 @@ export const BookDetail: React.FC = () => {
                     </span>
                   </div>
                   <div className={style.rating}>
-                    {renderStars(review.rating)}
+                    <Stars rating={review.rating} />
                   </div>
                 </div>
                 <p className={style.reviewText}>{review.reviewText}</p>
@@ -113,15 +112,10 @@ export const BookDetail: React.FC = () => {
           <h3>you might also like</h3>
           <div className={style.bookGrid}>
             {books
-              .filter((b) => b.id !== book.id)
+              .filter((innerBook) => innerBook.id !== Number(id))
               .slice(0, 4)
               .map((recommendedBook) => (
-                <div
-                  key={recommendedBook.id}
-                  onClick={() => goToBookDetail(recommendedBook.id)}
-                >
-                  <BookCard book={recommendedBook} />
-                </div>
+                <BookCard book={recommendedBook} />
               ))}
           </div>
         </section>

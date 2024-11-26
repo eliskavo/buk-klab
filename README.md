@@ -30,6 +30,7 @@ Make sure you have the following installed on your machine:
    cd <project-directory>
    ```
 2. Install the project dependencies
+
    ```bash
    yarn install
 
