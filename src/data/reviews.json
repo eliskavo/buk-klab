@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "reviewerName": "Alice Novak",
+    "rating": 4.5,
+    "reviewText": "A beautifully written story with deep characters and an engaging plot. Highly recommend!",
+    "reviewDate": "2024-11-20",
+    "bookId": 1
+  },
+  {
+    "id": 2,
+    "reviewerName": "Martin Černý",
+    "rating": 3.8,
+    "reviewText": "Good overall, but I found some parts a bit slow. Worth reading if you enjoy reflective narratives.",
+    "reviewDate": "2024-11-18",
+    "bookId": 1
+  },
+  {
+    "id": 3,
+    "reviewerName": "Linh Phạm",
+    "rating": 5.0,
+    "reviewText": "An absolute masterpiece! Couldn't put it down. The writing is phenomenal, and the twists kept me hooked.",
+    "reviewDate": "2024-11-15",
+    "bookId": 2
+  },
+  {
+    "id": 4,
+    "reviewerName": "John Doe",
+    "rating": 2.5,
+    "reviewText": "Unfortunately, this one didn't resonate with me. I struggled to connect with the characters.",
+    "reviewDate": "2024-11-12",
+    "bookId": 3
+  },
+  {
+    "id": 5,
+    "reviewerName": "Eliška Sýkorová",
+    "rating": 4.2,
+    "reviewText": "A thought-provoking book with strong messages. Some parts felt a little predictable, but I still enjoyed it.",
+    "reviewDate": "2024-11-10",
+    "bookId": 1
+  },
+  {
+    "id": 6,
+    "reviewerName": "Carlos García",
+    "rating": 3.0,
+    "reviewText": "The premise was interesting, but the execution lacked depth. It’s a decent one-time read.",
+    "reviewDate": "2024-11-09",
+    "bookId": 4
+  },
+  {
+    "id": 7,
+    "reviewerName": "Anna Bauer",
+    "rating": 4.7,
+    "reviewText": "A fascinating exploration of human emotions with great pacing and unforgettable characters.",
+    "reviewDate": "2024-11-07",
+    "bookId": 5
+  },
+  {
+    "id": 8,
+    "reviewerName": "Emily Zhang",
+    "rating": 4.0,
+    "reviewText": "A well-researched and compelling story, but it felt slightly rushed towards the end.",
+    "reviewDate": "2024-11-06",
+    "bookId": 6
+  },
+  {
+    "id": 9,
+    "reviewerName": "Noah Kim",
+    "rating": 5.0,
+    "reviewText": "This book is an absolute gem! The narrative style and character development are top-notch.",
+    "reviewDate": "2024-11-05",
+    "bookId": 8
+  },
+  {
+    "id": 10,
+    "reviewerName": "Olivia Williams",
+    "rating": 3.6,
+    "reviewText": "A decent read with an intriguing start, but it didn’t hold my attention throughout.",
+    "reviewDate": "2024-11-04",
+    "bookId": 8
+  },
+  {
+    "id": 11,
+    "reviewerName": "Tomáš Veselý",
+    "rating": 4.9,
+    "reviewText": "A captivating story that stays with you long after the last page. Highly recommended!",
+    "reviewDate": "2024-11-03",
+    "bookId": 5
+  },
+  {
+    "id": 12,
+    "reviewerName": "Sophia Johnson",
+    "rating": 2.8,
+    "reviewText": "Not my cup of tea. I found the plot underwhelming and the characters flat.",
+    "reviewDate": "2024-11-02",
+    "bookId": 2
+  }
+]

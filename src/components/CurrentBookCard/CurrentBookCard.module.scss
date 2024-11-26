@@ -1,0 +1,61 @@
+.currentSection {
+  margin: 5rem 0 5rem 0;
+}
+
+.featured {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.coverWrapper {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.currentCover {
+  width: 230px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.currentInfo {
+  flex-grow: 1;
+}
+
+.currentTitle {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: $extrabold;
+  cursor: pointer;
+}
+
+.currentMeta {
+  margin-bottom: 1rem;
+  font-weight: $semibold;
+}
+
+.currentDescription {
+  line-height: 1.6;
+}
+
+.currentButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: none;
+  color: $secondary-color;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+
+  &:hover {
+    font-weight: $semibold;
+  }
+}

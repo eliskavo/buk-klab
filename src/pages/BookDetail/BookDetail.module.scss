@@ -1,0 +1,153 @@
+.pageSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.bookInfo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.bookCover {
+  img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.bookContent {
+  .title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .author {
+    font-size: 1.2rem;
+    color: $secondary-color;
+    margin-bottom: 1rem;
+  }
+}
+
+.rating {
+  margin-bottom: 1rem;
+
+  .star {
+    font-size: 1.2rem;
+
+    &.filled {
+      color: $primary-color;
+    }
+
+    &.empty {
+      color: $primary-color;
+      opacity: 0.3;
+    }
+  }
+}
+
+.description {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  color: #666666;
+  font-size: 0.8rem;
+
+  span {
+    margin-right: 1rem;
+  }
+}
+
+.reviews {
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .review {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+
+    .rating {
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #666;
+      line-height: 1.5;
+    }
+  }
+}
+
+.recommended {
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .bookGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.reviewerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewerName {
+  font-weight: $extrabold;
+  margin-bottom: 0.25rem;
+}
+
+.reviewDate {
+  color: #666666;
+  font-size: 0.8rem;
+}
+
+.reviewText {
+  line-height: 1;
+  margin-top: 0.8rem;
+  font-weight: $regular;
+}
+
+.noReviews {
+  color: #666666;
+  font-style: italic;
+}
+
+.backButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: $secondary-color;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: $semibold;
+  }
+}
