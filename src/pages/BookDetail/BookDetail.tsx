@@ -7,6 +7,7 @@ import { BookCard } from '../../components/BookCard/BookCard';
 import mockbooks from '../../data/mockbooks.json';
 import reviews from '../../data/reviews.json';
 import { Book } from '../../../types/types';
+import { NotFound } from '../../components/NotFound/NotFound';
 import style from './BookDetail.module.scss';
 
 const Stars = ({ rating }: { rating: number }) => {
@@ -53,21 +54,23 @@ export const BookDetail: React.FC = () => {
   );
 
   if (!book) {
-    return <div>Book not found</div>;
+    return (
+      <div>
+        <NotFound />
+      </div>
+    );
   }
 
   const { id, title, author, cover, description, year, pages, rating } = book;
 
   return (
     <Layout>
-      <div className={style.pageSection}>
+      <div className={style.bookDetailSection}>
         <button onClick={goBackToBooks} className={style.backButton}>
           <ArrowBackIosRoundedIcon sx={{ fontSize: 16 }} /> back to books
         </button>
         <div className={style.bookInfo}>
-          <div className={style.bookCover}>
-            <img src={cover} alt={title} />
-          </div>
+          <img className={style.bookCover} src={cover} alt={title} />
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
@@ -76,8 +79,8 @@ export const BookDetail: React.FC = () => {
             </div>
             <p className={style.description}>{description}</p>
             <div className={style.meta}>
-              <span>First published: {year}</span>
-              <span>{pages} Pages: </span>
+              <span className={style.metaItem}>First published: {year}</span>
+              <span className={style.metaItem}>{pages} Pages: </span>
             </div>
           </div>
         </div>
@@ -113,7 +116,7 @@ export const BookDetail: React.FC = () => {
           <div className={style.bookGrid}>
             {books
               .filter((innerBook) => innerBook.id !== Number(id))
-              .slice(0, 4)
+              .slice(0, 5)
               .map((recommendedBook) => (
                 <BookCard book={recommendedBook} />
               ))}

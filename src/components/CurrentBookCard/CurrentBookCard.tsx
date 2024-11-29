@@ -1,5 +1,5 @@
+import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { useNavigate } from 'react-router-dom';
 
 import { Book } from '../../../types/types';
 import style from './CurrentBookCard.module.scss';
@@ -11,42 +11,43 @@ type CurrentBookProps = {
 export const CurrentBookCard: React.FC<CurrentBookProps> = ({ books }) => {
   const currentBook = books.find((book) => book.isCurrentlyReading);
 
-  const navigate = useNavigate();
-
-  const goToCurrentBookDetail = () => {
-    if (currentBook) {
-      navigate(`/books/${currentBook.id}`);
-    }
-  };
-
   return (
-    <div className={style.currentSection}>
+    <div>
       {currentBook && (
-        <div className={style.featured}>
-          <div className={style.coverWrapper} onClick={goToCurrentBookDetail}>
-            <img
-              src={currentBook.cover}
-              alt={currentBook.title}
-              className={style.currentCover}
-            />
-          </div>
-          <div className={style.currentInfo}>
-            <h3 className={style.currentTitle} onClick={goToCurrentBookDetail}>
-              {currentBook.title}
-            </h3>
-            <p className={style.currentMeta}>
-              {currentBook.author}, {currentBook.year}
-            </p>
-            <p className={style.currentDescription}>
-              {currentBook.description}
-            </p>
-            <button
-              className={style.currentButton}
-              onClick={goToCurrentBookDetail}
+        <div className={style.currentSection}>
+          <div className={style.featured}>
+            <Link
+              className={style.coverWrapper}
+              to={`/books/${currentBook.id}`}
             >
-              show more
-              <ArrowForwardIosRoundedIcon sx={{ fontSize: 16 }} />
-            </button>
+              <img
+                src={currentBook.cover}
+                alt={currentBook.title}
+                className={style.currentCover}
+              />
+            </Link>
+            <div className={style.currentInfo}>
+              <Link
+                className={style.currentTitle}
+                to={`/books/${currentBook.id}`}
+              >
+                <h3>{currentBook.title}</h3>
+              </Link>
+              <p className={style.currentMeta}>
+                {currentBook.author}, {currentBook.year}
+              </p>
+              <p className={style.currentDescription}>
+                {currentBook.description}
+              </p>
+              <Link
+                className={style.currentButton}
+                aria-label={`View details for book: ${currentBook.title}`}
+                to={`/books/${currentBook.id}`}
+              >
+                show more
+                <ArrowForwardIosRoundedIcon sx={{ fontSize: 16 }} />
+              </Link>
+            </div>
           </div>
         </div>
       )}

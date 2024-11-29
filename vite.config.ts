@@ -11,6 +11,7 @@ export default defineConfig({
         additionalData: `
           @use "${path.resolve(__dirname, 'src/styles/constants.scss')}" as *;
           @use "${path.resolve(__dirname, 'src/styles/breakpoints.scss')}" as *;
+          @use "${path.resolve(__dirname, 'src/styles/colors.scss')}" as *;
         `,
       },
     },
