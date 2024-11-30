@@ -28,12 +28,12 @@ export const Books: React.FC = () => {
 
   return (
     <Layout>
-      <div className={style.pageSection}>
-        <h2 className={style.currentReadingTitle}>We are currently reading:</h2>
+      <div className={style.bookSection}>
+        <h1 className={style.currentReadingTitle}>we are currently reading</h1>
         {currentlyReadingBook && <CurrentBookCard books={books} />}
         <div className={style.searchSection}>
           <div className={style.searchHeader}>
-            <h2>discover our books</h2>
+            <h1 className={style.allBooksTitle}>discover our books</h1>
 
             {!isSearchOpen && (
               <button
@@ -44,6 +44,7 @@ export const Books: React.FC = () => {
                 <SearchRoundedIcon sx={{ fontSize: 28 }} />
               </button>
             )}
+
             <input
               type="text"
               placeholder="search books..."
@@ -55,7 +56,6 @@ export const Books: React.FC = () => {
               autoFocus
             />
           </div>
-
           <div className={style.bookGrid}>
             {filteredBooks.map((book) => (
               <BookCard key={book.id} book={book} />

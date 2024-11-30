@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
@@ -28,6 +28,10 @@ const books: Book[] = mockbooks;
 export const BookDetail: React.FC = () => {
   const { id: queryId } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [queryId]);
 
   const goBackToBooks = () => {
     navigate('/books');
@@ -70,14 +74,16 @@ export const BookDetail: React.FC = () => {
           <ArrowBackIosRoundedIcon sx={{ fontSize: 16 }} /> back to books
         </button>
         <div className={style.bookInfo}>
-          <img className={style.bookCover} src={cover} alt={title} />
+          <div className={style.bookDetailCover}>
+            <img className={style.bookCover} src={cover} alt={title} />
+          </div>
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
-            <div className={style.rating}>
+            <div className={style.bookDetailRating}>
               {rating !== undefined && <Stars rating={rating} />}
             </div>
-            <p className={style.description}>{description}</p>
+            <p className={style.bookDetailDescription}>{description}</p>
             <div className={style.meta}>
               <span className={style.metaItem}>First published: {year}</span>
               <span className={style.metaItem}>{pages} Pages: </span>
@@ -85,11 +91,14 @@ export const BookDetail: React.FC = () => {
           </div>
         </div>
 
-        <section className={style.reviews}>
-          <h3>reviews</h3>
+        <section className={style.reviewsSection}>
+          <div className={style.reviewHeader}>
+            <h3 className={style.reviewHeading}>what our members say</h3>
+            <span className={style.line} />
+          </div>
           {bookReviews.length ? (
             bookReviews.map((review) => (
-              <div key={review.id} className={style.review}>
+              <div key={review.id} className={style.bookReview}>
                 <div className={style.reviewHeader}>
                   <div className={style.reviewerInfo}>
                     <span className={style.reviewerName}>
@@ -111,8 +120,8 @@ export const BookDetail: React.FC = () => {
           )}
         </section>
 
-        <section className={style.recommended}>
-          <h3>you might also like</h3>
+        <section className={style.recommendedSection}>
+          <h3 className={style.recommendedHeading}>you might also like</h3>
           <div className={style.bookGrid}>
             {books
               .filter((innerBook) => innerBook.id !== Number(id))
