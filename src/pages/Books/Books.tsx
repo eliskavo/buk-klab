@@ -9,8 +9,9 @@ import mockbooks from '../../data/mockbooks.json';
 import { Book } from '../../../types/types';
 import style from './Books.module.scss';
 
+const books: Book[] = mockbooks;
+
 export const Books: React.FC = () => {
-  const books: Book[] = mockbooks;
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
