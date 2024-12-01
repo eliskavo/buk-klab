@@ -7,6 +7,7 @@
   padding: 1rem 2rem;
   color: $secondary-color;
   z-index: 3;
+  background-color: #fff;
 }
 
 .hamburger {
@@ -79,7 +80,7 @@
       position: absolute;
       bottom: 0.2em;
       left: -2.5%;
-      width: 105%;
+      right: -2.5%;
       height: 0.3em;
       background-color: $primary-color;
       z-index: -2;
@@ -106,7 +107,7 @@
     position: absolute;
     bottom: 0.25em;
     left: -2.5%;
-    width: 105%;
+    right: -2.5%;
     height: 0.3em;
     background-color: $primary-color;
     z-index: -2;

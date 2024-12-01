@@ -13,7 +13,7 @@ type ButtonProps = {
 export const LinkButton: ChildrenFC<ButtonProps> = ({
   children,
   onClick,
-  className = '',
+  className,
   ...props
 }) => (
   <Link className={clsx(style.button, className)} {...props}>

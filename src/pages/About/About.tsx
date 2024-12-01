@@ -4,7 +4,7 @@ import style from './About.module.scss';
 export const About = () => (
   <Layout>
     <div className={style.pageSection}>
-      <h2 className="heading2-underlined">i wonder what is this page about?</h2>
+      <h2>i wonder what is this page about?</h2>
     </div>
   </Layout>
 );

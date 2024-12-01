@@ -1,0 +1,57 @@
+.bookCard {
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
+  color: $secondary-color;
+}
+
+.cardDescription {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: $secondary-color;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.cardCoverWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%;
+  border-radius: 0.2rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cardCoverWrapper:hover .cardDescription {
+  opacity: 1;
+}
+
+.card {
+  transition: box-shadow 0.2s;
+}
+
+.cardContent {
+  padding: 0.5rem;
+}
+
+.cardTitle {
+  margin-top: 0.25rem;
+  font-weight: $semibold;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.cardAuthor {
+  font-size: 0.8rem;
+  text-align: center;
+}

@@ -12,7 +12,7 @@ type ButtonProps = {
 export const Button: ChildrenFC<ButtonProps> = ({
   children,
   onClick,
-  className = '',
+  className,
   ...props
 }) => (
   <button

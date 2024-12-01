@@ -4,12 +4,18 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import "${path.resolve(__dirname, 'src/styles/constants.scss')}";
-          @import "${path.resolve(__dirname, 'src/styles/breakpoints.scss')}";
+          @use "@/styles/constants.scss" as *;
+          @use "@/styles/breakpoints.scss" as *;
+          @use "@/styles/colors.scss" as *;
         `,
       },
     },

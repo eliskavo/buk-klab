@@ -13,7 +13,7 @@
     position: absolute;
     bottom: 0.25em;
     left: -2.5%;
-    width: 105%;
+    right: -2.5%;
     height: 0.3em;
     background-color: $primary-color;
     z-index: -2;
@@ -30,6 +30,7 @@
   position: relative;
   z-index: -1;
 }
+
 .heading2 {
   font-weight: $extrabold;
   font-size: 1.5rem;

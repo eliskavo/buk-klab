@@ -1,0 +1,211 @@
+.bookDetailSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: $secondary-color;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: $semibold;
+  }
+}
+
+.bookInfo {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 1rem;
+  gap: 2rem;
+
+  @media (min-width: $screen-lg-min) {
+    flex-direction: row;
+  }
+}
+
+.bookDetailCover {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bookCover {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+
+  @media (min-width: $screen-sm-min) {
+    max-width: 350px;
+  }
+}
+
+.bookContentTitle {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-decoration: underline;
+  text-decoration-color: $primary-color;
+  text-decoration-thickness: 0.7rem;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -6px;
+}
+
+.bookContentAuthor {
+  font-size: 1.25rem;
+  color: $secondary-color;
+  margin-bottom: 1rem;
+}
+
+.rating {
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 1rem;
+
+  &.filled {
+    color: $primary-color;
+  }
+
+  &.empty {
+    color: $primary-color;
+    opacity: 0.3;
+  }
+}
+
+.bookDetailDescription {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  color: $dark-grey;
+  font-size: 0.8rem;
+}
+
+.metaItem {
+  margin-right: 1rem;
+}
+
+.reviewsSection {
+  margin: 5rem 1rem;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+}
+
+.line {
+  height: 2px;
+  flex: 1;
+  background-color: $light-grey;
+  margin-left: 2rem;
+}
+
+.reviewHeading {
+  font-size: 1rem;
+  margin: 1rem 0;
+  padding: 1rem 0;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 1.25rem;
+  }
+}
+
+.bookReview {
+  padding: 1rem 0;
+}
+
+.bookDetailRating {
+  margin-bottom: 0.5rem;
+  color: $secondary-color;
+  line-height: 1.5;
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.reviewerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewerName {
+  font-weight: $extrabold;
+  font-size: 0.8rem;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 1rem;
+  }
+}
+
+.reviewDate {
+  color: $dark-grey;
+  font-size: 0.75rem;
+}
+
+.reviewText {
+  margin-top: 0.8rem;
+  line-height: 1.2;
+  font-size: 0.75rem;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 0.9rem;
+  }
+}
+
+.noReviews {
+  color: $dark-grey;
+  font-style: italic;
+}
+
+.recommendedSection {
+  margin: 5rem 1rem;
+}
+
+.recommendedHeading {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  text-decoration: underline;
+  text-decoration-color: $primary-color;
+  text-decoration-thickness: 0.4rem;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -4px;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 1.5rem;
+  }
+}
+
+.bookGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+
+  @media (min-width: $screen-sm-min) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (min-width: $screen-md-min) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 2rem;
+  }
+}
