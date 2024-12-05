@@ -1,11 +1,11 @@
 export interface Book {
-  id: number;
+  id: string;
   title: string;
   author: string;
   cover: string;
   description: string;
-  year: number;
-  isCurrentlyReading: boolean;
+  year: number | string;
+  isCurrentlyReading?: boolean;
   rating?: number;
   pages?: number;
   reviews?: Review[];
