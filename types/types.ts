@@ -10,6 +10,7 @@ export interface Book {
   pages?: number;
   reviews?: Review[];
   recommendedBooks?: Book[];
+  editionKey?: string;
 }
 
 export type Review = {

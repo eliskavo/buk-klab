@@ -6,6 +6,7 @@ import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { CurrentBookCard } from '../../components/CurrentBookCard/CurrentBookCard';
 import { Book } from '../../../types/types';
+import { parseBookId } from '../../utils/parseBookId';
 import style from './Books.module.scss';
 
 export const Books: React.FC = () => {
@@ -19,20 +20,29 @@ export const Books: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${query}&fields=title,author_name,cover_i`,
+        `https://openlibrary.org/search.json?q=${query}&fields=key,title,author_name,cover_i,editions,editions.key,editions.title,editions.cover_i`,
       );
       const data = await response.json();
-      const booksData = data.docs.map((book: any) => ({
-        id: book.key,
-        title: book.title,
-        author: book.author_name ? book.author_name[0] : 'Unknown',
-        cover: book.cover_i
-          ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-          : '',
-      }));
+      console.log('Fetched books:', data); // Log the API response
+
+      const booksData = data.docs.map((book: any) => {
+        // Prefer the first edition if available, otherwise fall back to work info
+        const edition = book.editions?.docs?.[0] || book;
+
+        return {
+          id: parseBookId(edition.key),
+          title: edition.title || book.title,
+          author: book.author_name ? book.author_name[0] : 'Unknown',
+          cover: edition.cover_i
+            ? `https://covers.openlibrary.org/b/id/${edition.cover_i}-M.jpg`
+            : '',
+        };
+      });
+
+      console.log('Processed books:', booksData); // Log the processed book data
       setBooks(booksData);
     } catch (err) {
-      console.error('Error fetching trending books:', err);
+      console.error('Error fetching books:', err);
     } finally {
       setIsLoading(false);
     }
@@ -42,19 +52,27 @@ export const Books: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        'https://openlibrary.org/trending/now.json?fields=title,author_name,cover_i',
+        'https://openlibrary.org/trending/weekly.json?fields=key,title,author_name,cover_i,editions,editions.key,editions.title,editions.cover_i',
       );
       const data = await response.json();
-      const booksData = data.works.map((book: any) => ({
-        id: book.key,
-        title: book.title,
-        author: book.author_name ? book.author_name[0] : 'Unknown',
-        cover: book.cover_i
-          ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-          : '',
-      }));
+      console.log('Fetched trending books:', data); // Log the API response
+
+      const booksData = data.works.slice(0, 30).map((book: any) => {
+        // Prefer the first edition if available, otherwise fall back to work info
+        const edition = book.editions?.docs?.[0] || book;
+
+        return {
+          id: parseBookId(edition.key || book.key),
+          title: edition.title || book.title,
+          author: book.author_name ? book.author_name : 'Unknown',
+          cover: edition.cover_i
+            ? `https://covers.openlibrary.org/b/id/${edition.cover_i}-M.jpg`
+            : '',
+        };
+      });
+
+      console.log('Processed trending books:', booksData); // Log the processed book data
       setTrendingBooks(booksData);
-      console.log('Trending books:', booksData);
     } catch (err) {
       console.error('Error fetching trending books:', err);
     } finally {

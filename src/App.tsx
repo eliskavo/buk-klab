@@ -17,7 +17,7 @@ const router = createBrowserRouter([
   { path: '/about', element: <About /> },
   { path: '/signin', element: <SignIn /> },
   { path: '/join', element: <Join /> },
-  { path: '/books:id', element: <BookDetail /> },
+  { path: '/books/:id', element: <BookDetail /> },
 ]);
 
 export const App = () => <RouterProvider router={router} />;

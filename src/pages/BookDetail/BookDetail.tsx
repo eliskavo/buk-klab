@@ -6,6 +6,7 @@ import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { Book } from '../../../types/types';
 import { NotFound } from '../../components/NotFound/NotFound';
+import { parseAuthorId } from '../../utils/parseBookId';
 import style from './BookDetail.module.scss';
 
 const Stars = ({ rating }: { rating: number }) => {
@@ -51,17 +52,26 @@ export const BookDetail: React.FC = () => {
       }
 
       try {
-        setIsLoading(true);
-        const bookResponse = await fetch(
-          `https://openlibrary.org${queryId}.json`,
-        );
+        const isWorkKey = queryId.startsWith('OL') && queryId.endsWith('W');
+        const endpoint = isWorkKey
+          ? `https://openlibrary.org/works/${queryId}.json`
+          : `https://openlibrary.org/books/${queryId}.json`;
+
+        const bookResponse = await fetch(endpoint);
+
+        if (!bookResponse.ok) {
+          throw new Error('Book not found');
+        }
+
         const bookData = await bookResponse.json();
 
         const authorKey = bookData.authors?.[0]?.key;
         let authorName = 'Unknown Author';
+        let authorId = '';
         if (authorKey) {
+          authorId = parseAuthorId(authorKey);
           const authorResponse = await fetch(
-            `https://openlibrary.org${authorKey}.json`,
+            `https://openlibrary.org/authors/${authorId}.json`,
           );
 
           const authorData = await authorResponse.json();
@@ -74,7 +84,7 @@ export const BookDetail: React.FC = () => {
           : '';
 
         const bookDetails: Book = {
-          id: queryId,
+          id: parseAuthorId(queryId),
           title: bookData.title || 'Untitled',
           author: authorName,
           cover: coverUrl,
@@ -88,9 +98,11 @@ export const BookDetail: React.FC = () => {
           pages: bookData.number_of_pages || 'N/A',
           rating: Math.random() * 5,
           isCurrentlyReading: false,
+          editionKey: bookData.key,
         };
 
         setBook(bookDetails);
+        console.log('Book details:', bookDetails);
 
         const recommendedResponse = await fetch(
           `https://openlibrary.org/search.json?author=${encodeURIComponent(authorName)}&limit=5`,
@@ -100,7 +112,7 @@ export const BookDetail: React.FC = () => {
           .filter((b: any) => b.key !== queryId)
           .slice(0, 5)
           .map((recommendedBook: any) => ({
-            id: recommendedBook.key,
+            id: parseAuthorId(recommendedBook.key),
             title: recommendedBook.title,
             author: recommendedBook.author_name?.[0] || 'Unknown',
             cover: recommendedBook.cover_i
@@ -128,7 +140,7 @@ export const BookDetail: React.FC = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className={style.loading}>Loading book details...</div>
+        <div className={style.loading}>loading book details...</div>
       </Layout>
     );
   }
