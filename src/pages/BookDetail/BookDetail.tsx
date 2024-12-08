@@ -64,18 +64,36 @@ export const BookDetail: React.FC = () => {
         }
 
         const bookData = await bookResponse.json();
+        console.log('Fetched book data:', bookData);
 
-        const authorKey = bookData.authors?.[0]?.key;
         let authorName = 'Unknown Author';
         let authorId = '';
-        if (authorKey) {
-          authorId = parseAuthorId(authorKey);
-          const authorResponse = await fetch(
-            `https://openlibrary.org/authors/${authorId}.json`,
-          );
 
-          const authorData = await authorResponse.json();
-          authorName = authorData.name || authorName;
+        if (isWorkKey) {
+          const authorKey = bookData.authors?.[0]?.author?.key;
+          console.log('Author Key:', authorKey);
+
+          if (authorKey) {
+            authorId = parseAuthorId(authorKey);
+            const authorResponse = await fetch(
+              `https://openlibrary.org/authors/${authorId}.json`,
+            );
+            const authorData = await authorResponse.json();
+            authorName = authorData.name || authorName;
+          }
+        } else {
+          // Handle books endpoint
+          const authorKey = bookData.authors?.[0]?.key;
+          console.log('Author Key:', authorKey);
+
+          if (authorKey) {
+            authorId = parseAuthorId(authorKey);
+            const authorResponse = await fetch(
+              `https://openlibrary.org/authors/${authorId}.json`,
+            );
+            const authorData = await authorResponse.json();
+            authorName = authorData.name || authorName;
+          }
         }
 
         const coverId = bookData.covers?.[0];
@@ -84,7 +102,7 @@ export const BookDetail: React.FC = () => {
           : '';
 
         const bookDetails: Book = {
-          id: parseAuthorId(queryId),
+          id: queryId,
           title: bookData.title || 'Untitled',
           author: authorName,
           cover: coverUrl,
@@ -114,7 +132,7 @@ export const BookDetail: React.FC = () => {
           .map((recommendedBook: any) => ({
             id: parseAuthorId(recommendedBook.key),
             title: recommendedBook.title,
-            author: recommendedBook.author_name?.[0] || 'Unknown',
+            author: recommendedBook.author_name || 'Unknown',
             cover: recommendedBook.cover_i
               ? `https://covers.openlibrary.org/b/id/${recommendedBook.cover_i}-M.jpg`
               : '',
@@ -135,6 +153,7 @@ export const BookDetail: React.FC = () => {
     };
 
     fetchBookDetails();
+    console.log(fetchBookDetails());
   }, [queryId]);
 
   if (isLoading) {
