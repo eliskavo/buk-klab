@@ -6,21 +6,10 @@ import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { Book } from '../../../types/types';
 import { NotFound } from '../../components/NotFound/NotFound';
-import { parseAuthorId } from '../../utils/parseBookId';
+import { parseAuthorId } from '../../utils/parseId';
+import { Stars } from '../../components/StarsRating/StarsRating';
+import { Loading } from '../../components/Loading/Loading';
 import style from './BookDetail.module.scss';
-
-const Stars = ({ rating }: { rating: number }) => {
-  const roundedRating = Math.round(rating * 2) / 2;
-
-  return [...Array(5)].map((_, index) => (
-    <span
-      key={index}
-      className={`${style.star} ${index < roundedRating ? style.filled : style.empty}`}
-    >
-      ★
-    </span>
-  ));
-};
 
 export const BookDetail: React.FC = () => {
   const { id: queryId } = useParams();
@@ -64,6 +53,7 @@ export const BookDetail: React.FC = () => {
         }
 
         const bookData = await bookResponse.json();
+
         console.log('Fetched book data:', bookData);
 
         let authorName = 'Unknown Author';
@@ -82,7 +72,6 @@ export const BookDetail: React.FC = () => {
             authorName = authorData.name || authorName;
           }
         } else {
-          // Handle books endpoint
           const authorKey = bookData.authors?.[0]?.key;
           console.log('Author Key:', authorKey);
 
@@ -159,7 +148,7 @@ export const BookDetail: React.FC = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className={style.loading}>loading book details...</div>
+        <Loading message="loading book details" />
       </Layout>
     );
   }
@@ -187,14 +176,11 @@ export const BookDetail: React.FC = () => {
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
-            <div>
-              {/* <div className={style.bookDetailRating}> */}
-              {rating !== undefined && <Stars rating={rating} />}
-            </div>
+            <div>{rating !== undefined && <Stars rating={rating} />}</div>
             <p className={style.bookDetailDescription}>{description}</p>
             <div className={style.meta}>
               <span className={style.metaItem}>First published: {year}</span>
-              <span className={style.metaItem}>{pages} Pages</span>
+              <span className={style.metaItem}>{pages} pages</span>
             </div>
           </div>
         </div>

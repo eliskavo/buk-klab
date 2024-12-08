@@ -71,19 +71,6 @@
 //   margin-bottom: 1rem;
 // }
 
-.star {
-  font-size: 1rem;
-
-  &.filled {
-    color: $primary-color;
-  }
-
-  &.empty {
-    color: $primary-color;
-    opacity: 0.3;
-  }
-}
-
 .bookDetailDescription {
   line-height: 1.6;
   margin-bottom: 1rem;
@@ -208,11 +195,4 @@
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 2rem;
   }
-}
-
-.loading {
-  text-align: center;
-  margin-top: 10rem;
-  font-size: 1.5rem;
-  color: $secondary-color;
 }

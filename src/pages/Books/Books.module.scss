@@ -73,38 +73,3 @@
   position: relative;
   width: 180px;
 }
-
-.loading {
-  text-align: center;
-  margin-top: 10rem;
-  font-size: 1.5rem;
-  color: $secondary-color;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 3rem;
-  gap: 1rem;
-}
-
-.paginationButton {
-  display: flex;
-  justify-content: center;
-  background: none;
-  border: none;
-  border-radius: 4px;
-  padding: 5px;
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-.pageInfo {
-  font-size: 1rem;
-  color: $dark-grey;
-}
