@@ -1,28 +1,66 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import clsx from 'clsx';
 
 import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { CurrentBookCard } from '../../components/CurrentBookCard/CurrentBookCard';
-import mockbooks from '../../data/mockbooks.json';
 import { Book } from '../../../types/types';
+import { BookAPI } from '../../api/bookApi';
+import { Pagination } from '../../components/Pagination/Pagination';
+import { Loading } from '../../components/Loading/Loading';
 import style from './Books.module.scss';
 
-const books: Book[] = mockbooks;
+const BOOKS_PER_PAGE = 30;
 
 export const Books: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalBooks, setTotalBooks] = useState(0);
 
-  const filteredBooks = books.filter(
-    (book) =>
-      book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const fetchBooks = async (page: number) => {
+    setIsLoading(true);
+    try {
+      const result = searchQuery
+        ? await BookAPI.fetchSearchBooks({
+            query: searchQuery,
+            page,
+            limit: BOOKS_PER_PAGE,
+          })
+        : await BookAPI.fetchTrendingBooks({
+            page,
+            limit: BOOKS_PER_PAGE,
+          });
 
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
+      setBooks(result.books);
+      setTotalBooks(result.total);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchBooks(1);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  const handlePageChange = (isNext: boolean) => {
+    const nextPage = isNext ? currentPage + 1 : currentPage - 1;
+    const maxPages = Math.ceil(totalBooks / BOOKS_PER_PAGE);
+
+    if (nextPage >= 1 && nextPage <= maxPages) {
+      fetchBooks(nextPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const currentlyReadingBook = books.find((book) => book.isCurrentlyReading);
@@ -30,22 +68,26 @@ export const Books: React.FC = () => {
   return (
     <Layout>
       <div className={style.bookSection}>
-        <h1 className={style.currentReadingTitle}>we are currently reading</h1>
-        {currentlyReadingBook && <CurrentBookCard books={books} />}
+        {currentlyReadingBook && (
+          <div>
+            <h2 className={style.currentReadingTitle}>
+              We are currently reading:
+            </h2>
+            <CurrentBookCard book={currentlyReadingBook} />
+          </div>
+        )}
+
         <div className={style.searchSection}>
           <div className={style.searchHeader}>
-            <h1 className={style.allBooksTitle}>discover our books</h1>
-
+            <h2>Discover our books</h2>
             {!isSearchOpen && (
               <button
                 className={style.searchIcon}
-                onClick={toggleSearch}
-                aria-label="search books"
+                onClick={() => setIsSearchOpen(true)}
               >
                 <SearchRoundedIcon sx={{ fontSize: 28 }} />
               </button>
             )}
-
             <input
               type="text"
               placeholder="search books..."
@@ -54,14 +96,30 @@ export const Books: React.FC = () => {
               })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
+              aria-label="search books"
             />
           </div>
-          <div className={style.bookGrid}>
-            {filteredBooks.map((book) => (
-              <BookCard key={book.id} book={book} />
-            ))}
-          </div>
+
+          {isLoading ? (
+            <Loading message="loading books" />
+          ) : (
+            <>
+              <div className={style.bookGrid}>
+                {books.map((book) => (
+                  <BookCard key={book.id} book={book} />
+                ))}
+              </div>
+
+              {books.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(totalBooks / BOOKS_PER_PAGE)}
+                  onPageChange={handlePageChange}
+                  showTotalPages
+                />
+              )}
+            </>
+          )}
         </div>
       </div>
     </Layout>
