@@ -1,13 +1,13 @@
-import { parseBookId } from '../utils/parseId';
+import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
 import { FetchBooksParams } from '../../types/types';
 
-const page = 1;
-const limit = 30;
+const PAGE = 1;
+const LIMIT = 30;
 
 export const BookAPI = {
   async fetchSearchBooks({ query }: FetchBooksParams) {
-    const offset = (page - 1) * limit;
-    const url = `https://openlibrary.org/search.json?q=${query}&fields=key,title,author_name,cover_i,editions&lang=eng,cze&limit=${limit}&offset=${offset}`;
+    const offset = (PAGE - 1) * LIMIT;
+    const url = `https://openlibrary.org/search.json?q=${query}&fields=key,title,author_name,cover_i,editions&lang=eng,cze&LIMIT=${LIMIT}&offset=${offset}`;
 
     try {
       const response = await fetch(url);
@@ -15,7 +15,7 @@ export const BookAPI = {
 
       return {
         books: data.docs.map((book: any) => ({
-          id: parseBookId(book.key),
+          id: parseItemIdFromUri(book.key),
           title: book.title || 'Untitled',
           author: book.author_name?.[0] || 'Unknown',
           cover: book.cover_i
@@ -35,12 +35,12 @@ export const BookAPI = {
   async fetchTrendingBooks({}: FetchBooksParams) {
     try {
       const response = await fetch(
-        'https://openlibrary.org/trending/daily.json?limit=150',
+        'https://openlibrary.org/trending/daily.json?',
       );
       const data = await response.json();
 
       const allBooks = data.works.map((book: any) => ({
-        id: parseBookId(book.key),
+        id: parseItemIdFromUri(book.key),
         title: book.title || 'Untitled',
         author: book.author_name?.[0] || 'Unknown',
         cover: book.cover_i
@@ -49,8 +49,8 @@ export const BookAPI = {
         isCurrentlyReading: false,
       }));
 
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
+      const startIndex = (PAGE - 1) * LIMIT;
+      const endIndex = startIndex + LIMIT;
 
       return {
         books: allBooks.slice(startIndex, endIndex),

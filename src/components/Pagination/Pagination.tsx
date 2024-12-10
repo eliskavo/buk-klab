@@ -10,7 +10,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   showTotalPages = true,
 }) => (
-  <div className={style.pagination}>
+  <nav aria-label="Page navigation" className={style.pagination}>
     <button
       onClick={() => onPageChange(false)}
       disabled={currentPage === 1}
@@ -33,5 +33,5 @@ export const Pagination: React.FC<PaginationProps> = ({
     >
       <ChevronRightRoundedIcon />
     </button>
-  </div>
+  </nav>
 );

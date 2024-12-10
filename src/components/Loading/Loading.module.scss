@@ -1,5 +1,3 @@
-// src/components/Loading/Loading.module.scss
-
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -29,16 +27,17 @@
 }
 
 .loadingText {
-  font-size: 1.2rem;
-  color: var(--text-secondary);
   display: flex;
   align-items: center;
+  font-size: 1.2rem;
+  color: $secondary-color;
 }
 
 .dots {
   display: inline-flex;
   margin-left: 4px;
 }
+
 .dot {
   opacity: 0;
   animation: dotFade 1.4s infinite;

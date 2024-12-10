@@ -6,7 +6,10 @@ import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { Book } from '../../../types/types';
 import { NotFound } from '../../components/NotFound/NotFound';
-import { parseAuthorId } from '../../utils/parseId';
+import {
+  fetchBookDetails,
+  fetchRecommendedBooks,
+} from '../../api/bookDetailApi';
 import { Stars } from '../../components/StarsRating/StarsRating';
 import { Loading } from '../../components/Loading/Loading';
 import style from './BookDetail.module.scss';
@@ -27,112 +30,24 @@ export const BookDetail: React.FC = () => {
     navigate('/books');
   };
 
-  // const formatDate = (dateString: string) =>
-  //   new Date(dateString).toLocaleDateString('en-US', {
-  //     year: 'numeric',
-  //     month: 'long',
-  //     day: 'numeric',
-  //   });
-
   useEffect(() => {
-    const fetchBookDetails = async () => {
+    const fetchDetails = async () => {
       if (!queryId) {
         return;
       }
 
       try {
-        const isWorkKey = queryId.startsWith('OL') && queryId.endsWith('W');
-        const endpoint = isWorkKey
-          ? `https://openlibrary.org/works/${queryId}.json`
-          : `https://openlibrary.org/books/${queryId}.json`;
-
-        const bookResponse = await fetch(endpoint);
-
-        if (!bookResponse.ok) {
-          throw new Error('Book not found');
-        }
-
-        const bookData = await bookResponse.json();
-
-        console.log('Fetched book data:', bookData);
-
-        let authorName = 'Unknown Author';
-        let authorId = '';
-
-        if (isWorkKey) {
-          const authorKey = bookData.authors?.[0]?.author?.key;
-          console.log('Author Key:', authorKey);
-
-          if (authorKey) {
-            authorId = parseAuthorId(authorKey);
-            const authorResponse = await fetch(
-              `https://openlibrary.org/authors/${authorId}.json`,
-            );
-            const authorData = await authorResponse.json();
-            authorName = authorData.name || authorName;
-          }
+        const bookDetails = await fetchBookDetails(queryId);
+        if (bookDetails) {
+          setBook(bookDetails);
+          const recommendedBooksData = await fetchRecommendedBooks(
+            bookDetails.author,
+            queryId,
+          );
+          setRecommendedBooks(recommendedBooksData);
         } else {
-          const authorKey = bookData.authors?.[0]?.key;
-          console.log('Author Key:', authorKey);
-
-          if (authorKey) {
-            authorId = parseAuthorId(authorKey);
-            const authorResponse = await fetch(
-              `https://openlibrary.org/authors/${authorId}.json`,
-            );
-            const authorData = await authorResponse.json();
-            authorName = authorData.name || authorName;
-          }
+          setBook(null);
         }
-
-        const coverId = bookData.covers?.[0];
-        const coverUrl = coverId
-          ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
-          : '';
-
-        const bookDetails: Book = {
-          id: queryId,
-          title: bookData.title || 'Untitled',
-          author: authorName,
-          cover: coverUrl,
-          description:
-            typeof bookData.description === 'string'
-              ? bookData.description
-              : bookData.description?.value || 'No description available',
-          year: bookData.first_publish_date
-            ? new Date(bookData.first_publish_date).getFullYear()
-            : 'Unknown',
-          pages: bookData.number_of_pages || 'N/A',
-          rating: Math.random() * 5,
-          isCurrentlyReading: false,
-          editionKey: bookData.key,
-        };
-
-        setBook(bookDetails);
-        console.log('Book details:', bookDetails);
-
-        const recommendedResponse = await fetch(
-          `https://openlibrary.org/search.json?author=${encodeURIComponent(authorName)}&limit=5`,
-        );
-        const recommendedData = await recommendedResponse.json();
-        const recommendedBooksData: Book[] = recommendedData.docs
-          .filter((b: any) => b.key !== queryId)
-          .slice(0, 5)
-          .map((recommendedBook: any) => ({
-            id: parseAuthorId(recommendedBook.key),
-            title: recommendedBook.title,
-            author: recommendedBook.author_name || 'Unknown',
-            cover: recommendedBook.cover_i
-              ? `https://covers.openlibrary.org/b/id/${recommendedBook.cover_i}-M.jpg`
-              : '',
-            description: '',
-            year: recommendedBook.first_publish_year || 'Unknown',
-            pages: recommendedBook.number_of_pages_median || 'N/A',
-            isCurrentlyReading: false,
-            rating: Math.random() * 5,
-          }));
-
-        setRecommendedBooks(recommendedBooksData);
       } catch (error) {
         console.error('Error fetching book details:', error);
         setBook(null);
@@ -141,8 +56,7 @@ export const BookDetail: React.FC = () => {
       }
     };
 
-    fetchBookDetails();
-    console.log(fetchBookDetails());
+    fetchDetails();
   }, [queryId]);
 
   if (isLoading) {

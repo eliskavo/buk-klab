@@ -11,6 +11,8 @@ import { Pagination } from '../../components/Pagination/Pagination';
 import { Loading } from '../../components/Loading/Loading';
 import style from './Books.module.scss';
 
+const BOOKS_PER_PAGE = 30;
+
 export const Books: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -19,8 +21,6 @@ export const Books: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalBooks, setTotalBooks] = useState(0);
 
-  const booksPerPage = 30;
-
   const fetchBooks = async (page: number) => {
     setIsLoading(true);
     try {
@@ -28,11 +28,11 @@ export const Books: React.FC = () => {
         ? await BookAPI.fetchSearchBooks({
             query: searchQuery,
             page,
-            limit: booksPerPage,
+            limit: BOOKS_PER_PAGE,
           })
         : await BookAPI.fetchTrendingBooks({
             page,
-            limit: booksPerPage,
+            limit: BOOKS_PER_PAGE,
           });
 
       setBooks(result.books);
@@ -55,7 +55,7 @@ export const Books: React.FC = () => {
 
   const handlePageChange = (isNext: boolean) => {
     const nextPage = isNext ? currentPage + 1 : currentPage - 1;
-    const maxPages = Math.ceil(totalBooks / booksPerPage);
+    const maxPages = Math.ceil(totalBooks / BOOKS_PER_PAGE);
 
     if (nextPage >= 1 && nextPage <= maxPages) {
       fetchBooks(nextPage);
@@ -113,7 +113,7 @@ export const Books: React.FC = () => {
               {books.length > 0 && (
                 <Pagination
                   currentPage={currentPage}
-                  totalPages={Math.ceil(totalBooks / booksPerPage)}
+                  totalPages={Math.ceil(totalBooks / BOOKS_PER_PAGE)}
                   onPageChange={handlePageChange}
                   showTotalPages
                 />

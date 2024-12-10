@@ -35,7 +35,7 @@
   "rules": {
     "strict": [2, "never"], // Avoid any unsafe functions that would not be allowed under strict mode
     "default-case": 0, // Allow switch without a default case
-    "no-console": "off", // Forbid console logs
+    "no-console": [2, { "allow": ["warn", "error"] }], // Forbid console logs
     "arrow-body-style": [2, "as-needed"], // Remove all explicit returns that are not necessary
     "no-unneeded-ternary": [2, { "defaultAssignment": false }], // Default ternary x ? x : 1 results to x || 1
     "curly": 2, // Avoid single line ifs, force curly brace on the same line
