@@ -6,32 +6,48 @@ import style from './Pagination.module.scss';
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
-  totalPages,
+  totalItems,
+  itemsPerPage,
   onPageChange,
   showTotalPages = true,
-}) => (
-  <nav aria-label="Page navigation" className={style.pagination}>
-    <button
-      onClick={() => onPageChange(false)}
-      disabled={currentPage === 1}
-      className={style.paginationButton}
-      aria-label="Previous page"
-    >
-      <ChevronLeftRoundedIcon />
-    </button>
+}) => {
+  if (totalItems === 0) {
+    return null;
+  }
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    <span className={style.pageInfo}>
-      Page {currentPage}
-      {showTotalPages && totalPages ? ` of ${totalPages}` : ''}
-    </span>
+  const handlePageChange = (isNext: boolean) => {
+    const nextPage = isNext ? currentPage + 1 : currentPage - 1;
 
-    <button
-      onClick={() => onPageChange(true)}
-      disabled={totalPages ? currentPage >= totalPages : false}
-      className={style.paginationButton}
-      aria-label="Next page"
-    >
-      <ChevronRightRoundedIcon />
-    </button>
-  </nav>
-);
+    if (nextPage >= 1 && nextPage <= totalPages) {
+      onPageChange(nextPage);
+    }
+  };
+
+  return (
+    <nav aria-label="Page navigation" className={style.pagination}>
+      <button
+        onClick={() => handlePageChange(false)}
+        disabled={currentPage === 1}
+        className={style.paginationButton}
+        aria-label="Previous page"
+      >
+        <ChevronLeftRoundedIcon />
+      </button>
+
+      <span className={style.pageInfo}>
+        Page {currentPage}
+        {showTotalPages && totalPages ? ` of ${totalPages}` : ''}
+      </span>
+
+      <button
+        onClick={() => handlePageChange(true)}
+        disabled={currentPage >= totalPages}
+        className={style.paginationButton}
+        aria-label="Next page"
+      >
+        <ChevronRightRoundedIcon />
+      </button>
+    </nav>
+  );
+};

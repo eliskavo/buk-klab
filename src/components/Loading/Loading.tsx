@@ -1,6 +1,9 @@
 import search from '../../assets/images/search.png';
-import { LoadingProps } from '../../../types/types';
 import style from './Loading.module.scss';
+
+type LoadingProps = {
+  message?: string;
+};
 
 export const Loading: React.FC<LoadingProps> = ({ message }) => (
   <div className={style.loadingContainer}>

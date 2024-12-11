@@ -12,7 +12,7 @@ const fetchDetail = async (
       throw new Error('Book not found');
     }
 
-    const bookData = await bookResponse.json();
+    const bookData: any = await bookResponse.json();
 
     const authorKey = isWorkKey
       ? bookData.authors?.[0]?.author?.key
@@ -38,12 +38,14 @@ const fetchDetail = async (
       author: authorName,
       cover: coverUrl,
       description:
-        typeof bookData.description === 'string'
-          ? bookData.description
-          : bookData.description?.value || 'No description available',
-      year: bookData.first_publish_date
-        ? new Date(bookData.first_publish_date).getFullYear()
-        : 'Unknown',
+        bookData.description?.value ??
+        bookData.description ??
+        'No description available',
+
+      year:
+        bookData.first_publish_date ??
+        new Date(bookData.first_publish_date).getFullYear() ??
+        'Unknown',
       pages: bookData.number_of_pages || 'N/A',
       rating: Math.random() * 5,
       isCurrentlyReading: false,

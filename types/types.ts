@@ -22,19 +22,10 @@ export type Review = {
   bookId: number;
 };
 
-export type LoadingProps = {
-  message?: string;
-};
-
-export type FetchBooksParams = {
-  query?: string;
-  page?: number;
-  limit?: number;
-};
-
 export type PaginationProps = {
   currentPage: number;
-  totalPages?: number;
-  onPageChange: (isNext: boolean) => void;
+  totalItems: number;
+  itemsPerPage: number;
+  onPageChange: (page: number) => Promise<void> | void;
   showTotalPages?: boolean;
 };

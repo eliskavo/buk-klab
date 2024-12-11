@@ -6,7 +6,7 @@ import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { CurrentBookCard } from '../../components/CurrentBookCard/CurrentBookCard';
 import { Book } from '../../../types/types';
-import { BookAPI } from '../../api/bookApi';
+import { fetchSearchBooks, fetchTrendingBooks } from '../../api/bookAPI';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { Loading } from '../../components/Loading/Loading';
 import style from './Books.module.scss';
@@ -21,19 +21,16 @@ export const Books: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalBooks, setTotalBooks] = useState(0);
 
-  const fetchBooks = async (page: number) => {
+  const fetchBooks = async (page: number = 1) => {
     setIsLoading(true);
     try {
       const result = searchQuery
-        ? await BookAPI.fetchSearchBooks({
+        ? await fetchSearchBooks({
             query: searchQuery,
             page,
             limit: BOOKS_PER_PAGE,
           })
-        : await BookAPI.fetchTrendingBooks({
-            page,
-            limit: BOOKS_PER_PAGE,
-          });
+        : await fetchTrendingBooks();
 
       setBooks(result.books);
       setTotalBooks(result.total);
@@ -47,21 +44,11 @@ export const Books: React.FC = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchBooks(1);
+      fetchBooks();
     }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
-
-  const handlePageChange = (isNext: boolean) => {
-    const nextPage = isNext ? currentPage + 1 : currentPage - 1;
-    const maxPages = Math.ceil(totalBooks / BOOKS_PER_PAGE);
-
-    if (nextPage >= 1 && nextPage <= maxPages) {
-      fetchBooks(nextPage);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
 
   const currentlyReadingBook = books.find((book) => book.isCurrentlyReading);
 
@@ -73,7 +60,7 @@ export const Books: React.FC = () => {
             <h2 className={style.currentReadingTitle}>
               We are currently reading:
             </h2>
-            <CurrentBookCard book={currentlyReadingBook} />
+            <CurrentBookCard books={[currentlyReadingBook]} />
           </div>
         )}
 
@@ -109,15 +96,13 @@ export const Books: React.FC = () => {
                   <BookCard key={book.id} book={book} />
                 ))}
               </div>
-
-              {books.length > 0 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(totalBooks / BOOKS_PER_PAGE)}
-                  onPageChange={handlePageChange}
-                  showTotalPages
-                />
-              )}
+              <Pagination
+                currentPage={currentPage}
+                totalItems={totalBooks}
+                itemsPerPage={BOOKS_PER_PAGE}
+                onPageChange={(page) => fetchBooks(page)}
+                showTotalPages
+              />
             </>
           )}
         </div>
