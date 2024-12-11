@@ -12,10 +12,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern',
         additionalData: `
-          @use "@/styles/constants.scss" as *;
-          @use "@/styles/breakpoints.scss" as *;
-          @use "@/styles/colors.scss" as *;
+           @use "${path.resolve(__dirname, 'src/styles/constants.scss')}" as *;
+          @use "${path.resolve(__dirname, 'src/styles/breakpoints.scss')}" as *;
+          @use "${path.resolve(__dirname, 'src/styles/colors.scss')}" as *;
         `,
       },
     },
