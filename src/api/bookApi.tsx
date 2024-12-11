@@ -1,4 +1,5 @@
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
+import { Book } from '../model/Book';
 
 const PAGE = 1;
 const LIMIT = 30;
@@ -9,13 +10,31 @@ type FetchBooksParams = {
   limit?: number;
 };
 
+type SearchResponse = {
+  docs: Book[];
+  num_found: number;
+};
+
+type TrendingBooksResponse = {
+  works: Book[];
+};
+
 export const fetchSearchBooks = async ({ query }: FetchBooksParams) => {
   const offset = (PAGE - 1) * LIMIT;
-  const url = `https://openlibrary.org/search.json?q=${query}&fields=key,title,author_name,cover_i,editions&lang=eng,cze&LIMIT=${LIMIT}&offset=${offset}`;
+
+  const searchParams = new URLSearchParams({
+    q: query ?? '',
+    fields: 'key,title,author_name,cover_i,editions',
+    lang: 'eng,cze',
+    limit: LIMIT.toString(),
+    offset: offset.toString(),
+  });
+
+  const url = `https://openlibrary.org/search.json?${searchParams.toString()}`;
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
+    const data = (await response.json()) as SearchResponse;
 
     return {
       books: data.docs.map((book: any) => ({
@@ -41,7 +60,7 @@ export const fetchTrendingBooks = async () => {
     const response = await fetch(
       'https://openlibrary.org/trending/daily.json?',
     );
-    const data = await response.json();
+    const data = (await response.json()) as TrendingBooksResponse;
 
     const allBooks = data.works.map((book: any) => ({
       id: parseItemIdFromUri(book.key),

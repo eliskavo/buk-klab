@@ -5,13 +5,14 @@ import clsx from 'clsx';
 import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { CurrentBookCard } from '../../components/CurrentBookCard/CurrentBookCard';
-import { Book } from '../../../types/types';
-import { fetchSearchBooks, fetchTrendingBooks } from '../../api/bookAPI';
+import { Book } from '../../model/Book';
+import { fetchSearchBooks, fetchTrendingBooks } from '../../api/bookApi';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { Loading } from '../../components/Loading/Loading';
 import style from './Books.module.scss';
 
 const BOOKS_PER_PAGE = 30;
+const SEARCH_DELAY = 500;
 
 export const Books: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,21 +20,22 @@ export const Books: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalBooks, setTotalBooks] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const fetchBooks = async (page: number = 1) => {
     setIsLoading(true);
     try {
-      const result = searchQuery
-        ? await fetchSearchBooks({
-            query: searchQuery,
-            page,
-            limit: BOOKS_PER_PAGE,
-          })
-        : await fetchTrendingBooks();
+      const fetchFunction: typeof fetchSearchBooks | typeof fetchTrendingBooks =
+        searchQuery ? fetchSearchBooks : fetchTrendingBooks;
+
+      const result = await fetchFunction({
+        query: searchQuery,
+        page,
+        limit: BOOKS_PER_PAGE,
+      });
 
       setBooks(result.books);
-      setTotalBooks(result.total);
+      setTotalItems(result.total);
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -45,7 +47,7 @@ export const Books: React.FC = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchBooks();
-    }, 500);
+    }, SEARCH_DELAY);
 
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
@@ -71,6 +73,7 @@ export const Books: React.FC = () => {
               <button
                 className={style.searchIcon}
                 onClick={() => setIsSearchOpen(true)}
+                aria-label="Open search"
               >
                 <SearchRoundedIcon sx={{ fontSize: 28 }} />
               </button>
@@ -83,7 +86,7 @@ export const Books: React.FC = () => {
               })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="search books"
+              aria-label="Search books"
             />
           </div>
 
@@ -98,7 +101,7 @@ export const Books: React.FC = () => {
               </div>
               <Pagination
                 currentPage={currentPage}
-                totalItems={totalBooks}
+                totalItems={totalItems}
                 itemsPerPage={BOOKS_PER_PAGE}
                 onPageChange={(page) => fetchBooks(page)}
                 showTotalPages

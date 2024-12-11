@@ -1,7 +1,7 @@
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
-import { PaginationProps } from '../../../types/types';
+import { PaginationProps } from '../../model/Pagination';
 import style from './Pagination.module.scss';
 
 export const Pagination: React.FC<PaginationProps> = ({

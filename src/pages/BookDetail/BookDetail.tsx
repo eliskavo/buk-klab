@@ -4,7 +4,7 @@ import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
-import { Book } from '../../../types/types';
+import { Book } from '../../model/Book';
 import { NotFound } from '../../components/NotFound/NotFound';
 import {
   fetchBookDetails,
@@ -80,12 +80,20 @@ export const BookDetail: React.FC = () => {
   return (
     <Layout>
       <div className={style.bookDetailSection}>
-        <button onClick={goBackToBooks} className={style.backButton}>
+        <button
+          onClick={goBackToBooks}
+          className={style.backButton}
+          aria-label="Back to books"
+        >
           <ArrowBackIosRoundedIcon sx={{ fontSize: 16 }} /> back to books
         </button>
         <div className={style.bookInfo}>
           <div className={style.bookDetailCover}>
-            <img className={style.bookCover} src={cover} alt={title} />
+            <img
+              className={style.bookCover}
+              src={cover}
+              alt={`cover of ${title}`}
+            />
           </div>
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
@@ -98,15 +106,16 @@ export const BookDetail: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <section className={style.recommendedSection}>
-          <h3 className={style.recommendedHeading}>you might also like</h3>
-          <div className={style.bookGrid}>
-            {recommendedBooks.map((recommendedBook) => (
-              <BookCard key={recommendedBook.id} book={recommendedBook} />
-            ))}
-          </div>
-        </section>
+        {recommendedBooks.length > 0 && (
+          <section className={style.recommendedSection}>
+            <h3 className={style.recommendedHeading}>you might also like</h3>
+            <div className={style.bookGrid}>
+              {recommendedBooks.map((recommendedBook) => (
+                <BookCard key={recommendedBook.id} book={recommendedBook} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </Layout>
   );

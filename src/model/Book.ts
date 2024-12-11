@@ -1,12 +1,12 @@
-import { Review } from '../../types/types';
+import { Review } from '../model/Review';
 
 export type Book = {
   id: string;
   title: string;
   author: string;
   cover: string;
-  description: string;
-  year: number | string;
+  description?: string;
+  year?: number | string;
   isCurrentlyReading?: boolean;
   rating?: number;
   pages?: number;

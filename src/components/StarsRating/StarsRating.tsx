@@ -1,12 +1,23 @@
 import style from './StarsRating.module.scss';
 
-export const Stars = ({ rating }: { rating: number }) => {
-  const roundedRating = Math.round(rating * 2) / 2;
+type StarsProps = {
+  rating: number;
+  maxStars?: number;
+};
 
-  return [...Array(5)].map((_, index) => (
+export const Stars = ({ rating, maxStars = 5 }: StarsProps) => {
+  const roundedRating = Math.min(
+    Math.max(Math.round(rating * 2) / 2, 0),
+    maxStars,
+  );
+
+  return Array.from({ length: maxStars }, (_, i) => (
     <span
-      key={index}
-      className={`${style.star} ${index < roundedRating ? style.starFilled : style.starEmpty}`}
+      key={`star-${i}`}
+      className={`${style.star} ${
+        i < roundedRating ? style.starFilled : style.starEmpty
+      }`}
+      aria-label={i < roundedRating ? 'filled star' : 'empty star'}
     >
       ★
     </span>

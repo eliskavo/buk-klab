@@ -1,5 +1,32 @@
-import { Book } from '../../types/types';
+import { Book } from '../model/Book';
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
+
+type RatingsResponse = {
+  summary: {
+    average: number;
+    count: number;
+  };
+};
+
+const fetchBookRating = async (workId: string): Promise<number> => {
+  try {
+    const response = await fetch(
+      `https://openlibrary.org/works/${workId}/ratings.json`,
+    );
+    const ratingsData: RatingsResponse =
+      (await response.json()) as RatingsResponse;
+
+    if (ratingsData.summary.average) {
+      return ratingsData.summary.average;
+    }
+
+    return 0;
+  } catch (error) {
+    console.error('Error fetching book rating:', error);
+
+    return 0;
+  }
+};
 
 const fetchDetail = async (
   endpoint: string,
@@ -7,12 +34,10 @@ const fetchDetail = async (
 ): Promise<Book | null> => {
   try {
     const bookResponse = await fetch(endpoint);
-
     if (!bookResponse.ok) {
       throw new Error('Book not found');
     }
-
-    const bookData: any = await bookResponse.json();
+    const bookData: any = (await bookResponse.json()) as Book;
 
     const authorKey = isWorkKey
       ? bookData.authors?.[0]?.author?.key
@@ -32,6 +57,8 @@ const fetchDetail = async (
       ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
       : '';
 
+    const rating = await fetchBookRating(parseItemIdFromUri(bookData.key));
+
     const bookDetails: Book = {
       id: parseItemIdFromUri(bookData.key),
       title: bookData.title || 'Untitled',
@@ -41,13 +68,12 @@ const fetchDetail = async (
         bookData.description?.value ??
         bookData.description ??
         'No description available',
-
       year:
         bookData.first_publish_date ??
         new Date(bookData.first_publish_date).getFullYear() ??
         'Unknown',
       pages: bookData.number_of_pages || 'N/A',
-      rating: Math.random() * 5,
+      rating,
       isCurrentlyReading: false,
       editionKey: bookData.key,
     };
@@ -94,7 +120,6 @@ export const fetchRecommendedBooks = async (
         year: recommendedBook.first_publish_year || 'Unknown',
         pages: recommendedBook.number_of_pages_median || 'N/A',
         isCurrentlyReading: false,
-        rating: Math.random() * 5,
       }));
 
     return recommendedBooksData;
