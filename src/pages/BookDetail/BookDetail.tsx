@@ -21,6 +21,7 @@ export const BookDetail: React.FC = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [recommendedBooks, setRecommendedBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingRecommended, setIsLoadingRecommended] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,11 +41,7 @@ export const BookDetail: React.FC = () => {
         const bookDetails = await fetchBookDetails(queryId);
         if (bookDetails) {
           setBook(bookDetails);
-          const recommendedBooksData = await fetchRecommendedBooks(
-            bookDetails.author,
-            queryId,
-          );
-          setRecommendedBooks(recommendedBooksData);
+          setIsLoading(false);
         } else {
           setBook(null);
         }
@@ -58,6 +55,30 @@ export const BookDetail: React.FC = () => {
 
     fetchDetails();
   }, [queryId]);
+
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      if (!book?.author) {
+        return;
+      }
+
+      setIsLoadingRecommended(true);
+      try {
+        const recommendedBooksData = await fetchRecommendedBooks(
+          book.author,
+          queryId ?? '',
+        );
+        setRecommendedBooks(recommendedBooksData);
+      } catch (error) {
+        console.error('Error fetching recommended books:', error);
+        setRecommendedBooks([]);
+      } finally {
+        setIsLoadingRecommended(false);
+      }
+    };
+
+    fetchRecommended();
+  }, [book?.author, queryId]);
 
   if (isLoading) {
     return (
@@ -106,15 +127,19 @@ export const BookDetail: React.FC = () => {
             </div>
           </div>
         </div>
-        {recommendedBooks.length > 0 && (
-          <section className={style.recommendedSection}>
-            <h3 className={style.recommendedHeading}>you might also like</h3>
-            <div className={style.bookGrid}>
-              {recommendedBooks.map((recommendedBook) => (
-                <BookCard key={recommendedBook.id} book={recommendedBook} />
-              ))}
-            </div>
-          </section>
+        {isLoadingRecommended ? (
+          <Loading message="loading recommendations" />
+        ) : (
+          recommendedBooks.length > 0 && (
+            <section className={style.recommendedSection}>
+              <h3 className={style.recommendedHeading}>you might also like</h3>
+              <div className={style.bookGrid}>
+                {recommendedBooks.map((recommendedBook) => (
+                  <BookCard key={recommendedBook.id} book={recommendedBook} />
+                ))}
+              </div>
+            </section>
+          )
         )}
       </div>
     </Layout>
