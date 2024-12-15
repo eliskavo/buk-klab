@@ -19,8 +19,8 @@ export const BookDetail: React.FC = () => {
   const navigate = useNavigate();
 
   const [book, setBook] = useState<Book | null>(null);
-  const [recommendedBooks, setRecommendedBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [recommendedBooks, setRecommendedBooks] = useState<Book[]>([]);
   const [isRecommendedLoading, setIsRecommendedLoading] = useState(false);
 
   useEffect(() => {

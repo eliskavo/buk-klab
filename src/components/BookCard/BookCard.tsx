@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Book } from '../../../types/types';
+import { Book } from '../../model/Book';
 import style from './BookCard.module.scss';
 
 type BooksProps = { book: Book };
