@@ -1,11 +1,14 @@
 import style from './StarsRating.module.scss';
 
-type StarsProps = {
+type StarsRatingProps = {
   rating: number;
   maxStars?: number;
 };
 
-export const Stars = ({ rating, maxStars = 5 }: StarsProps) => {
+export const StarsRating: React.FC<StarsRatingProps> = ({
+  rating,
+  maxStars = 5,
+}) => {
   const roundedRating = Math.min(
     Math.max(Math.round(rating * 2) / 2, 0),
     maxStars,

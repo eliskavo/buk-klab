@@ -3,13 +3,6 @@ import { Book } from '../model/Book';
 import { getFetch } from './base';
 
 const LIMIT = 30;
-const OFFSET = 0;
-
-type FetchBooksParams = {
-  query?: string;
-  page?: number;
-  limit?: number;
-};
 
 type DocType = {
   author_name: string[];
@@ -28,16 +21,22 @@ type SearchResponse = {
   offset: number;
 };
 
-export const fetchSearchBooks = async ({ query }: FetchBooksParams) => {
+export const fetchSearchBooks = async ({
+  query,
+  page = 1,
+}: {
+  query?: string;
+  page?: number;
+}) => {
   const searchParams = new URLSearchParams({
     q: query ?? '',
     fields: 'key,title,author_name,cover_i',
     lang: 'eng,cze',
     limit: String(LIMIT),
-    offset: String(OFFSET),
+    offset: String((page - 1) * LIMIT),
   });
 
-  const url = `https://openlibrary.org/search.json?${searchParams.toString()}`;
+  const url = `https://openlibrary.org/search.json?${String(searchParams)}`;
 
   try {
     const data = await getFetch<SearchResponse>(url);
@@ -45,21 +44,18 @@ export const fetchSearchBooks = async ({ query }: FetchBooksParams) => {
     const allBooks: Book[] = data.docs.map((book: DocType) => ({
       id: parseItemIdFromUri(book.key),
       title: book.title || 'Untitled',
-      author: book.author_name?.[0] || 'Unknown',
+      author: book.author_name[0] || 'Unknown',
       cover: book.cover_i
         ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
         : '',
       isCurrentlyReading: false,
     }));
 
-    return {
-      books: allBooks,
-      total: data.num_found,
-    };
+    return allBooks;
   } catch (error) {
     console.error('Error fetching search books:', error);
 
-    return { books: [], total: 0 };
+    return [];
   }
 };
 
@@ -89,13 +85,14 @@ type TrendingBooksResponse = {
   works: WorkType[];
 };
 
-export const fetchTrendingBooks = async () => {
+export const fetchTrendingBooks = async (page: number = 1) => {
   const searchParams = new URLSearchParams({
     lang: 'eng,cze',
     limit: String(LIMIT),
+    page: String(page),
   });
 
-  const url = `https://openlibrary.org/trending/daily.json?${searchParams.toString()}`;
+  const url = `https://openlibrary.org/trending/daily.json?${String(searchParams)}`;
 
   try {
     const data = await getFetch<TrendingBooksResponse>(url);
@@ -110,13 +107,10 @@ export const fetchTrendingBooks = async () => {
       isCurrentlyReading: false,
     }));
 
-    return {
-      books: allBooks.slice(OFFSET, OFFSET + LIMIT),
-      total: allBooks.length,
-    };
+    return allBooks;
   } catch (error) {
     console.error('Error fetching trending books:', error);
 
-    return { books: [], total: 0 };
+    return [];
   }
 };

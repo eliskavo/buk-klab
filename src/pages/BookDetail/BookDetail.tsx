@@ -10,7 +10,7 @@ import {
   fetchBookDetails,
   fetchRecommendedBooks,
 } from '../../api/bookDetailApi';
-import { Stars } from '../../components/StarsRating/StarsRating';
+import { StarsRating } from '../../components/StarsRating/StarsRating';
 import { Loading } from '../../components/Loading/Loading';
 import style from './BookDetail.module.scss';
 
@@ -21,7 +21,7 @@ export const BookDetail: React.FC = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [recommendedBooks, setRecommendedBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingRecommended, setIsLoadingRecommended] = useState(false);
+  const [isRecommendedLoading, setIsRecommendedLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,18 +62,18 @@ export const BookDetail: React.FC = () => {
         return;
       }
 
-      setIsLoadingRecommended(true);
+      setIsRecommendedLoading(true);
       try {
-        const recommendedBooksData = await fetchRecommendedBooks(
-          book.author,
-          queryId ?? '',
-        );
+        const recommendedBooksData = await fetchRecommendedBooks({
+          authorName: book.author,
+          queryId: queryId ?? '',
+        });
         setRecommendedBooks(recommendedBooksData);
       } catch (error) {
         console.error('Error fetching recommended books:', error);
         setRecommendedBooks([]);
       } finally {
-        setIsLoadingRecommended(false);
+        setIsRecommendedLoading(false);
       }
     };
 
@@ -119,7 +119,7 @@ export const BookDetail: React.FC = () => {
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
-            <div>{rating !== undefined && <Stars rating={rating} />}</div>
+            <div>{rating !== undefined && <StarsRating rating={rating} />}</div>
             <p className={style.bookDetailDescription}>{description}</p>
             <div className={style.meta}>
               <span className={style.metaItem}>First published: {year}</span>
@@ -127,7 +127,7 @@ export const BookDetail: React.FC = () => {
             </div>
           </div>
         </div>
-        {isLoadingRecommended ? (
+        {isRecommendedLoading ? (
           <Loading message="loading recommendations" />
         ) : (
           recommendedBooks.length > 0 && (

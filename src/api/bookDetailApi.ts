@@ -28,16 +28,13 @@ const fetchBookRating = async (workId: string): Promise<number> => {
   }
 };
 
-const fetchDetail = async (
-  endpoint: string,
-  isWorkKey: boolean,
-): Promise<Book | null> => {
+const fetchDetail = async (endpoint: string, isWorkKey: boolean) => {
   try {
     const bookResponse = await fetch(endpoint);
     if (!bookResponse.ok) {
       throw new Error('Book not found');
     }
-    const bookData: any = (await bookResponse.json()) as Book;
+    const bookData = (await bookResponse.json()) as Book;
 
     const authorKey = isWorkKey
       ? bookData.authors?.[0]?.author?.key
@@ -97,10 +94,13 @@ export const fetchBookDetails = async (
   return fetchDetail(endpoint, isWorkKey);
 };
 
-export const fetchRecommendedBooks = async (
-  authorName: string,
-  queryId: string,
-): Promise<Book[]> => {
+export const fetchRecommendedBooks = async ({
+  queryId,
+  authorName,
+}: {
+  queryId: string;
+  authorName: string;
+}) => {
   try {
     const recommendedResponse = await fetch(
       `https://openlibrary.org/search.json?author=${encodeURIComponent(authorName)}&limit=5`,

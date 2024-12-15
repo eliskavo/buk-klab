@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import clsx from 'clsx';
 
@@ -14,28 +14,25 @@ import style from './Books.module.scss';
 const BOOKS_PER_PAGE = 30;
 const SEARCH_DELAY = 500;
 
+const iconSx = { fontSize: 28 };
+
 export const Books: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 
-  const fetchBooks = async (page: number = 1) => {
+  const fetchBooks = async (
+    fetchFunction: () => Promise<Book[]>,
+    page: number = 1,
+  ) => {
     setIsLoading(true);
     try {
-      const fetchFunction: typeof fetchSearchBooks | typeof fetchTrendingBooks =
-        searchQuery ? fetchSearchBooks : fetchTrendingBooks;
+      const resultBooks = await fetchFunction();
 
-      const result = await fetchFunction({
-        query: searchQuery,
-        page,
-        limit: BOOKS_PER_PAGE,
-      });
-
-      setBooks(result.books);
-      setTotalItems(result.total);
+      setBooks(resultBooks);
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -45,14 +42,39 @@ export const Books: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchBooks(fetchTrendingBooks);
+  }, []);
+
+  useEffect(() => {
+    if (searchQuery) {
+      return;
+    }
+
+    fetchBooks(() => fetchTrendingBooks(currentPage));
+  }, [searchQuery, currentPage]);
+
+  useEffect(() => {
+    if (searchQuery == null) {
+      return;
+    }
+
+    if (searchQuery === '') {
+      return;
+    }
+
     const timeoutId = setTimeout(() => {
-      fetchBooks();
+      fetchBooks(() =>
+        fetchSearchBooks({ query: searchQuery, page: currentPage }),
+      );
     }, SEARCH_DELAY);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, currentPage]);
 
-  const currentlyReadingBook = books.find((book) => book.isCurrentlyReading);
+  const currentlyReadingBook = useMemo(
+    () => books.find((book) => book.isCurrentlyReading),
+    [books],
+  );
 
   return (
     <Layout>
@@ -75,7 +97,7 @@ export const Books: React.FC = () => {
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Open search"
               >
-                <SearchRoundedIcon sx={{ fontSize: 28 }} />
+                <SearchRoundedIcon sx={iconSx} />
               </button>
             )}
             <input
@@ -84,7 +106,7 @@ export const Books: React.FC = () => {
               className={clsx(style.searchInput, {
                 [style.searchInputOpen]: isSearchOpen,
               })}
-              value={searchQuery}
+              value={searchQuery || ''}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search books"
             />
@@ -103,7 +125,9 @@ export const Books: React.FC = () => {
                 currentPage={currentPage}
                 totalItems={totalItems}
                 itemsPerPage={BOOKS_PER_PAGE}
-                onPageChange={(page) => fetchBooks(page)}
+                onPageChange={(page) =>
+                  fetchBooks(() => fetchTrendingBooks(page))
+                }
                 showTotalPages
               />
             </>
