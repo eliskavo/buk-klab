@@ -95,32 +95,14 @@
 
 .sectionMembers {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   width: 100%;
   margin-top: 3rem;
   padding: 0 2rem;
   gap: 2rem;
 
-  @media (min-width: $screen-sm-min) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  @media (min-width: $screen-md-min) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3rem;
-  }
-
   @media (min-width: $screen-lg-min) {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 2rem;
-    padding: 0 4rem;
-  }
-
-  @media (min-width: $screen-xl-min) {
-    grid-template-columns: repeat(7, 1fr);
-    gap: 2rem;
-    padding: 0 4rem;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
 
@@ -128,8 +110,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 2rem;
+  gap: 1rem;
 }
 
 .memberImg {

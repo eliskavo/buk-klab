@@ -8,7 +8,7 @@ export const Members: React.FC = () => (
     <section className={style.section}>
       <div className={style.sectionHeader}>
         <div className={style.sectionLeft}>
-          <h2 className={style.underlined}>our great members</h2>'
+          <h1 className={style.underlined}>our great members</h1>
           <p className={style.description}>
             Our community is made up of book lovers from all walks of life. We
             have students, teachers, parents, and professionals who are
@@ -20,18 +20,18 @@ export const Members: React.FC = () => (
           <img className={style.illustration} src={girlHoldingBooks} alt="" />
         </div>
       </div>
-      <section className={style.sectionMembers} aria-label="Member list">
+      <ul className={style.sectionMembers} aria-label="Member list">
         {members.map((member) => (
-          <div key={member.id} className={style.member}>
+          <li key={member.id} className={style.member}>
             <img
               className={style.memberImg}
               src={member.img}
               alt={member.name}
             />
             <p className={style.memberName}>{member.name}</p>
-          </div>
+          </li>
         ))}
-      </section>
+      </ul>
     </section>
   </Layout>
 );
