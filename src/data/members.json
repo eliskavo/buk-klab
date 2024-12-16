@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Eliška V.",
+    "img": "/src/assets/members/eliskav.png"
+  },
+  {
+    "id": 2,
+    "name": "Russell B.",
+    "img": "/src/assets/members/russellb.png"
+  },
+
+  {
+    "id": 3,
+    "name": "Davit S.",
+    "img": "/src/assets/members/davits.png"
+  },
+  {
+    "id": 4,
+    "name": "Kiki V.",
+    "img": "/src/assets/members/kikiv.png"
+  },
+  {
+    "id": 5,
+    "name": "Damjan M.",
+    "img": "/src/assets/members/damjanm.png"
+  },
+  {
+    "id": 6,
+    "name": "Míša L.",
+    "img": "/src/assets/members/misal.png"
+  },
+  {
+    "id": 7,
+    "name": "Pavel J.",
+    "img": "/src/assets/members/pavelj.png"
+  },
+  {
+    "id": 8,
+    "name": "Jaruška N.",
+    "img": "/src/assets/members/jaruskan.png"
+  },
+  {
+    "id": 9,
+    "name": "Anička V.",
+    "img": "/src/assets/members/anickav.png"
+  }
+]
