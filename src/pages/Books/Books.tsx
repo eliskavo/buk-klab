@@ -3,12 +3,10 @@ import { useState, useEffect, useMemo } from 'react';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { BookType } from '../../model/Book';
 import { fetchSearchBooks, fetchTrendingBooks } from '../../api/bookApi';
-import { Pagination } from '../../components/Pagination/Pagination';
 import { Loading } from '../../components/Loading/Loading';
 import { BookLayout } from '../../components/books/BookLayout';
 import style from './Books.module.scss';
 
-const BOOKS_PER_PAGE = 30;
 const SEARCH_DELAY = 500;
 
 export const Books: React.FC = () => {
@@ -16,7 +14,6 @@ export const Books: React.FC = () => {
   const [books, setBooks] = useState<BookType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalItems, setTotalItems] = useState(0);
 
   const fetchBooks = async (
     fetchFunction: () => Promise<BookType[]>,
@@ -75,20 +72,11 @@ export const Books: React.FC = () => {
       {isLoading ? (
         <Loading message="loading books" />
       ) : (
-        <>
-          <div className={style.bookGrid}>
-            {books.map((book) => (
-              <BookCard key={book.id} book={book} />
-            ))}
-          </div>
-          <Pagination
-            currentPage={currentPage}
-            totalItems={totalItems}
-            itemsPerPage={BOOKS_PER_PAGE}
-            onPageChange={(page) => fetchBooks(() => fetchTrendingBooks(page))}
-            showTotalPages
-          />
-        </>
+        <div className={style.bookGrid}>
+          {books.map((book) => (
+            <BookCard key={book.id} book={book} />
+          ))}
+        </div>
       )}
     </BookLayout>
   );

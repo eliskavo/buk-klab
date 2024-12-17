@@ -1,8 +1,15 @@
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
-import { PaginationProps } from '../../model/Pagination';
 import style from './Pagination.module.scss';
+
+type PaginationProps = {
+  currentPage: number;
+  totalItems: number;
+  itemsPerPage: number;
+  onPageChange: (page: number) => Promise<void> | void;
+  showTotalPages?: boolean;
+};
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
