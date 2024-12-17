@@ -2,7 +2,7 @@ import { useState } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import clsx from 'clsx';
 
-import { Book } from '../../model/Book';
+import { BookType } from '../../model/Book';
 import { ChildrenFC } from '../../utils/type';
 import { CurrentBookCard } from '../CurrentBookCard/CurrentBookCard';
 import { Layout } from '../Layout/Layout';
@@ -11,7 +11,7 @@ import style from './BookLayout.module.scss';
 const iconSx = { fontSize: 28 };
 
 type BookLayoutProps = {
-  currentlyReadingBook: Book | undefined;
+  currentlyReadingBook: BookType | undefined;
   searchQuery: string | null;
   setSearchQuery: (query: string) => void;
 };

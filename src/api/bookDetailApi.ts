@@ -1,5 +1,9 @@
-import { Book } from '../model/Book';
+import { DetailedAuthorType } from '../model/Author';
+import { BookType } from '../model/Book';
+import { SearchResponse } from '../model/Doc';
+import { DetailWorkType } from '../model/Work';
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
+import { getFetch } from './base';
 
 type RatingsResponse = {
   summary: {
@@ -8,7 +12,7 @@ type RatingsResponse = {
   };
 };
 
-const fetchBookRating = async (workId: string): Promise<number> => {
+const fetchBookRating = async (workId: string) => {
   try {
     const response = await fetch(
       `https://openlibrary.org/works/${workId}/ratings.json`,
@@ -28,46 +32,63 @@ const fetchBookRating = async (workId: string): Promise<number> => {
   }
 };
 
-const fetchDetail = async (endpoint: string, isWorkKey: boolean) => {
+const getAuthorData = async (bookData: DetailWorkType) => {
+  const authorKey =
+    bookData.authors[0].author.key || bookData.authors?.[0]?.key;
+
+  if (!authorKey) {
+    return {
+      name: 'Unknown Author',
+      birth_date: '',
+      bio: '',
+      key: '',
+    };
+  }
+
+  return getFetch<DetailedAuthorType>(
+    `https://openlibrary.org/authors/${parseItemIdFromUri(authorKey)}.json`,
+  );
+};
+
+const fetchDetail = async (endpoint: string, authorKey: string) => {
   try {
-    const bookResponse = await fetch(endpoint);
-    if (!bookResponse.ok) {
-      throw new Error('Book not found');
-    }
-    const bookData = (await bookResponse.json()) as Book;
-
-    const authorKey = isWorkKey
-      ? bookData.authors?.[0]?.author?.key
-      : bookData.authors?.[0]?.key;
-
-    let authorResult = { name: 'Unknown Author' };
+    let authorPromise: Promise<DetailedAuthorType> = Promise.resolve() as any;
     if (authorKey) {
-      const authorResponse = await fetch(
-        `https://openlibrary.org/authors/${parseItemIdFromUri(authorKey)}.json`,
+      authorPromise = getFetch<DetailedAuthorType>(
+        `https://openlibrary.org/authors/${authorKey}.json`,
       );
-      authorResult = await authorResponse.json();
     }
-    const authorName = authorResult.name || 'Unknown Author';
 
-    const coverId = bookData.covers?.[0];
+    const [bookData, authorResult] = await Promise.all([
+      getFetch<DetailWorkType>(endpoint),
+      authorPromise,
+    ]);
+
+    let authorData = authorResult;
+
+    if (!authorData) {
+      authorData = await getAuthorData(bookData);
+    }
+
+    const coverId = bookData.covers[0];
     const coverUrl = coverId
       ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
       : '';
 
     const rating = await fetchBookRating(parseItemIdFromUri(bookData.key));
 
-    const bookDetails: Book = {
+    const bookDetails: BookType = {
       id: parseItemIdFromUri(bookData.key),
       title: bookData.title || 'Untitled',
-      author: authorName,
+      author: authorResult.name || 'Unknown Author',
       cover: coverUrl,
       description:
         bookData.description?.value ??
         bookData.description ??
         'No description available',
       year:
-        bookData.first_publish_date ??
-        new Date(bookData.first_publish_date).getFullYear() ??
+        bookData.first_publish_date ||
+        new Date(bookData.first_publish_date).getFullYear() ||
         'Unknown',
       pages: bookData.number_of_pages || 'N/A',
       rating,
@@ -83,15 +104,13 @@ const fetchDetail = async (endpoint: string, isWorkKey: boolean) => {
   }
 };
 
-export const fetchBookDetails = async (
-  queryId: string,
-): Promise<Book | null> => {
+export const fetchBookDetails = async (queryId: string, authorKey: string) => {
   const isWorkKey = queryId.startsWith('OL') && queryId.endsWith('W');
   const endpoint = isWorkKey
     ? `https://openlibrary.org/works/${queryId}.json`
     : `https://openlibrary.org/books/${queryId}.json`;
 
-  return fetchDetail(endpoint, isWorkKey);
+  return fetchDetail(endpoint, authorKey);
 };
 
 export const fetchRecommendedBooks = async ({
@@ -102,14 +121,13 @@ export const fetchRecommendedBooks = async ({
   authorName: string;
 }) => {
   try {
-    const recommendedResponse = await fetch(
+    const recommendedData = await getFetch<SearchResponse>(
       `https://openlibrary.org/search.json?author=${encodeURIComponent(authorName)}&limit=5`,
     );
-    const recommendedData = await recommendedResponse.json();
-    const recommendedBooksData: Book[] = recommendedData.docs
-      .filter((b: any) => b.key !== queryId)
-      .slice(0, 5)
-      .map((recommendedBook: any) => ({
+
+    const recommendedBooksData: BookType[] = recommendedData.docs
+      .filter((book) => book.key !== queryId)
+      .map((recommendedBook) => ({
         id: parseItemIdFromUri(recommendedBook.key),
         title: recommendedBook.title,
         author: recommendedBook.author_name?.[0] || 'Unknown',

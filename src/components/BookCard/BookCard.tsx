@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 
-import { Book } from '../../model/Book';
+import { BookType } from '../../model/Book';
 import style from './BookCard.module.scss';
 
-type BooksProps = { book: Book };
+type BooksProps = { book: BookType };
 
 export const BookCard: React.FC<BooksProps> = ({
-  book: { id, cover, title, author },
+  book: { id, cover, title, author, authorKey },
 }) => (
-  <Link key={id} className={style.bookCard} to={`/books/${id}`}>
+  <Link
+    key={id}
+    className={style.bookCard}
+    to={`/books/${id}?authorKey=${authorKey || ''}`}
+  >
     <section className={style.card}>
       <div className={style.cardCoverWrapper}>
         <img src={cover} className={style.cardCover} alt={title} />

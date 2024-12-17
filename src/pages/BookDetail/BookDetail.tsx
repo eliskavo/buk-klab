@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import { Layout } from '../../components/Layout/Layout';
-import { BookCard } from '../../components/BookCard/BookCard';
-import { Book } from '../../model/Book';
+import { BookType } from '../../model/Book';
 import { NotFound } from '../../components/NotFound/NotFound';
 import {
   fetchBookDetails,
@@ -12,16 +11,20 @@ import {
 } from '../../api/bookDetailApi';
 import { StarsRating } from '../../components/StarsRating/StarsRating';
 import { Loading } from '../../components/Loading/Loading';
+import { RecommendedBooks } from './RecommendedBooks';
 import style from './BookDetail.module.scss';
 
 export const BookDetail: React.FC = () => {
   const { id: queryId } = useParams();
+  const [searchParams] = useSearchParams();
+  const authorKey = searchParams.get('authorKey') || '';
   const navigate = useNavigate();
 
-  const [book, setBook] = useState<Book | null>(null);
+  const [book, setBook] = useState<BookType | null>(null);
+  const [recommendedBooks, setRecommendedBooks] = useState<BookType[] | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
-  const [recommendedBooks, setRecommendedBooks] = useState<Book[]>([]);
-  const [isRecommendedLoading, setIsRecommendedLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,16 +41,11 @@ export const BookDetail: React.FC = () => {
       }
 
       try {
-        const bookDetails = await fetchBookDetails(queryId);
-        if (bookDetails) {
-          setBook(bookDetails);
-          setIsLoading(false);
-        } else {
-          setBook(null);
-        }
+        const bookDetails = await fetchBookDetails(queryId, authorKey);
+
+        setBook(bookDetails);
       } catch (error) {
         console.error('Error fetching book details:', error);
-        setBook(null);
       } finally {
         setIsLoading(false);
       }
@@ -62,18 +60,16 @@ export const BookDetail: React.FC = () => {
         return;
       }
 
-      setIsRecommendedLoading(true);
       try {
         const recommendedBooksData = await fetchRecommendedBooks({
-          authorName: book.author,
+          authorName: book?.author || '',
           queryId: queryId ?? '',
         });
-        setRecommendedBooks(recommendedBooksData);
+
+        setRecommendedBooks(recommendedBooksData || []);
       } catch (error) {
         console.error('Error fetching recommended books:', error);
         setRecommendedBooks([]);
-      } finally {
-        setIsRecommendedLoading(false);
       }
     };
 
@@ -108,6 +104,7 @@ export const BookDetail: React.FC = () => {
         >
           <ArrowBackIosRoundedIcon sx={{ fontSize: 16 }} /> back to books
         </button>
+
         <div className={style.bookInfo}>
           <div className={style.bookDetailCover}>
             <img
@@ -119,27 +116,19 @@ export const BookDetail: React.FC = () => {
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
+
             <div>{rating !== undefined && <StarsRating rating={rating} />}</div>
             <p className={style.bookDetailDescription}>{description}</p>
+
             <div className={style.meta}>
               <span className={style.metaItem}>First published: {year}</span>
               <span className={style.metaItem}>{pages} pages</span>
             </div>
           </div>
         </div>
-        {isRecommendedLoading ? (
-          <Loading message="loading recommendations" />
-        ) : (
-          recommendedBooks.length > 0 && (
-            <section className={style.recommendedSection}>
-              <h3 className={style.recommendedHeading}>you might also like</h3>
-              <div className={style.bookGrid}>
-                {recommendedBooks.map((recommendedBook) => (
-                  <BookCard key={recommendedBook.id} book={recommendedBook} />
-                ))}
-              </div>
-            </section>
-          )
+
+        {book.author && (
+          <RecommendedBooks recommendedBooks={recommendedBooks} />
         )}
       </div>
     </Layout>

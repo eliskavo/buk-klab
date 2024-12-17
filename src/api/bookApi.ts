@@ -1,25 +1,10 @@
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
-import { Book } from '../model/Book';
+import { BookType } from '../model/Book';
 import { getFetch } from './base';
+import { WorkType } from '../model/Work';
+import { SearchResponse, DocType } from '../model/Doc';
 
 const LIMIT = 30;
-
-type DocType = {
-  author_name: string[];
-  cover_i?: number;
-  key: string;
-  title: string;
-};
-
-type SearchResponse = {
-  numFound: number;
-  start: number;
-  numFoundExact: boolean;
-  docs: DocType[];
-  num_found: number;
-  q: string;
-  offset: number;
-};
 
 export const fetchSearchBooks = async ({
   query,
@@ -41,10 +26,10 @@ export const fetchSearchBooks = async ({
   try {
     const data = await getFetch<SearchResponse>(url);
 
-    const allBooks: Book[] = data.docs.map((book: DocType) => ({
+    const allBooks: BookType[] = data.docs.map((book: DocType) => ({
       id: parseItemIdFromUri(book.key),
       title: book.title || 'Untitled',
-      author: book.author_name[0] || 'Unknown',
+      author: book.author_name?.[0] || 'Unknown',
       cover: book.cover_i
         ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
         : '',
@@ -57,28 +42,6 @@ export const fetchSearchBooks = async ({
 
     return [];
   }
-};
-
-type WorkType = {
-  author_key?: string[];
-  author_name?: string[];
-  cover_edition_key?: string;
-  cover_i?: number;
-  edition_count: number;
-  first_publish_year?: number;
-  has_fulltext: boolean;
-  ia?: string[];
-  ia_collection_s?: string;
-  key: string;
-  language?: string[];
-  public_scan_b: boolean;
-  title: string;
-  lending_edition_s?: string;
-  lending_identifier_s?: string;
-  id_project_gutenberg?: string[];
-  id_librivox?: string[];
-  id_standard_ebooks?: string[];
-  subtitle?: string;
 };
 
 type TrendingBooksResponse = {
@@ -97,10 +60,11 @@ export const fetchTrendingBooks = async (page: number = 1) => {
   try {
     const data = await getFetch<TrendingBooksResponse>(url);
 
-    const allBooks: Book[] = data.works.map((book: WorkType) => ({
+    const allBooks: BookType[] = data.works.map((book: WorkType) => ({
       id: parseItemIdFromUri(book.key),
       title: book.title || 'Untitled',
       author: book.author_name?.[0] || 'Unknown',
+      authorKey: book.author_key?.[0] || '',
       cover: book.cover_i
         ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
         : '',

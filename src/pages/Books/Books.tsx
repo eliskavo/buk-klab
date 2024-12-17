@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 
 import { BookCard } from '../../components/BookCard/BookCard';
-import { Book } from '../../model/Book';
+import { BookType } from '../../model/Book';
 import { fetchSearchBooks, fetchTrendingBooks } from '../../api/bookApi';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { Loading } from '../../components/Loading/Loading';
@@ -13,13 +13,13 @@ const SEARCH_DELAY = 500;
 
 export const Books: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<BookType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 
   const fetchBooks = async (
-    fetchFunction: () => Promise<Book[]>,
+    fetchFunction: () => Promise<BookType[]>,
     page: number = 1,
   ) => {
     setIsLoading(true);
@@ -34,10 +34,6 @@ export const Books: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchBooks(fetchTrendingBooks);
-  }, []);
 
   useEffect(() => {
     if (searchQuery) {
