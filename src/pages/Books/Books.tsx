@@ -1,69 +1,75 @@
-import { useState } from 'react';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import clsx from 'clsx';
+import { useState, useEffect, useMemo } from 'react';
 
-import { Layout } from '../../components/Layout/Layout';
 import { BookCard } from '../../components/BookCard/BookCard';
-import { CurrentBookCard } from '../../components/CurrentBookCard/CurrentBookCard';
-import mockbooks from '../../data/mockbooks.json';
-import { Book } from '../../../types/types';
+import { BookType } from '../../model/Book';
+import { fetchSearchBooks } from '../../api/bookApi';
+import { Loading } from '../../components/Loading/Loading';
+import { BookLayout } from '../../components/books/BookLayout';
 import style from './Books.module.scss';
 
-const books: Book[] = mockbooks;
+const SEARCH_DELAY = 500;
 
 export const Books: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
+  const [books, setBooks] = useState<BookType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredBooks = books.filter(
-    (book) =>
-      book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const fetchBooks = async (
+    fetchFunction: () => Promise<BookType[]>,
+    page: number = 1,
+  ) => {
+    setIsLoading(true);
+    try {
+      const resultBooks = await fetchFunction();
 
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
+      setBooks(resultBooks);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const currentlyReadingBook = books.find((book) => book.isCurrentlyReading);
+  useEffect(() => {
+    if (searchQuery == null) {
+      return;
+    }
+
+    if (searchQuery === '') {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      fetchBooks(() =>
+        fetchSearchBooks({ query: searchQuery, page: currentPage }),
+      );
+    }, SEARCH_DELAY);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, currentPage]);
+
+  const currentlyReadingBook = useMemo(
+    () => books.find((book) => book.isCurrentlyReading),
+    [books],
+  );
 
   return (
-    <Layout>
-      <div className={style.bookSection}>
-        <h1 className={style.currentReadingTitle}>we are currently reading</h1>
-        {currentlyReadingBook && <CurrentBookCard books={books} />}
-        <div className={style.searchSection}>
-          <div className={style.searchHeader}>
-            <h1 className={style.allBooksTitle}>discover our books</h1>
-
-            {!isSearchOpen && (
-              <button
-                className={style.searchIcon}
-                onClick={toggleSearch}
-                aria-label="search books"
-              >
-                <SearchRoundedIcon sx={{ fontSize: 28 }} />
-              </button>
-            )}
-
-            <input
-              type="text"
-              placeholder="search books..."
-              className={clsx(style.searchInput, {
-                [style.searchInputOpen]: isSearchOpen,
-              })}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
-            />
-          </div>
-          <div className={style.bookGrid}>
-            {filteredBooks.map((book) => (
-              <BookCard key={book.id} book={book} />
-            ))}
-          </div>
+    <BookLayout
+      currentlyReadingBook={currentlyReadingBook}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
+    >
+      {isLoading ? (
+        <Loading message="loading books" />
+      ) : (
+        <div className={style.bookGrid}>
+          {books.map((book) => (
+            <BookCard key={book.id} book={book} />
+          ))}
         </div>
-      </div>
-    </Layout>
+      )}
+    </BookLayout>
   );
 };
