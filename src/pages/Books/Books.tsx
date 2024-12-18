@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 import { BookCard } from '../../components/BookCard/BookCard';
 import { BookType } from '../../model/Book';
-import { fetchSearchBooks, fetchTrendingBooks } from '../../api/bookApi';
+import { fetchSearchBooks } from '../../api/bookApi';
 import { Loading } from '../../components/Loading/Loading';
 import { BookLayout } from '../../components/books/BookLayout';
 import style from './Books.module.scss';
@@ -31,14 +31,6 @@ export const Books: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (searchQuery) {
-      return;
-    }
-
-    fetchBooks(() => fetchTrendingBooks(currentPage));
-  }, [searchQuery, currentPage]);
 
   useEffect(() => {
     if (searchQuery == null) {

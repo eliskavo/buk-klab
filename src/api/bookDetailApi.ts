@@ -1,116 +1,41 @@
-import { DetailedAuthorType } from '../model/Author';
-import { BookType } from '../model/Book';
-import { SearchResponse } from '../model/Doc';
-import { DetailWorkType } from '../model/Work';
+import { AuthorDoc } from '../model/Author';
+import { EditionDoc } from '../model/Doc';
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
 import { getFetch } from './base';
 
-type RatingsResponse = {
-  summary: {
-    average: number;
-    count: number;
-  };
-};
-
-const fetchBookRating = async (workId: string) => {
+export const fetchBookDetails = async (editionId: string) => {
   try {
-    const response = await fetch(
-      `https://openlibrary.org/works/${workId}/ratings.json`,
+    const editionData = await getFetch<EditionDoc>(
+      `https://openlibrary.org/books/${editionId}.json`,
     );
-    const ratingsData: RatingsResponse =
-      (await response.json()) as RatingsResponse;
 
-    if (ratingsData.summary.average) {
-      return ratingsData.summary.average;
-    }
+    const authorId = parseItemIdFromUri(editionData.authors?.[0]?.key || '');
 
-    return 0;
-  } catch (error) {
-    console.error('Error fetching book rating:', error);
+    const authorData = await getFetch<AuthorDoc>(
+      `https://openlibrary.org/authors/${authorId}.json`,
+    );
 
-    return 0;
-  }
-};
-
-const getAuthorData = async (bookData: DetailWorkType) => {
-  const authorKey =
-    bookData.authors[0].author.key || bookData.authors?.[0]?.key;
-
-  if (!authorKey) {
-    return {
-      name: 'Unknown Author',
-      birth_date: '',
-      bio: '',
-      key: '',
-    };
-  }
-
-  return getFetch<DetailedAuthorType>(
-    `https://openlibrary.org/authors/${parseItemIdFromUri(authorKey)}.json`,
-  );
-};
-
-const fetchDetail = async (endpoint: string, authorKey: string) => {
-  try {
-    let authorPromise: Promise<DetailedAuthorType> = Promise.resolve() as any;
-    if (authorKey) {
-      authorPromise = getFetch<DetailedAuthorType>(
-        `https://openlibrary.org/authors/${authorKey}.json`,
-      );
-    }
-
-    const [bookData, authorResult] = await Promise.all([
-      getFetch<DetailWorkType>(endpoint),
-      authorPromise,
-    ]);
-
-    let authorData = authorResult;
-
-    if (!authorData) {
-      authorData = await getAuthorData(bookData);
-    }
-
-    const coverId = bookData.covers[0];
+    const coverId = editionData.covers?.find((id) => id > 0);
     const coverUrl = coverId
       ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
       : '';
 
-    const rating = await fetchBookRating(parseItemIdFromUri(bookData.key));
-
-    const bookDetails: BookType = {
-      id: parseItemIdFromUri(bookData.key),
-      title: bookData.title || 'Untitled',
-      author: authorResult.name || 'Unknown Author',
+    return {
+      id: editionId,
+      title: editionData.title || 'Untitled',
+      author: authorData.name || 'Unknown Author',
+      authorId,
       cover: coverUrl,
-      description:
-        bookData.description?.value ??
-        bookData.description ??
-        'No description available',
-      year:
-        bookData.first_publish_date ||
-        new Date(bookData.first_publish_date).getFullYear() ||
-        'Unknown',
-      pages: bookData.number_of_pages || 'N/A',
-      rating,
+      description: editionData.description || 'No description available',
+      year: editionData.publish_date || 'Unknown',
+      pages: editionData.number_of_pages?.toString() || 'N/A',
       isCurrentlyReading: false,
-      editionKey: bookData.key,
     };
-
-    return bookDetails;
   } catch (error) {
     console.error('Error fetching book details:', error);
 
     return null;
   }
-};
-
-export const fetchBookDetails = async (queryId: string, authorKey: string) => {
-  const isWorkKey = queryId.startsWith('OL') && queryId.endsWith('W');
-  const endpoint = isWorkKey
-    ? `https://openlibrary.org/works/${queryId}.json`
-    : `https://openlibrary.org/books/${queryId}.json`;
-
-  return fetchDetail(endpoint, authorKey);
 };
 
 export const fetchRecommendedBooks = async ({

@@ -1,6 +1,4 @@
-export type DetailedAuthorType = {
+export type AuthorDoc = {
   name: string;
-  birth_date: string;
-  bio: string;
   key: string;
 };
