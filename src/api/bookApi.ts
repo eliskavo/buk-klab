@@ -14,7 +14,7 @@ export const fetchSearchBooks = async ({
 }) => {
   const searchParams = new URLSearchParams({
     q: query ?? '',
-    fields: 'key,title,author_name,cover_i,editions',
+    fields: 'key,title,author_name,cover_i,editions,author_key',
     lang: 'eng,cze',
     limit: String(LIMIT),
     offset: String((page - 1) * LIMIT),
@@ -29,6 +29,7 @@ export const fetchSearchBooks = async ({
       id: parseItemIdFromUri(book.editions.docs[0].key),
       title: book.editions.docs[0].title || 'Untitled',
       author: book.author_name?.[0] || 'Unknown',
+      authorKey: book.author_key?.[0] || '',
       cover: book.editions.docs[0].cover_i
         ? `https://covers.openlibrary.org/b/id/${book.editions.docs[0].cover_i}-M.jpg`
         : '',

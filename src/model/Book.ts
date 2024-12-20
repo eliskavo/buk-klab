@@ -6,11 +6,11 @@ export type BookType = {
   author: string;
   authorKey?: string;
   cover: string;
-  description?: string;
+  description?: string | { value: string };
   year?: number | string;
   isCurrentlyReading?: boolean;
   rating?: number;
-  pages?: number;
+  pages?: string;
   reviews?: ReviewType[];
   recommendedBooks?: BookType[];
   editionKey?: string;

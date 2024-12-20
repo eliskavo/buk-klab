@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import { Layout } from '../../components/Layout/Layout';
 import { BookType } from '../../model/Book';
 import { NotFound } from '../../components/NotFound/NotFound';
-import {
-  fetchBookDetails,
-  fetchRecommendedBooks,
-} from '../../api/bookDetailApi';
-import { StarsRating } from '../../components/StarsRating/StarsRating';
+import { fetchBookDetails } from '../../api/bookDetailApi';
+import { fetchRecommendedBooks } from '../../api/recommendedBooksApi';
 import { Loading } from '../../components/Loading/Loading';
 import { RecommendedBooks } from './RecommendedBooks';
 import style from './BookDetail.module.scss';
 
+const iconSx = { fontSize: 16 };
+
 export const BookDetail: React.FC = () => {
   const { id: queryId } = useParams();
-  const [searchParams] = useSearchParams();
-  const authorKey = searchParams.get('authorKey') || '';
   const navigate = useNavigate();
 
   const [book, setBook] = useState<BookType | null>(null);
@@ -41,7 +38,7 @@ export const BookDetail: React.FC = () => {
       }
 
       try {
-        const bookDetails = await fetchBookDetails(queryId, authorKey);
+        const bookDetails = await fetchBookDetails(queryId);
 
         setBook(bookDetails);
       } catch (error) {
@@ -62,11 +59,11 @@ export const BookDetail: React.FC = () => {
 
       try {
         const recommendedBooksData = await fetchRecommendedBooks({
-          authorName: book?.author || '',
+          authorName: book.author || '',
           queryId: queryId ?? '',
         });
 
-        setRecommendedBooks(recommendedBooksData || []);
+        setRecommendedBooks(recommendedBooksData);
       } catch (error) {
         console.error('Error fetching recommended books:', error);
         setRecommendedBooks([]);
@@ -92,7 +89,7 @@ export const BookDetail: React.FC = () => {
     );
   }
 
-  const { title, author, cover, description, year, pages, rating } = book;
+  const { title, author, cover, description, year, pages } = book;
 
   return (
     <Layout>
@@ -102,7 +99,7 @@ export const BookDetail: React.FC = () => {
           className={style.backButton}
           aria-label="Back to books"
         >
-          <ArrowBackIosRoundedIcon sx={{ fontSize: 16 }} /> back to books
+          <ArrowBackIosRoundedIcon sx={iconSx} /> back to books
         </button>
 
         <div className={style.bookInfo}>
@@ -116,9 +113,11 @@ export const BookDetail: React.FC = () => {
           <div>
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
-
-            <div>{rating !== undefined && <StarsRating rating={rating} />}</div>
-            <p className={style.bookDetailDescription}>{description}</p>
+            <p className={style.bookDetailDescription}>
+              {typeof description === 'string'
+                ? description
+                : description?.value}
+            </p>
 
             <div className={style.meta}>
               <span className={style.metaItem}>First published: {year}</span>

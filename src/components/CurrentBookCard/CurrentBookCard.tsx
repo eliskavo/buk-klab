@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 
-import { Book } from '../../../types/types';
+import { BookType } from '../../model/Book';
 import style from './CurrentBookCard.module.scss';
 
+const iconSx = { fontSize: 16 };
+
 type CurrentBookProps = {
-  books: Book[];
+  books: BookType[];
 };
 
 export const CurrentBookCard: React.FC<CurrentBookProps> = ({ books }) => {
@@ -32,14 +34,18 @@ export const CurrentBookCard: React.FC<CurrentBookProps> = ({ books }) => {
           <p className={style.currentMeta}>
             {currentBook.author}, {currentBook.year}
           </p>
-          <p className={style.currentDescription}>{currentBook.description}</p>
+          <p className={style.currentDescription}>
+            {typeof currentBook.description === 'string'
+              ? currentBook.description
+              : currentBook.description?.value}
+          </p>
           <Link
             className={style.currentButton}
             aria-label={`View details for book: ${currentBook.title}`}
             to={`/books/${currentBook.id}`}
           >
             show more
-            <ArrowForwardIosRoundedIcon sx={{ fontSize: 16 }} />
+            <ArrowForwardIosRoundedIcon sx={iconSx} />
           </Link>
         </div>
       </div>
