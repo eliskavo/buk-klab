@@ -1,23 +1,14 @@
 .bookCard {
   display: flex;
+  flex-direction: column;
   cursor: pointer;
   text-decoration: none;
   color: $secondary-color;
-}
 
-.cardDescription {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: $secondary-color;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s;
+  &:hover {
+    transform: scale(1.07);
+    border-radius: 0.2rem;
+  }
 }
 
 .cardCoverWrapper {
@@ -30,12 +21,16 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.cardCoverWrapper:hover .cardDescription {
-  opacity: 1;
-}
-
 .card {
   transition: box-shadow 0.2s;
+}
+
+.cardCover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .cardContent {
