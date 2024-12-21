@@ -10,13 +10,27 @@
   }
 
   @media (min-width: $screen-lg-min) {
-    flex-direction: row;
     justify-content: space-between;
     padding: 4rem 4rem 8rem 4rem;
   }
 }
 
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+
+  @media (min-width: $screen-lg-min) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+}
+
 .sectionLeft {
+  flex: 1;
   width: 100%;
   padding: 2rem;
   text-align: center;
@@ -29,21 +43,31 @@
 }
 
 .sectionRight {
-  width: 100%;
   display: flex;
+  flex: 1;
+  width: 100%;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 2rem;
 
   @media (min-width: $screen-lg-min) {
-    width: 50%;
+    width: 40%;
+    padding: 0 2rem;
   }
 }
 
 .illustration {
-  width: 50%;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+
+  @media (min-width: $screen-md-min) {
+    max-width: 250px;
+  }
 
   @media (min-width: $screen-lg-min) {
-    width: 50%;
+    max-width: 300px;
   }
 }
 
@@ -61,18 +85,41 @@
   position: relative;
   display: inline-block;
   font-weight: $extrabold;
+  text-decoration: underline;
+  text-decoration-color: $primary-color;
+  text-decoration-thickness: 0.5rem;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -4px;
   font-size: 2rem;
-  text-align: center;
-  z-index: -1;
+}
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0.25em;
-    left: -1%;
-    right: -1%;
-    height: 0.3em;
-    background-color: $primary-color;
-    z-index: -2;
+.sectionMembers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  width: 100%;
+  margin-top: 3rem;
+  padding: 0 2rem;
+  gap: 2rem;
+
+  @media (min-width: $screen-lg-min) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
+}
+
+.member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.memberImg {
+  width: 100%;
+  max-width: 180px;
+}
+
+.memberName {
+  font-size: 1rem;
+  font-weight: $semibold;
 }
