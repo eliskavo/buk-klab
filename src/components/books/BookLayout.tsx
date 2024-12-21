@@ -49,6 +49,7 @@ export const BookLayout: ChildrenFC<BookLayoutProps> = ({
               </button>
             )}
             <input
+              data-testid="search-input"
               type="text"
               placeholder="search books..."
               className={clsx(style.searchInput, {

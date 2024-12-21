@@ -3,9 +3,7 @@ export type EditionDoc = {
   author_key?: string[];
   title: string;
   cover_i?: string;
-  description?: {
-    value: string;
-  };
+  description?: string | { value: string };
   authors?: {
     key: string;
     name: string;

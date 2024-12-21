@@ -25,16 +25,18 @@ export const fetchSearchBooks = async ({
   try {
     const data = await getFetch<SearchResponse>(url);
 
-    const allBooks: BookType[] = data.docs.map((book: DocType) => ({
-      id: parseItemIdFromUri(book.editions.docs[0].key),
-      title: book.editions.docs[0].title || 'Untitled',
-      author: book.author_name?.[0] || 'Unknown',
-      authorKey: book.author_key?.[0] || '',
-      cover: book.editions.docs[0].cover_i
-        ? `https://covers.openlibrary.org/b/id/${book.editions.docs[0].cover_i}-M.jpg`
-        : '',
-      isCurrentlyReading: false,
-    }));
+    const allBooks: BookType[] = data.docs.map(
+      ({ editions: { docs }, author_name, author_key }: DocType) => ({
+        id: parseItemIdFromUri(docs[0].key),
+        title: docs[0].title || 'Untitled',
+        author: author_name?.[0] || 'Unknown',
+        authorKey: author_key?.[0] || '',
+        cover: docs[0].cover_i
+          ? `https://covers.openlibrary.org/b/id/${docs[0].cover_i}-M.jpg`
+          : '',
+        isCurrentlyReading: false,
+      }),
+    );
 
     return allBooks;
   } catch (error) {

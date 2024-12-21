@@ -4,10 +4,10 @@ import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
 import { getFetch } from './base';
 
 export const fetchRecommendedBooks = async ({
-  queryId,
+  editionId,
   authorName,
 }: {
-  queryId: string;
+  editionId: string;
   authorName: string;
 }) => {
   try {
@@ -18,11 +18,12 @@ export const fetchRecommendedBooks = async ({
       lang: 'eng,cze',
     });
 
-    const url = `https://openlibrary.org/search.json?${String(searchParams)}`;
-    const data = await getFetch<SearchResponse>(url);
+    const data = await getFetch<SearchResponse>(
+      `https://openlibrary.org/search.json?${searchParams}`,
+    );
 
     const recommendedBooks: BookType[] = data.docs
-      .filter((book) => book.editions.docs[0].key !== queryId)
+      .filter((book) => book.editions.docs[0].key !== editionId)
       .map((book: DocType) => ({
         id: parseItemIdFromUri(book.editions.docs[0].key),
         title: book.editions.docs[0].title || 'Untitled',

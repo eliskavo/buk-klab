@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 
 import { BookType } from '../../model/Book';
+import { getDescriptionValue } from '../../utils/getDescriptionValue';
 import style from './CurrentBookCard.module.scss';
 
 const iconSx = { fontSize: 16 };
@@ -35,9 +36,7 @@ export const CurrentBookCard: React.FC<CurrentBookProps> = ({ books }) => {
             {currentBook.author}, {currentBook.year}
           </p>
           <p className={style.currentDescription}>
-            {typeof currentBook.description === 'string'
-              ? currentBook.description
-              : currentBook.description?.value}
+            {getDescriptionValue(currentBook.description)}
           </p>
           <Link
             className={style.currentButton}

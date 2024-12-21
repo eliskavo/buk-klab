@@ -1,34 +1,40 @@
 import { AuthorDoc } from '../model/Author';
 import { EditionDoc } from '../model/Doc';
-import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
+import { getDescriptionValue } from '../utils/getDescriptionValue';
 import { getFetch } from './base';
 
-export const fetchBookDetails = async (editionId: string) => {
+export const fetchBookDetails = async ({
+  editionId,
+  authorKey,
+}: {
+  editionId: string;
+  authorKey: string | null;
+}) => {
   try {
-    const editionData = await getFetch<EditionDoc>(
-      `https://openlibrary.org/books/${editionId}.json`,
-    );
+    const [editionData, authorData] = await Promise.all([
+      getFetch<EditionDoc>(`https://openlibrary.org/books/${editionId}.json`),
+      authorKey
+        ? getFetch<AuthorDoc>(
+            `https://openlibrary.org/authors/${authorKey}.json`,
+          )
+        : null,
+    ]);
 
-    const authorId = parseItemIdFromUri(editionData.authors?.[0]?.key || '');
-    const authorData = await getFetch<AuthorDoc>(
-      `https://openlibrary.org/authors/${authorId}.json`,
-    );
-
-    const coverId = editionData.covers?.[0];
+    const { title, description, covers, publish_date, number_of_pages } =
+      editionData;
+    const coverId = covers?.[0];
 
     return {
       id: editionId,
-      title: editionData.title || 'Untitled',
-      author: authorData.name || 'Unknown Author',
+      title: title || 'Untitled',
+      author: authorData?.name || 'Unknown Author',
       cover: coverId
         ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
         : '',
       description:
-        editionData.description?.value ||
-        editionData.description ||
-        'No description available',
-      year: editionData.publish_date || 'Unknown',
-      pages: editionData.number_of_pages?.toString() || 'N/A',
+        getDescriptionValue(description) ?? 'No description available',
+      year: publish_date || 'Unknown',
+      pages: number_of_pages?.toString() || 'N/A',
       isCurrentlyReading: false,
     };
   } catch (error) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import { Layout } from '../../components/Layout/Layout';
@@ -9,12 +9,15 @@ import { fetchBookDetails } from '../../api/bookDetailApi';
 import { fetchRecommendedBooks } from '../../api/recommendedBooksApi';
 import { Loading } from '../../components/Loading/Loading';
 import { RecommendedBooks } from './RecommendedBooks';
+import { getDescriptionValue } from '../../utils/getDescriptionValue';
 import style from './BookDetail.module.scss';
 
 const iconSx = { fontSize: 16 };
 
 export const BookDetail: React.FC = () => {
-  const { id: queryId } = useParams();
+  const { id: editionId } = useParams();
+  const [searchParams] = useSearchParams();
+  const authorKey = searchParams.get('authorKey');
   const navigate = useNavigate();
 
   const [book, setBook] = useState<BookType | null>(null);
@@ -25,7 +28,7 @@ export const BookDetail: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [queryId]);
+  }, [editionId]);
 
   const goBackToBooks = () => {
     navigate('/books');
@@ -33,12 +36,15 @@ export const BookDetail: React.FC = () => {
 
   useEffect(() => {
     const fetchDetails = async () => {
-      if (!queryId) {
+      if (!editionId) {
         return;
       }
 
       try {
-        const bookDetails = await fetchBookDetails(queryId);
+        const bookDetails = await fetchBookDetails({
+          editionId,
+          authorKey,
+        });
 
         setBook(bookDetails);
       } catch (error) {
@@ -49,7 +55,7 @@ export const BookDetail: React.FC = () => {
     };
 
     fetchDetails();
-  }, [queryId]);
+  }, [editionId]);
 
   useEffect(() => {
     const fetchRecommended = async () => {
@@ -60,7 +66,7 @@ export const BookDetail: React.FC = () => {
       try {
         const recommendedBooksData = await fetchRecommendedBooks({
           authorName: book.author || '',
-          queryId: queryId ?? '',
+          editionId: editionId ?? '',
         });
 
         setRecommendedBooks(recommendedBooksData);
@@ -71,7 +77,7 @@ export const BookDetail: React.FC = () => {
     };
 
     fetchRecommended();
-  }, [book?.author, queryId]);
+  }, [book?.author, editionId]);
 
   if (isLoading) {
     return (
@@ -114,9 +120,7 @@ export const BookDetail: React.FC = () => {
             <h1 className={style.bookContentTitle}>{title}</h1>
             <h2 className={style.bookContentAuthor}>{author}</h2>
             <p className={style.bookDetailDescription}>
-              {typeof description === 'string'
-                ? description
-                : description?.value}
+              {getDescriptionValue(description)}
             </p>
 
             <div className={style.meta}>
