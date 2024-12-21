@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 
 import { Layout } from '../../components/Layout/Layout';
 import girlHoldingBooks from '../../assets/images/girl_holding_books.png';
-import mockMembers from '../../data/mockMembers.json';
 import { getMembers } from '../../api/membersApi';
+import { MemberType } from '../../model/Member';
 import style from './Members.module.scss';
 
 export const Members: React.FC = () => {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<MemberType[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -18,7 +18,11 @@ export const Members: React.FC = () => {
     getData();
   }, []);
 
-  console.log(members);
+  const formatName = (name: string, surname: string) => {
+    const surnameInitial = surname ? `${surname.charAt(0)}.` : '';
+
+    return `${name} ${surnameInitial}`;
+  };
 
   return (
     <Layout>
@@ -39,14 +43,16 @@ export const Members: React.FC = () => {
           </div>
         </div>
         <ul className={style.sectionMembers} aria-label="Member list">
-          {mockMembers.map((member) => (
+          {members.map((member) => (
             <li key={member.id} className={style.member}>
               <img
                 className={style.memberImg}
-                src={member.img}
+                src={member.profile_image}
                 alt={member.name}
               />
-              <p className={style.memberName}>{member.name}</p>
+              <p className={style.memberName}>
+                {formatName(member.name, member.surname)}
+              </p>
             </li>
           ))}
         </ul>
