@@ -2,17 +2,23 @@
   padding: 2rem 1rem;
   margin: 2rem;
 }
+
 .title {
   margin-bottom: 2.5rem;
   font-size: 2rem;
   font-weight: $extrabold;
+  text-decoration: underline;
+  text-decoration-color: $primary-color;
+  text-decoration-thickness: 0.4rem;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -4px;
 }
 
 .clubsList {
-  list-style: none;
+  display: grid;
   padding: 0;
   margin: 0;
-  display: grid;
+  list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
 }

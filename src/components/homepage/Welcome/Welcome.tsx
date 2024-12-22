@@ -15,7 +15,7 @@ export const Welcome = () => (
             are passionate about reading and sharing our thoughts with others.
             Join us today and start your reading journey with us!
           </p>
-          <LinkButton to="/join" className={style.ctaButton}>
+          <LinkButton to="/joinclub" className={style.ctaButton}>
             join buk klab
           </LinkButton>
         </div>

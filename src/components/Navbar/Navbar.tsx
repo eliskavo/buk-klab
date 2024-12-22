@@ -72,7 +72,7 @@ export const Navbar: React.FC = () => {
         </li>
         <li className={style.navbarItem}>
           <LinkButton
-            to="/join"
+            to="/joinclub"
             className={`${style.navbarLink} ${style.navbarButton}`}
           >
             join buk klab
