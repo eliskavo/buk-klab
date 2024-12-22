@@ -8,3 +8,22 @@
     gap: 3rem;
   }
 }
+
+.message {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 2rem;
+  font-size: 1.25rem;
+}
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  font-size: 1.5rem;
+}
+
+.welcomeImage {
+  width: 300px;
+  margin-bottom: 1rem;
+}

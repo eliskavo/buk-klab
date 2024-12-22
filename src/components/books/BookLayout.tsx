@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import clsx from 'clsx';
 
@@ -21,49 +20,37 @@ export const BookLayout: ChildrenFC<BookLayoutProps> = ({
   currentlyReadingBook,
   searchQuery,
   setSearchQuery,
-}) => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+}) => (
+  <Layout>
+    <div className={style.bookSection}>
+      {currentlyReadingBook && (
+        <div>
+          <h1 className={style.currentReadingTitle}>
+            We are currently reading:
+          </h1>
+          <CurrentBookCard books={[currentlyReadingBook]} />
+        </div>
+      )}
 
-  return (
-    <Layout>
-      <div className={style.bookSection}>
-        {currentlyReadingBook && (
-          <div>
-            <h2 className={style.currentReadingTitle}>
-              We are currently reading:
-            </h2>
-            <CurrentBookCard books={[currentlyReadingBook]} />
-          </div>
-        )}
-
-        <div className={style.searchSection}>
-          <div className={style.searchHeader}>
-            <h2>Discover our books</h2>
-            {!isSearchOpen && (
-              <button
-                className={style.searchIcon}
-                onClick={() => setIsSearchOpen(true)}
-                aria-label="Open search"
-              >
-                <SearchRoundedIcon sx={iconSx} />
-              </button>
-            )}
+      <div className={style.searchSection}>
+        <div className={style.searchHeader}>
+          <h1 className={style.searchTitle}>discover our books</h1>
+          <div className={style.searchContainer}>
             <input
               data-testid="search-input"
               type="text"
-              placeholder="search books..."
-              className={clsx(style.searchInput, {
-                [style.searchInputOpen]: isSearchOpen,
-              })}
+              placeholder="search books by title or author"
+              className={clsx(style.searchInput)}
               value={searchQuery || ''}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Search books"
             />
+            <SearchRoundedIcon className={style.searchIcon} sx={iconSx} />
           </div>
-
-          {children}
         </div>
+
+        {children}
       </div>
-    </Layout>
-  );
-};
+    </div>
+  </Layout>
+);

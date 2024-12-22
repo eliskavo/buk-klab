@@ -5,7 +5,7 @@
 }
 
 .currentReadingTitle {
-  font-size: 1.25rem;
+  font-size: 1rem;
   text-decoration: underline;
   text-decoration-color: $primary-color;
   text-decoration-thickness: 0.4rem;
@@ -23,42 +23,56 @@
 
 .searchHeader {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
   margin-bottom: 3rem;
 }
 
+.searchTitle {
+  font-size: 1.5rem;
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-color: $primary-color;
+  text-decoration-thickness: 0.4rem;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -4px;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 2rem;
+  }
+}
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+
+  @media (min-width: $screen-sm-min) {
+    width: 80%;
+  }
+}
+
 .searchInput {
-  display: none;
-  padding: 0.3rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 24px;
-  width: 300px;
+  width: 100%;
+  padding: 0.4rem 2rem 0.4rem 1rem;
+  border: 2px solid $secondary-color;
+  border-radius: 40px;
 
   &:focus {
     outline: none;
   }
 
-  @media (min-width: $screen-md-min) {
-    display: block;
+  @media (min-width: $screen-sm-min) {
+    padding: 0.8rem 2.5rem 0.8rem 1rem;
   }
 }
 
 .searchIcon {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  background-color: transparent;
-  cursor: pointer;
-  border: none;
-
-  @media (min-width: $screen-md-min) {
-    display: none;
-  }
-}
-
-.searchInputOpen {
-  display: block;
-  position: relative;
-  width: 180px;
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $secondary-color;
 }

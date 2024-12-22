@@ -2,6 +2,7 @@ import { BookType } from '../model/Book';
 import { DocType, SearchResponse } from '../model/Doc';
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
 import { getFetch } from './base';
+import placeholder_book from '../assets/images/placeholder_book.png';
 
 export const fetchRecommendedBooks = async ({
   editionId,
@@ -14,7 +15,7 @@ export const fetchRecommendedBooks = async ({
     const searchParams = new URLSearchParams({
       author: authorName,
       fields: 'key,title,author_name,cover_i,editions',
-      limit: '5',
+      limit: '6',
       lang: 'eng,cze',
     });
 
@@ -30,7 +31,7 @@ export const fetchRecommendedBooks = async ({
         author: book.author_name?.[0] || 'Unknown',
         cover: book.editions.docs[0].cover_i
           ? `https://covers.openlibrary.org/b/id/${book.editions.docs[0].cover_i}-M.jpg`
-          : '',
+          : placeholder_book,
         isCurrentlyReading: false,
       }));
 
