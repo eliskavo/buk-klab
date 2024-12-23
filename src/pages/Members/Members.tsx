@@ -18,12 +18,6 @@ export const Members: React.FC = () => {
     getData();
   }, []);
 
-  const formatName = (name: string, surname: string) => {
-    const surnameInitial = surname ? `${surname.charAt(0)}.` : '';
-
-    return `${name} ${surnameInitial}`;
-  };
-
   return (
     <Layout>
       <section className={style.section}>
@@ -47,11 +41,11 @@ export const Members: React.FC = () => {
             <li key={member.id} className={style.member}>
               <img
                 className={style.memberImg}
-                src={member.profile_image}
-                alt={member.name}
+                src={member.profileImage}
+                alt={member.firstName}
               />
               <p className={style.memberName}>
-                {formatName(member.name, member.surname)}
+                {`${member.firstName} ${member.lastName.charAt(0)}.`}
               </p>
             </li>
           ))}
