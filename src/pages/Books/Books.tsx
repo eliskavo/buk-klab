@@ -5,6 +5,8 @@ import { BookType } from '../../model/Book';
 import { fetchSearchBooks } from '../../api/bookApi';
 import { Loading } from '../../components/Loading/Loading';
 import { BookLayout } from '../../components/books/BookLayout';
+import { SearchBooksResult } from '../../model/Doc';
+import search from '../../assets/images/search.png';
 import style from './Books.module.scss';
 
 const SEARCH_DELAY = 500;
@@ -14,16 +16,17 @@ export const Books: React.FC = () => {
   const [books, setBooks] = useState<BookType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [message, setMessage] = useState('');
 
   const fetchBooks = async (
-    fetchFunction: () => Promise<BookType[]>,
+    fetchFunction: () => Promise<SearchBooksResult>,
     page: number = 1,
   ) => {
     setIsLoading(true);
     try {
-      const resultBooks = await fetchFunction();
-
-      setBooks(resultBooks);
+      const result = await fetchFunction();
+      setBooks(result.books);
+      setMessage(result.message || '');
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -32,12 +35,17 @@ export const Books: React.FC = () => {
     }
   };
 
+  const handleSearchUpdate = (query: string) => {
+    setSearchQuery(query);
+
+    if (query === '') {
+      setMessage('Backspace champion! What shall we search for now?');
+      setBooks([]);
+    }
+  };
+
   useEffect(() => {
     if (searchQuery == null) {
-      return;
-    }
-
-    if (searchQuery === '') {
       return;
     }
 
@@ -59,11 +67,16 @@ export const Books: React.FC = () => {
     <BookLayout
       currentlyReadingBook={currentlyReadingBook}
       searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
+      handleSearchUpdate={handleSearchUpdate}
     >
-      {isLoading ? (
-        <Loading message="loading books" />
-      ) : (
+      {searchQuery == null && (
+        <div className={style.welcome}>
+          <img src={search} className={style.welcomeImage} />
+        </div>
+      )}
+      {isLoading && <Loading message="loading books" />}
+      {!isLoading && message && <div className={style.message}>{message}</div>}
+      {!isLoading && !message && (
         <div className={style.bookGrid}>
           {books.map((book) => (
             <BookCard key={book.id} book={book} />

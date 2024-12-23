@@ -2,6 +2,7 @@ import { AuthorDoc } from '../model/Author';
 import { EditionDoc } from '../model/Doc';
 import { getDescriptionValue } from '../utils/getDescriptionValue';
 import { getFetch } from './base';
+import placeholder_book from '../assets/images/placeholder_book.png';
 
 export const fetchBookDetails = async ({
   editionId,
@@ -30,7 +31,7 @@ export const fetchBookDetails = async ({
       author: authorData?.name || 'Unknown Author',
       cover: coverId
         ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
-        : '',
+        : placeholder_book,
       description:
         getDescriptionValue(description) ?? 'No description available',
       year: publish_date || 'Unknown',

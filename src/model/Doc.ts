@@ -1,3 +1,5 @@
+import { BookType } from './Book';
+
 export type EditionDoc = {
   key: string;
   author_key?: string[];
@@ -23,5 +25,10 @@ export type DocType = {
 
 export type SearchResponse = {
   docs: DocType[];
-  offset: number;
+  offset?: number;
+};
+
+export type SearchBooksResult = {
+  books: BookType[];
+  message?: string;
 };
