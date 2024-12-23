@@ -1,11 +1,11 @@
 import { ClubType } from '../../model/Club';
-import style from './Clubs.module.scss';
+import style from './ClubCard.module.scss';
 
 type ClubProps = {
   club: ClubType;
 };
 
-export const Club = ({ club }: ClubProps) => (
+export const ClubCard = ({ club }: ClubProps) => (
   <div className={style.clubCard}>
     <img
       src={club.clubImage}

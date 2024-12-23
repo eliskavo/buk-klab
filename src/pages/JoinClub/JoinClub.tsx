@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Layout } from '../../components/Layout/Layout';
 import { getClubs } from '../../api/clubsApi';
 import { ClubType } from '../../model/Club';
-import { Club } from '../../components/Clubs/Clubs';
+import { ClubCard } from '../../components/ClubCard/ClubCard';
 import style from './JoinClub.module.scss';
 
 export const JoinClub = () => {
@@ -26,7 +26,7 @@ export const JoinClub = () => {
         <ul className={style.clubsList} aria-label="Clubs list">
           {clubs.map((club) => (
             <li key={club.id}>
-              <Club club={club} />
+              <ClubCard club={club} />
             </li>
           ))}
         </ul>
