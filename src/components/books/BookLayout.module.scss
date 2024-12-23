@@ -56,16 +56,16 @@
 
 .searchInput {
   width: 100%;
-  padding: 0.4rem 2rem 0.4rem 1rem;
+  padding: 0.4rem 3rem 0.4rem 1rem;
   border: 2px solid $secondary-color;
   border-radius: 40px;
 
-  &:focus {
-    outline: none;
+  &:focus-visible {
+    outline: 2px solid $primary-color;
   }
 
   @media (min-width: $screen-sm-min) {
-    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    padding: 0.8rem 3rem 0.8rem 1rem;
   }
 }
 

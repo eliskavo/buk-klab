@@ -16,7 +16,7 @@ export const Books: React.FC = () => {
   const [books, setBooks] = useState<BookType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [message, setMessage] = useState<string | undefined>();
+  const [message, setMessage] = useState('');
 
   const fetchBooks = async (
     fetchFunction: () => Promise<SearchBooksResult>,
@@ -26,7 +26,7 @@ export const Books: React.FC = () => {
     try {
       const result = await fetchFunction();
       setBooks(result.books);
-      setMessage(result.message);
+      setMessage(result.message || '');
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -35,17 +35,17 @@ export const Books: React.FC = () => {
     }
   };
 
+  const handleSearchUpdate = (query: string) => {
+    setSearchQuery(query);
+
+    if (query === '') {
+      setMessage('Backspace champion! What shall we search for now?');
+      setBooks([]);
+    }
+  };
+
   useEffect(() => {
     if (searchQuery == null) {
-      return;
-    }
-
-    if (searchQuery === '') {
-      setMessage(
-        '📚 Having a bookworm memory block? Type anything to get started!',
-      );
-      setBooks([]);
-
       return;
     }
 
@@ -67,7 +67,7 @@ export const Books: React.FC = () => {
     <BookLayout
       currentlyReadingBook={currentlyReadingBook}
       searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
+      handleSearchUpdate={handleSearchUpdate}
     >
       {searchQuery == null && (
         <div className={style.welcome}>

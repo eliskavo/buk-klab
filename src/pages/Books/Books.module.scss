@@ -1,6 +1,6 @@
 .bookGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
 
   @media (min-width: $screen-sm-min) {
@@ -11,9 +11,13 @@
 
 .message {
   text-align: center;
-  margin-top: 4rem;
-  padding: 2rem;
-  font-size: 1.25rem;
+  padding: 1rem;
+  font-size: 1rem;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 1.25rem;
+    margin-top: 4rem;
+  }
 }
 
 .welcome {
@@ -24,6 +28,10 @@
 }
 
 .welcomeImage {
-  width: 300px;
+  width: 200px;
   margin-bottom: 1rem;
+
+  @media (min-width: $screen-sm-min) {
+    width: 300px;
+  }
 }

@@ -1,5 +1,4 @@
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import clsx from 'clsx';
 
 import { BookType } from '../../model/Book';
 import { ChildrenFC } from '../../utils/type';
@@ -12,14 +11,14 @@ const iconSx = { fontSize: 28 };
 type BookLayoutProps = {
   currentlyReadingBook: BookType | undefined;
   searchQuery: string | null;
-  setSearchQuery: (query: string) => void;
+  handleSearchUpdate: (query: string) => void;
 };
 
 export const BookLayout: ChildrenFC<BookLayoutProps> = ({
   children,
   currentlyReadingBook,
   searchQuery,
-  setSearchQuery,
+  handleSearchUpdate,
 }) => (
   <Layout>
     <div className={style.bookSection}>
@@ -37,12 +36,11 @@ export const BookLayout: ChildrenFC<BookLayoutProps> = ({
           <h1 className={style.searchTitle}>discover our books</h1>
           <div className={style.searchContainer}>
             <input
-              data-testid="search-input"
               type="text"
               placeholder="search books by title or author"
-              className={clsx(style.searchInput)}
+              className={style.searchInput}
               value={searchQuery || ''}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchUpdate(e.target.value)}
               aria-label="Search books"
             />
             <SearchRoundedIcon className={style.searchIcon} sx={iconSx} />
