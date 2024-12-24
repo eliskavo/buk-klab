@@ -7,6 +7,7 @@ import { About } from './pages/About/About';
 import { SignIn } from './pages/SignIn/SignIn';
 import { JoinClub } from './pages/JoinClub/JoinClub';
 import { BookDetail } from './pages/BookDetail/BookDetail';
+import { Register } from './pages/Register/Register';
 
 import './styles/global.scss';
 
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
   { path: '/signin', element: <SignIn /> },
   { path: '/joinclub', element: <JoinClub /> },
   { path: '/books/:id', element: <BookDetail /> },
+  { path: '/register', element: <Register /> },
 ]);
 
 export const App = () => <RouterProvider router={router} />;
