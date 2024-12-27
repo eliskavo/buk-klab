@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lintfix": "eslint . --fix && prettier --write \"**\"",
+    "lintfix": "eslint . --fix --ignore-path .gitignore && prettier --write \"**\"",
     "prepare": "husky"
   },
   "engines": {
