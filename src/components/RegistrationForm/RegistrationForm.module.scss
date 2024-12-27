@@ -12,37 +12,19 @@
 
 .registrationTitle {
   margin: 2rem 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: $extrabold;
   color: $secondary-color;
-}
 
-.inputWrapper {
-  margin-bottom: 1rem;
-  min-height: 3.5rem;
-  width: 400px;
-  position: relative;
-}
-
-.input {
-  width: 100%;
-  height: 2.75rem;
-  padding: 0 1rem;
-  border: 1.5px solid $secondary-color;
-  border-radius: 24px;
-  color: $secondary-color;
-  background-color: transparent;
-  font-size: 0.8rem;
-
-  &:focus {
-    box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.2);
+  @media (min-width: $screen-sm-min) {
+    font-size: 2rem;
   }
 }
 
 .registerButton {
   width: 150px;
   height: 2.75rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   background-color: transparent;
   border: 1.5px solid $secondary-color;
   border-radius: 24px;
@@ -56,19 +38,7 @@
   }
 }
 
-.error {
-  border: 1.5px solid $red;
-}
-
-.errorText {
-  display: block;
-  color: $red;
-  font-size: 0.75rem;
-  margin-left: 1rem;
-  margin-top: 0.25rem;
-}
-
-.shake {
+.shakeAnimation {
   animation: shakeAnimation 0.5s;
 }
 
@@ -88,13 +58,13 @@
 }
 
 .successMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 2rem;
   border-radius: 24px;
-  font-size: 1rem;
   font-weight: $semibold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 1rem;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -104,5 +74,19 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+.signInSection {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.signInLink {
+  color: $secondary-color;
+  font-weight: $semibold;
+
+  &:visited {
+    text-decoration: underline;
   }
 }

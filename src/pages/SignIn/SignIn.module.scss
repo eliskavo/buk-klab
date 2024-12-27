@@ -1,7 +1,17 @@
 .pageSection {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   align-content: center;
   height: 70vh;
+}
+
+.signUpLink {
+  color: $secondary-color;
+  font-weight: $semibold;
+
+  &:visited {
+    text-decoration: underline;
+  }
 }
