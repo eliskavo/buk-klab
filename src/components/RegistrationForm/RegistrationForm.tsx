@@ -101,8 +101,6 @@ export const RegistrationForm = () => {
       password: false,
       confirmPassword: false,
     });
-
-    console.log('Form submitted:', formData);
   };
 
   return (
