@@ -26,13 +26,12 @@
 }
 
 .error {
-  border: 1.5px solid $red;
+  border: 1.5px solid $boomers-red;
 }
 
 .errorText {
-  display: block;
   margin-left: 1rem;
   margin-top: 0.25rem;
-  color: $red;
+  color: $boomers-red;
   font-size: 0.75rem;
 }

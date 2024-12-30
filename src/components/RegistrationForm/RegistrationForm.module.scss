@@ -1,17 +1,16 @@
 .registrationFormCard {
   display: flex;
-  border-radius: 24px;
 }
 
 .inputSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 3rem 3rem;
+  padding: 0 3rem;
 }
 
 .registrationTitle {
-  margin: 2rem 0;
+  margin-bottom: 2rem;
   font-size: 1.5rem;
   font-weight: $extrabold;
   color: $secondary-color;
@@ -59,21 +58,14 @@
 
 .successMessage {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-  border-radius: 24px;
+  flex-direction: column;
+  margin-top: 8rem;
   font-weight: $semibold;
-  font-size: 1rem;
-  animation: fadeIn 0.2s ease-out;
-}
+  font-size: 0.8rem;
+  gap: 1rem;
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+  @media (min-width: $screen-sm-min) {
+    font-size: 1rem;
   }
 }
 

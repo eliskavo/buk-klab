@@ -1,26 +1,11 @@
-import { useState, FormEvent, ChangeEvent, useMemo } from 'react';
+import { useState, FormEvent, ChangeEvent, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 
 import { FormInput } from '../FormInput/FormInput';
 import style from './RegistrationForm.module.scss';
 
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
-
-type TouchedFields = {
-  firstName: boolean;
-  lastName: boolean;
-  email: boolean;
-  password: boolean;
-  confirmPassword: boolean;
-};
-
-const INITIAL_FORM_DATA: FormData = {
+const INITIAL_FORM_DATA = {
   firstName: '',
   lastName: '',
   email: '',
@@ -28,13 +13,16 @@ const INITIAL_FORM_DATA: FormData = {
   confirmPassword: '',
 };
 
-const INITIAL_TOUCHED: TouchedFields = {
+const INITIAL_TOUCHED = {
   firstName: false,
   lastName: false,
   email: false,
   password: false,
   confirmPassword: false,
 };
+
+type FormData = typeof INITIAL_FORM_DATA;
+type TouchedFields = typeof INITIAL_TOUCHED;
 
 const ERROR_MESSAGES = {
   firstName: 'First name cannot be empty or contain numbers',
@@ -57,6 +45,8 @@ export const RegistrationForm = () => {
   const [touched, setTouched] = useState<TouchedFields>(INITIAL_TOUCHED);
   const [shakeAnimation, setShakeAnimation] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   const formErrors = useMemo(
     () => ({
@@ -106,6 +96,7 @@ export const RegistrationForm = () => {
     }
 
     setIsSubmitted(true);
+    formRef.current?.reset();
     setFormData(INITIAL_FORM_DATA);
     setTouched(INITIAL_TOUCHED);
 
@@ -115,84 +106,97 @@ export const RegistrationForm = () => {
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit}
-        className={`${style.registrationFormCard} ${shakeAnimation ? style.shakeAnimation : ''}`}
-      >
-        <div className={style.inputSection}>
-          <h1 className={style.registrationTitle}>register to buk klab</h1>
+      {isSubmitted ? (
+        <div className={style.successMessage}>
+          <h2>registration successful!</h2>
+          <p>
+            you can now{' '}
+            <Link to="/signin" className={style.signInLink}>
+              sign{' '}
+            </Link>
+            in to your account
+          </p>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className={clsx(
+            style.registrationFormCard,
+            shakeAnimation && style.shakeAnimation,
+          )}
+          ref={formRef}
+        >
+          <div className={style.inputSection}>
+            <h1 className={style.registrationTitle}>register to buk klab</h1>
 
-          <FormInput
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={formData.firstName}
-            error={formErrors.firstName}
-            errorMessage={ERROR_MESSAGES.firstName}
-            onChange={handleChange}
-            onBlur={() => handleBlur('firstName')}
-          />
+            <FormInput
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              value={formData.firstName}
+              error={formErrors.firstName}
+              errorMessage={ERROR_MESSAGES.firstName}
+              onChange={handleChange}
+              onBlur={() => handleBlur('firstName')}
+            />
 
-          <FormInput
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            value={formData.lastName}
-            error={formErrors.lastName}
-            errorMessage={ERROR_MESSAGES.lastName}
-            onChange={handleChange}
-            onBlur={() => handleBlur('lastName')}
-          />
+            <FormInput
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value={formData.lastName}
+              error={formErrors.lastName}
+              errorMessage={ERROR_MESSAGES.lastName}
+              onChange={handleChange}
+              onBlur={() => handleBlur('lastName')}
+            />
 
-          <FormInput
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            error={formErrors.email}
-            errorMessage={ERROR_MESSAGES.email}
-            onChange={handleChange}
-            onBlur={() => handleBlur('email')}
-          />
+            <FormInput
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              error={formErrors.email}
+              errorMessage={ERROR_MESSAGES.email}
+              onChange={handleChange}
+              onBlur={() => handleBlur('email')}
+            />
 
-          <FormInput
-            type="password"
-            name="password"
-            placeholder="Choose your password"
-            value={formData.password}
-            error={formErrors.password}
-            errorMessage={ERROR_MESSAGES.password}
-            onChange={handleChange}
-            onBlur={() => handleBlur('password')}
-          />
+            <FormInput
+              type="password"
+              name="password"
+              placeholder="Choose your password"
+              value={formData.password}
+              error={formErrors.password}
+              errorMessage={ERROR_MESSAGES.password}
+              onChange={handleChange}
+              onBlur={() => handleBlur('password')}
+            />
 
-          <FormInput
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            error={formErrors.confirmPassword}
-            errorMessage={ERROR_MESSAGES.passwordMatch}
-            onChange={handleChange}
-            onBlur={() => handleBlur('confirmPassword')}
-          />
+            <FormInput
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              error={formErrors.confirmPassword}
+              errorMessage={ERROR_MESSAGES.passwordMatch}
+              onChange={handleChange}
+              onBlur={() => handleBlur('confirmPassword')}
+            />
 
-          {isSubmitted ? (
-            <div className={style.successMessage}>Registration successful!</div>
-          ) : (
             <button type="submit" className={style.registerButton}>
               register
             </button>
-          )}
 
-          <div className={style.signInSection}>
-            Already have an account?{' '}
-            <Link to="/signin" className={style.signInLink}>
-              Sign in
-            </Link>
+            <div className={style.signInSection}>
+              Already have an account?{' '}
+              <Link to="/signin" className={style.signInLink}>
+                Sign in
+              </Link>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 };

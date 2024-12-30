@@ -1,19 +1,22 @@
-import { ChangeEvent } from 'react';
+import { ComponentProps } from 'react';
+import clsx from 'clsx';
 
 import style from './FormInput.module.scss';
 
+type InputProps = ComponentProps<'input'>;
+
 type FormInputProps = {
-  type: string;
+  type: InputProps['type'];
   name: string;
   placeholder: string;
   value: string;
   error?: boolean;
   errorMessage?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
+  onChange: InputProps['onChange'];
+  onBlur: InputProps['onBlur'];
 };
 
-export const FormInput = ({
+export const FormInput: React.FC<FormInputProps> = ({
   type,
   name,
   placeholder,
@@ -22,13 +25,13 @@ export const FormInput = ({
   errorMessage,
   onChange,
   onBlur,
-}: FormInputProps) => (
+}) => (
   <div className={style.inputWrapper}>
     <input
       type={type}
       name={name}
       placeholder={placeholder}
-      className={`${style.input} ${error ? style.error : ''}`}
+      className={clsx(style.input, error && style.error)}
       value={value}
       onChange={onChange}
       onBlur={onBlur}
