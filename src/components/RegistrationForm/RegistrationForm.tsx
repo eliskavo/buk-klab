@@ -1,5 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 
 import group_of_people from '../../assets/images/group_of_people.png';
 import { FormInput } from '../FormInput/FormInput';
@@ -33,36 +34,21 @@ const ERROR_MESSAGES = {
   passwordMatch: "Passwords don't match",
 };
 
-const validators = {
-  name: (value: string): boolean => {
-    if (value.length === 0) {
-      return false;
-    }
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] >= '0' && value[i] <= '9') {
-        return false;
-      }
-    }
+const isNumber = (value: string) => value >= '0' && value <= '9';
+const isUpperCase = (value: string) => value >= 'A' && value <= 'Z';
 
-    return true;
-  },
-  email: (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-  password: (value: string): boolean => {
-    let hasUpperCase = false;
-    let hasNumber = false;
+const validators = {
+  name: (value: string) =>
+    value.length > 0 && value.split('').every((char) => !isNumber(char)),
+  email: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+  password: (value: string) => {
     if (value.length < 8) {
       return false;
     }
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] >= '0' && value[i] <= '9') {
-        hasNumber = true;
-      }
-      if (value[i] >= 'A' && value[i] <= 'Z') {
-        hasUpperCase = true;
-      }
-    }
 
-    return hasUpperCase && hasNumber;
+    const charList = value.split('');
+
+    return charList.some(isUpperCase) && charList.some(isNumber);
   },
 };
 
@@ -80,13 +66,8 @@ export const RegistrationForm = () => {
       firstName: () => !validators.name(value),
       lastName: () => !validators.name(value),
       email: () => !validators.email(value),
-      password: () => ({
-        password: !validators.password(value),
-        confirmPassword: formData.confirmPassword !== value,
-      }),
-      confirmPassword: () => ({
-        confirmPassword: value !== formData.password,
-      }),
+      password: () => !validators.password(value),
+      confirmPassword: () => false,
     };
 
     const fieldValidationResult =
@@ -94,9 +75,7 @@ export const RegistrationForm = () => {
 
     setErrors((prev) => ({
       ...prev,
-      ...(typeof fieldValidationResult === 'boolean'
-        ? { [name]: fieldValidationResult }
-        : fieldValidationResult),
+      [name]: fieldValidationResult,
     }));
   };
 
@@ -147,7 +126,7 @@ export const RegistrationForm = () => {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className={shakeAnimation ? style.shakeAnimation : ''}
+            className={clsx(shakeAnimation && style.shakeAnimation)}
           >
             <div className={style.inputSection}>
               <h1 className={style.registrationTitle}>register to buk klab</h1>
