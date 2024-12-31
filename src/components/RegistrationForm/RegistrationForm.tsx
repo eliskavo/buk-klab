@@ -1,6 +1,5 @@
-import { useState, FormEvent, ChangeEvent, useMemo, useRef } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
 
 import { FormInput } from '../FormInput/FormInput';
 import style from './RegistrationForm.module.scss';
@@ -13,7 +12,7 @@ const INITIAL_FORM_DATA = {
   confirmPassword: '',
 };
 
-const INITIAL_TOUCHED = {
+const INITIAL_ERRORS = {
   firstName: false,
   lastName: false,
   email: false,
@@ -22,7 +21,7 @@ const INITIAL_TOUCHED = {
 };
 
 type FormData = typeof INITIAL_FORM_DATA;
-type TouchedFields = typeof INITIAL_TOUCHED;
+type FormErrors = typeof INITIAL_ERRORS;
 
 const ERROR_MESSAGES = {
   firstName: 'First name cannot be empty or contain numbers',
@@ -34,61 +33,87 @@ const ERROR_MESSAGES = {
 };
 
 const validators = {
-  name: (value: string): boolean => /^[^0-9]+$/.test(value) && value.length > 0,
+  name: (value: string): boolean => {
+    if (value.length === 0) {
+      return false;
+    }
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] >= '0' && value[i] <= '9') {
+        return false;
+      }
+    }
+
+    return true;
+  },
   email: (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-  password: (value: string): boolean =>
-    /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(value),
+  password: (value: string): boolean => {
+    let hasUpperCase = false;
+    let hasNumber = false;
+    if (value.length < 8) {
+      return false;
+    }
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] >= '0' && value[i] <= '9') {
+        hasNumber = true;
+      }
+      if (value[i] >= 'A' && value[i] <= 'Z') {
+        hasUpperCase = true;
+      }
+    }
+
+    return hasUpperCase && hasNumber;
+  },
 };
 
 export const RegistrationForm = () => {
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
-  const [touched, setTouched] = useState<TouchedFields>(INITIAL_TOUCHED);
   const [shakeAnimation, setShakeAnimation] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const formErrors = useMemo(
-    () => ({
-      firstName: touched.firstName && !validators.name(formData.firstName),
-      lastName: touched.lastName && !validators.name(formData.lastName),
-      email: touched.email && !validators.email(formData.email),
-      password: touched.password && !validators.password(formData.password),
-      confirmPassword:
-        touched.confirmPassword &&
-        formData.password !== formData.confirmPassword,
-    }),
-    [formData, touched],
-  );
+  const [errors, setErrors] = useState<FormErrors>(INITIAL_ERRORS);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
-  const handleBlur = (fieldName: keyof TouchedFields) => {
-    setTouched((prev) => ({ ...prev, [fieldName]: true }));
+    const fieldValidation = {
+      firstName: () => !validators.name(value),
+      lastName: () => !validators.name(value),
+      email: () => !validators.email(value),
+      password: () => ({
+        password: !validators.password(value),
+        confirmPassword: formData.confirmPassword !== value,
+      }),
+      confirmPassword: () => ({
+        confirmPassword: value !== formData.password,
+      }),
+    };
+
+    const fieldValidationResult =
+      fieldValidation[name as keyof typeof fieldValidation]();
+
+    setErrors((prev) => ({
+      ...prev,
+      ...(typeof fieldValidationResult === 'boolean'
+        ? { [name]: fieldValidationResult }
+        : fieldValidationResult),
+    }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setTouched({
-      firstName: true,
-      lastName: true,
-      email: true,
-      password: true,
-      confirmPassword: true,
-    });
+    const newErrors = {
+      firstName: !validators.name(formData.firstName),
+      lastName: !validators.name(formData.lastName),
+      email: !validators.email(formData.email),
+      password: !validators.password(formData.password),
+      confirmPassword: formData.password !== formData.confirmPassword,
+    };
+    setErrors(newErrors);
 
-    const isValid =
-      validators.name(formData.firstName) &&
-      validators.name(formData.lastName) &&
-      validators.email(formData.email) &&
-      validators.password(formData.password) &&
-      formData.password === formData.confirmPassword;
+    const hasErrors = Object.values(newErrors).some((error) => error);
 
-    if (!isValid) {
+    if (hasErrors) {
       setShakeAnimation(true);
       setTimeout(() => setShakeAnimation(false), 500);
 
@@ -96,9 +121,6 @@ export const RegistrationForm = () => {
     }
 
     setIsSubmitted(true);
-    formRef.current?.reset();
-    setFormData(INITIAL_FORM_DATA);
-    setTouched(INITIAL_TOUCHED);
 
     // eslint-disable-next-line no-console
     console.log('Form submitted:', formData);
@@ -112,19 +134,15 @@ export const RegistrationForm = () => {
           <p>
             you can now{' '}
             <Link to="/signin" className={style.signInLink}>
-              sign{' '}
-            </Link>
-            in to your account
+              sign in
+            </Link>{' '}
+            to your account
           </p>
         </div>
       ) : (
         <form
           onSubmit={handleSubmit}
-          className={clsx(
-            style.registrationFormCard,
-            shakeAnimation && style.shakeAnimation,
-          )}
-          ref={formRef}
+          className={shakeAnimation && style.shakeAnimation}
         >
           <div className={style.inputSection}>
             <h1 className={style.registrationTitle}>register to buk klab</h1>
@@ -134,10 +152,9 @@ export const RegistrationForm = () => {
               name="firstName"
               placeholder="First Name"
               value={formData.firstName}
-              error={formErrors.firstName}
+              error={errors.firstName}
               errorMessage={ERROR_MESSAGES.firstName}
               onChange={handleChange}
-              onBlur={() => handleBlur('firstName')}
             />
 
             <FormInput
@@ -145,10 +162,9 @@ export const RegistrationForm = () => {
               name="lastName"
               placeholder="Last Name"
               value={formData.lastName}
-              error={formErrors.lastName}
+              error={errors.lastName}
               errorMessage={ERROR_MESSAGES.lastName}
               onChange={handleChange}
-              onBlur={() => handleBlur('lastName')}
             />
 
             <FormInput
@@ -156,10 +172,9 @@ export const RegistrationForm = () => {
               name="email"
               placeholder="Email"
               value={formData.email}
-              error={formErrors.email}
+              error={errors.email}
               errorMessage={ERROR_MESSAGES.email}
               onChange={handleChange}
-              onBlur={() => handleBlur('email')}
             />
 
             <FormInput
@@ -167,10 +182,9 @@ export const RegistrationForm = () => {
               name="password"
               placeholder="Choose your password"
               value={formData.password}
-              error={formErrors.password}
+              error={errors.password}
               errorMessage={ERROR_MESSAGES.password}
               onChange={handleChange}
-              onBlur={() => handleBlur('password')}
             />
 
             <FormInput
@@ -178,10 +192,9 @@ export const RegistrationForm = () => {
               name="confirmPassword"
               placeholder="Confirm your password"
               value={formData.confirmPassword}
-              error={formErrors.confirmPassword}
+              error={errors.confirmPassword}
               errorMessage={ERROR_MESSAGES.passwordMatch}
               onChange={handleChange}
-              onBlur={() => handleBlur('confirmPassword')}
             />
 
             <button type="submit" className={style.registerButton}>
