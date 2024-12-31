@@ -1,8 +1,40 @@
+.registerPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+  @media (min-width: $screen-lg-min) {
+    flex-direction: row;
+    padding-right: 4rem;
+  }
+}
+
+.illustrationSection {
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: $screen-md-min) {
+    width: 50%;
+    margin-bottom: 4rem;
+  }
+}
+
+.illustration {
+  width: 100%;
+  height: auto;
+}
+
 .inputSection {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0 3rem;
+
+  @media (min-width: $screen-md-min) {
+    padding: 0 1rem;
+  }
 }
 
 .registrationTitle {
@@ -55,7 +87,6 @@
 .successMessage {
   display: flex;
   flex-direction: column;
-  margin-top: 8rem;
   font-weight: $semibold;
   font-size: 0.8rem;
   gap: 1rem;
