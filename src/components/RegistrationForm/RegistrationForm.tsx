@@ -52,6 +52,31 @@ const validators = {
   },
 };
 
+const isInputInvalid = ({
+  name,
+  value,
+  formData,
+}: {
+  name: string;
+  value: string;
+  formData: FormData;
+}) => {
+  switch (name) {
+    case 'firstName':
+    case 'lastName':
+      return !validators.name(value);
+    case 'email':
+      return !validators.email(value);
+    case 'password':
+      return !validators.password(value);
+    case 'confirmPassword':
+      return value !== formData.password;
+
+    default:
+      return false;
+  }
+};
+
 export const RegistrationForm = () => {
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
   const [shakeAnimation, setShakeAnimation] = useState(false);
@@ -62,20 +87,9 @@ export const RegistrationForm = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    const fieldValidation = {
-      firstName: () => !validators.name(value),
-      lastName: () => !validators.name(value),
-      email: () => !validators.email(value),
-      password: () => !validators.password(value),
-      confirmPassword: () => false,
-    };
-
-    const fieldValidationResult =
-      fieldValidation[name as keyof typeof fieldValidation]();
-
     setErrors((prev) => ({
       ...prev,
-      [name]: fieldValidationResult,
+      [name]: isInputInvalid({ name, value, formData }),
     }));
   };
 
@@ -83,12 +97,29 @@ export const RegistrationForm = () => {
     e.preventDefault();
 
     const newErrors = {
-      firstName: !validators.name(formData.firstName),
-      lastName: !validators.name(formData.lastName),
-      email: !validators.email(formData.email),
-      password: !validators.password(formData.password),
-      confirmPassword: formData.password !== formData.confirmPassword,
+      firstName: isInputInvalid({
+        name: 'firstName',
+        value: formData.firstName,
+        formData,
+      }),
+      lastName: isInputInvalid({
+        name: 'lastName',
+        value: formData.lastName,
+        formData,
+      }),
+      email: isInputInvalid({ name: 'email', value: formData.email, formData }),
+      password: isInputInvalid({
+        name: 'password',
+        value: formData.password,
+        formData,
+      }),
+      confirmPassword: isInputInvalid({
+        name: 'confirmPassword',
+        value: formData.confirmPassword,
+        formData,
+      }),
     };
+
     setErrors(newErrors);
 
     const hasErrors = Object.values(newErrors).some((error) => error);
