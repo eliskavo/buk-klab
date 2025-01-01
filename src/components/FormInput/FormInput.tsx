@@ -9,10 +9,11 @@ type FormInputProps = {
   type: InputProps['type'];
   name: string;
   placeholder: string;
-  value: string;
+  value?: string;
   error?: boolean;
   errorMessage?: string;
-  onChange: InputProps['onChange'];
+  onChange?: InputProps['onChange'];
+  required?: boolean;
 };
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -23,6 +24,7 @@ export const FormInput: React.FC<FormInputProps> = ({
   error,
   errorMessage,
   onChange,
+  required,
 }) => (
   <div className={style.inputWrapper}>
     <input
@@ -32,6 +34,7 @@ export const FormInput: React.FC<FormInputProps> = ({
       className={clsx(style.input, error && style.error)}
       value={value}
       onChange={onChange}
+      required={required}
     />
     {error && <p className={style.errorText}>{errorMessage}</p>}
   </div>
