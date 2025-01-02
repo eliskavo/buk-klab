@@ -1,8 +1,8 @@
 import { useRef, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
 
+import { Button } from '../Button/Button';
 import { FormInput } from '../FormInput/FormInput';
-import style from './LoginForm.module.scss';
+import { FormWrapper } from '../FormWrapper/FormWrapper';
 
 export const LoginForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -16,39 +16,36 @@ export const LoginForm = () => {
 
     const formData = new FormData(formRef.current);
     const loginData = {
-      email: formData.get('email')?.toString() ?? '',
-      password: formData.get('password')?.toString() ?? '',
+      email: String(formData.get('email') || ''),
+      password: String(formData.get('password') || ''),
     };
 
     // eslint-disable-next-line no-console
     console.log(loginData);
+    formRef.current.reset();
   };
 
   return (
-    <div className={style.loginSection}>
-      <form onSubmit={handleSubmit} className={style.loginForm} ref={formRef}>
-        <h1 className={style.signInTitle}>sign in to your buk klab account</h1>
-        <FormInput type="email" name="email" placeholder="email" required />
+    <FormWrapper
+      title="sign in to your buk klab account"
+      onSubmit={handleSubmit}
+      formRef={formRef}
+      redirectText="Don't have an account?"
+      redirectTo="/register"
+      redirectLinkText="Sign up"
+    >
+      <FormInput type="email" name="email" placeholder="email" required />
 
-        <FormInput
-          type="password"
-          name="password"
-          placeholder="password"
-          required
-        />
+      <FormInput
+        type="password"
+        name="password"
+        placeholder="password"
+        required
+      />
 
-        <button type="submit" className={style.signInButton}>
-          sign in
-        </button>
-      </form>
-
-      <p className={style.signUpText}>
-        Don't have an account?{' '}
-        <Link to="/register" className={style.signUpLink}>
-          Sign up
-        </Link>{' '}
-        here to join the amazing community of book lovers.
-      </p>
-    </div>
+      <Button variant="form" type="submit">
+        sign in
+      </Button>
+    </FormWrapper>
   );
 };

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import group_of_people from '../../assets/images/group_of_people.png';
+import { FormWrapper } from '../FormWrapper/FormWrapper';
+import { Button } from '../Button/Button';
 import { FormInput } from '../FormInput/FormInput';
 import style from './RegistrationForm.module.scss';
 
@@ -146,7 +148,7 @@ export const RegistrationForm = () => {
         {isSubmitted ? (
           <div className={style.successMessage}>
             <h2>registration successful!</h2>
-            <p>
+            <p className={style.signInSection}>
               you can now{' '}
               <Link to="/signin" className={style.signInLink}>
                 sign in
@@ -155,75 +157,69 @@ export const RegistrationForm = () => {
             </p>
           </div>
         ) : (
-          <form
+          <FormWrapper
+            title="register to buk klab"
             onSubmit={handleSubmit}
             className={clsx(shakeAnimation && style.shakeAnimation)}
+            redirectLinkText="Sign in"
+            redirectText="Already have an account?"
+            redirectTo="/signin"
+            illustration={group_of_people}
           >
-            <div className={style.inputSection}>
-              <h1 className={style.registrationTitle}>register to buk klab</h1>
+            <FormInput
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              value={formData.firstName}
+              error={errors.firstName}
+              errorMessage={ERROR_MESSAGES.firstName}
+              onChange={handleChange}
+            />
 
-              <FormInput
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                value={formData.firstName}
-                error={errors.firstName}
-                errorMessage={ERROR_MESSAGES.firstName}
-                onChange={handleChange}
-              />
+            <FormInput
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value={formData.lastName}
+              error={errors.lastName}
+              errorMessage={ERROR_MESSAGES.lastName}
+              onChange={handleChange}
+            />
 
-              <FormInput
-                type="text"
-                name="lastName"
-                placeholder="Last Name"
-                value={formData.lastName}
-                error={errors.lastName}
-                errorMessage={ERROR_MESSAGES.lastName}
-                onChange={handleChange}
-              />
+            <FormInput
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              error={errors.email}
+              errorMessage={ERROR_MESSAGES.email}
+              onChange={handleChange}
+            />
 
-              <FormInput
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                error={errors.email}
-                errorMessage={ERROR_MESSAGES.email}
-                onChange={handleChange}
-              />
+            <FormInput
+              type="password"
+              name="password"
+              placeholder="Choose your password"
+              value={formData.password}
+              error={errors.password}
+              errorMessage={ERROR_MESSAGES.password}
+              onChange={handleChange}
+            />
 
-              <FormInput
-                type="password"
-                name="password"
-                placeholder="Choose your password"
-                value={formData.password}
-                error={errors.password}
-                errorMessage={ERROR_MESSAGES.password}
-                onChange={handleChange}
-              />
+            <FormInput
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              error={errors.confirmPassword}
+              errorMessage={ERROR_MESSAGES.passwordMatch}
+              onChange={handleChange}
+            />
 
-              <FormInput
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                error={errors.confirmPassword}
-                errorMessage={ERROR_MESSAGES.passwordMatch}
-                onChange={handleChange}
-              />
-
-              <button type="submit" className={style.registerButton}>
-                register
-              </button>
-
-              <div className={style.signInSection}>
-                Already have an account?{' '}
-                <Link to="/signin" className={style.signInLink}>
-                  Sign in
-                </Link>
-              </div>
-            </div>
-          </form>
+            <Button type="submit" variant="form">
+              Register
+            </Button>
+          </FormWrapper>
         )}
       </div>
     </div>

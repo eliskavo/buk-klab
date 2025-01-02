@@ -34,3 +34,23 @@
     transform: scaleX(1);
   }
 }
+
+.formButton {
+  width: 250px;
+  height: 2.75rem;
+  background-color: transparent;
+  border: 1.5px solid $secondary-color;
+  border-radius: 24px;
+  color: $secondary-color;
+  font-size: 1rem;
+  font-weight: $semibold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primary-color;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    width: 400px;
+  }
+}
