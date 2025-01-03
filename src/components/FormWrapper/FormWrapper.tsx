@@ -1,4 +1,4 @@
-import { FormEvent, RefObject } from 'react';
+import { FormEvent, RefObject, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -6,7 +6,7 @@ import { ChildrenFC } from '../../utils/type';
 import style from './FormWrapper.module.scss';
 
 type FormWrapperProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   title: string;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   formRef?: RefObject<HTMLFormElement>;
