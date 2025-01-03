@@ -15,17 +15,9 @@ export const LinkButton: ChildrenFC<ButtonProps> = ({
   children,
   onClick,
   className,
-  variant = 'default',
   ...props
 }) => (
-  <Link
-    className={clsx(
-      style.button,
-      variant === 'form' && style.formButton,
-      className,
-    )}
-    {...props}
-  >
+  <Link className={clsx(style.button, className)} {...props}>
     {children}
   </Link>
 );
