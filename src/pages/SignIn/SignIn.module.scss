@@ -6,12 +6,3 @@
   align-content: center;
   height: 70vh;
 }
-
-.signUpLink {
-  color: $secondary-color;
-  font-weight: $semibold;
-
-  &:visited {
-    text-decoration: underline;
-  }
-}
