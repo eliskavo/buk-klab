@@ -35,7 +35,7 @@ export const fetchBookDetails = async ({
       description:
         getDescriptionValue(description) ?? 'No description available',
       year: publish_date || 'Unknown',
-      pages: number_of_pages?.toString() || 'N/A',
+      pages: String(number_of_pages || 'N/A'),
       isCurrentlyReading: false,
     };
   } catch (error) {

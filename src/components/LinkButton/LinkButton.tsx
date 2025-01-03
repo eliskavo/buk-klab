@@ -8,6 +8,7 @@ import { ChildrenFC } from '../../utils/type';
 type ButtonProps = {
   onClick?: () => void;
   className?: string;
+  variant?: 'default' | 'form';
 } & ComponentProps<typeof Link>;
 
 export const LinkButton: ChildrenFC<ButtonProps> = ({
