@@ -1,6 +1,5 @@
 import { useRef, FormEvent } from 'react';
 
-import { Button } from '../Button/Button';
 import { FormInput } from '../FormInput/FormInput';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
 
@@ -33,6 +32,7 @@ export const LoginForm = () => {
       redirectText="Don't have an account?"
       redirectTo="/register"
       redirectLinkText="Sign up"
+      submitText="sign in"
     >
       <FormInput type="email" name="email" placeholder="email" required />
 
@@ -42,10 +42,6 @@ export const LoginForm = () => {
         placeholder="password"
         required
       />
-
-      <Button variant="form" type="submit">
-        sign in
-      </Button>
     </FormWrapper>
   );
 };

@@ -4,7 +4,6 @@ import clsx from 'clsx';
 
 import group_of_people from '../../assets/images/group_of_people.png';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
-import { Button } from '../Button/Button';
 import { FormInput } from '../FormInput/FormInput';
 import style from './RegistrationForm.module.scss';
 
@@ -160,11 +159,11 @@ export const RegistrationForm = () => {
           <FormWrapper
             title="register to buk klab"
             onSubmit={handleSubmit}
-            className={clsx(shakeAnimation && style.shakeAnimation)}
+            className={clsx({ [style.shakeAnimation]: shakeAnimation })}
             redirectLinkText="Sign in"
             redirectText="Already have an account?"
             redirectTo="/signin"
-            illustration={group_of_people}
+            submitText="register"
           >
             <FormInput
               type="text"
@@ -215,10 +214,6 @@ export const RegistrationForm = () => {
               errorMessage={ERROR_MESSAGES.passwordMatch}
               onChange={handleChange}
             />
-
-            <Button type="submit" variant="form">
-              Register
-            </Button>
           </FormWrapper>
         )}
       </div>

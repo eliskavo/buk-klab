@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, RefObject } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -9,13 +9,12 @@ type FormWrapperProps = {
   children: React.ReactNode;
   title: string;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  formRef?: React.RefObject<HTMLFormElement>;
+  formRef?: RefObject<HTMLFormElement>;
   className?: string;
   redirectText?: string;
   redirectTo?: string;
   redirectLinkText?: string;
-  illustration?: string;
-  variant?: 'default' | 'register';
+  submitText?: string;
 };
 
 export const FormWrapper: ChildrenFC<FormWrapperProps> = ({
@@ -27,15 +26,21 @@ export const FormWrapper: ChildrenFC<FormWrapperProps> = ({
   redirectText,
   redirectTo = '/',
   redirectLinkText,
+  submitText,
 }) => (
-  <div className={style.formSection}>
+  <div className={style.container}>
     <form
       onSubmit={onSubmit}
       className={clsx(style.form, className)}
       ref={formRef}
     >
-      <h1 className={style.formTitle}>{title}</h1>
+      <h1 className={style.title}>{title}</h1>
+
       {children}
+
+      <button type="submit" className={style.submitButton}>
+        {submitText}
+      </button>
       <p className={style.redirectText}>
         {redirectText}{' '}
         <Link to={redirectTo} className={style.redirectLink}>
