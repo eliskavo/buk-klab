@@ -138,6 +138,7 @@ export const RegistrationForm = () => {
 
     try {
       const supabase = getSupabaseClient();
+
       const { error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -148,7 +149,9 @@ export const RegistrationForm = () => {
           },
         },
       });
+
       if (error) {
+        console.error('Sign up error:', error);
         if (error.message.includes('User already registered')) {
           setEmailErrorMessage(ERROR_MESSAGES.emailExists);
 

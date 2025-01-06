@@ -1,16 +1,46 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
+import { getSupabaseClient } from '../../api/supabase';
 import { LinkButton } from '../LinkButton/LinkButton';
 import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  useEffect(() => {
+    const supabase = getSupabaseClient();
+
+    supabase.auth.getUser().then(({ data }) => {
+      setIsLoggedIn(!!data.user);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signOut = async () => {
+    const supabase = getSupabaseClient();
+    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error(error);
+      navigate('/');
+    }
   };
 
   return (
@@ -59,16 +89,26 @@ export const Navbar: React.FC = () => {
           </NavLink>
         </li>
         <li className={style.navbarItem}>
-          <NavLink
-            to="/signin"
-            className={({ isActive }) =>
-              isActive
-                ? `${style.navbarLink} ${style.active}`
-                : style.navbarLink
-            }
-          >
-            sign in
-          </NavLink>
+          {isLoggedIn ? (
+            <button
+              onClick={signOut}
+              className={style.signOutButton}
+              type="button"
+            >
+              sign out
+            </button>
+          ) : (
+            <NavLink
+              to="/signin"
+              className={({ isActive }) =>
+                isActive
+                  ? `${style.navbarLink} ${style.active}`
+                  : style.navbarLink
+              }
+            >
+              sign in
+            </NavLink>
+          )}
         </li>
         <li className={style.navbarItem}>
           <LinkButton

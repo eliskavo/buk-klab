@@ -117,3 +117,32 @@
 .navbarButton {
   z-index: 1;
 }
+
+.signOutButton {
+  position: relative;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+
+  &:hover {
+    font-weight: $extrabold;
+  }
+
+  @media (min-width: $screen-lg-min) {
+    &:hover {
+      font-weight: $semibold;
+    }
+
+    &:hover:not(.navbarButton)::after,
+    &.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0.25em;
+      left: -2.5%;
+      right: -2.5%;
+      height: 0.3em;
+      background-color: $primary-color;
+      z-index: -2;
+    }
+  }
+}

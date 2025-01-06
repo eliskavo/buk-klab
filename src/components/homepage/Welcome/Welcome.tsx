@@ -9,14 +9,19 @@ export const Welcome = () => {
   const [name, setName] = useState<string>('');
 
   useEffect(() => {
-    const fetchName = async () => {
-      const supabase = getSupabaseClient();
-      const { data } = await supabase.auth.getUser();
-      if (data.user) {
-        setName(data.user.user_metadata.first_name);
-      }
-    };
-    fetchName();
+    const supabase = getSupabaseClient();
+
+    supabase.auth.getUser().then(({ data }) => {
+      setName(data.user?.user_metadata.first_name || '');
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setName(session?.user.user_metadata.first_name || '');
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
