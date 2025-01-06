@@ -18,6 +18,8 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.47.10",
     "clsx": "^2.1.1",
     "react": "^18.3.1",
@@ -48,7 +50,11 @@
     "vite": "^5.4.9"
   },
   "lint-staged": {
-    "src/**/*.{js,ts?(x)}": ["eslint --fix"],
-    "src/**/*.{js,ts,tsx,css}": ["prettier --write"]
+    "src/**/*.{js,ts?(x)}": [
+      "eslint --fix"
+    ],
+    "src/**/*.{js,ts,tsx,css}": [
+      "prettier --write"
+    ]
   }
 }

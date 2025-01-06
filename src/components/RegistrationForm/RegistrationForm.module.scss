@@ -56,17 +56,3 @@
     font-size: 1rem;
   }
 }
-
-.signInSection {
-  margin: 1rem 0;
-  text-align: center;
-}
-
-.signInLink {
-  color: $secondary-color;
-  font-weight: $semibold;
-
-  &:visited {
-    text-decoration: underline;
-  }
-}
