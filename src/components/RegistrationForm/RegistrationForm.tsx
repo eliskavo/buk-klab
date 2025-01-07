@@ -139,7 +139,7 @@ export const RegistrationForm = () => {
     try {
       const supabase = getSupabaseClient();
 
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -150,14 +150,15 @@ export const RegistrationForm = () => {
         },
       });
 
+      const isUserDuplicate = data?.user?.identities?.length === 0;
+
+      if (isUserDuplicate) {
+        setEmailErrorMessage(ERROR_MESSAGES.emailExists);
+
+        return;
+      }
+
       if (error) {
-        console.error('Sign up error:', error);
-        if (error.message.includes('User already registered')) {
-          setEmailErrorMessage(ERROR_MESSAGES.emailExists);
-
-          return;
-        }
-
         throw error;
       }
 
