@@ -190,6 +190,7 @@ export const RegistrationForm = () => {
             submitText="register"
           >
             {emailErrorMessage && <div>{emailErrorMessage}</div>}
+
             <FormInput
               type="text"
               name="firstName"
