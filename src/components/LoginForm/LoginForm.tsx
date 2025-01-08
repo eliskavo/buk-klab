@@ -26,7 +26,11 @@ export const LoginForm = () => {
     }
 
     try {
-      signIn(formRef.current.email.value, formRef.current.password.value);
+      signIn({
+        email: formRef.current.email.value as string,
+        password: formRef.current.password.value as string,
+      });
+
       navigate('/');
     } catch (error) {
       console.error('Sign in error:', error);

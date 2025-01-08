@@ -139,12 +139,12 @@ export const RegistrationForm = () => {
     }
 
     try {
-      const { data, error } = await signUp(
-        formData.email,
-        formData.password,
-        formData.firstName,
-        formData.lastName,
-      );
+      const { data, error } = await signUp({
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      });
 
       const isUserDuplicate = data.user?.identities?.length === 0;
 
@@ -178,7 +178,7 @@ export const RegistrationForm = () => {
           </div>
         ) : (
           <FormWrapper
-            title="register to buk klab"
+            title="sign up for your buk klab"
             onSubmit={handleSubmit}
             className={clsx({ [style.shakeAnimation]: shakeAnimation })}
             redirectLinkText="Sign in"

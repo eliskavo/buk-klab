@@ -4,16 +4,23 @@ import { User } from '@supabase/supabase-js';
 import { ChildrenFC } from '../utils/type';
 import { getSupabaseClient } from '../api/supabase';
 
+type SignInParams = {
+  email: string;
+  password: string;
+};
+
+type SignUpParams = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
 type AuthContextType = {
   user: User | null;
   signOut: () => void;
-  signIn: (email: string, password: string) => void;
-  signUp: (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-  ) => Promise<{ data: any; error: any }>;
+  signIn: (params: SignInParams) => void;
+  signUp: (params: SignUpParams) => Promise<{ data: any; error: any }>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,7 +46,7 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async ({ email, password }: SignInParams) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -49,12 +56,12 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
     }
   };
 
-  const signUp = async (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-  ) => {
+  const signUp = async ({
+    email,
+    password,
+    firstName,
+    lastName,
+  }: SignUpParams) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import clsx from 'clsx';
 
 import { useAuth } from '../../context/AuthContext';
@@ -10,13 +11,19 @@ import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { signOut, user } = useAuth();
 
   const navigate = useNavigate();
+  const firstName = user?.user_metadata?.first_name || '';
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleSignOut = async () => {
@@ -67,16 +74,8 @@ export const Navbar: React.FC = () => {
             about
           </NavLink>
         </li>
-        <li className={style.navbarItem}>
-          {user ? (
-            <button
-              onClick={handleSignOut}
-              className={style.signOutButton}
-              type="button"
-            >
-              sign out
-            </button>
-          ) : (
+        {user ? null : (
+          <li className={style.navbarItem}>
             <NavLink
               to="/signin"
               className={({ isActive }) =>
@@ -87,8 +86,52 @@ export const Navbar: React.FC = () => {
             >
               sign in
             </NavLink>
-          )}
-        </li>
+          </li>
+        )}
+        {user ? (
+          <li className={style.navbarItem}>
+            <div className={style.userMenuWrapper}>
+              <button
+                className={style.userButton}
+                type="button"
+                onClick={toggleDropdown}
+              >
+                {firstName}
+                <ExpandMoreRoundedIcon
+                  className={clsx(style.dropdownIcon, {
+                    [style.dropdownIconOpen]: isDropdownOpen,
+                  })}
+                />
+              </button>
+              {isDropdownOpen && (
+                <div className={style.dropdownMenu}>
+                  <button
+                    onClick={handleSignOut}
+                    className={style.dropdownItem}
+                    type="button"
+                  >
+                    sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          </li>
+        ) : (
+          <>
+            <li className={style.navbarItem}>
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  isActive
+                    ? clsx(style.navbarLink, style.active)
+                    : style.navbarLink
+                }
+              >
+                sign up
+              </NavLink>
+            </li>
+          </>
+        )}
         <li className={style.navbarItem}>
           <LinkButton
             to="/joinclub"
