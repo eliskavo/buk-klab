@@ -1,38 +1,22 @@
-import { useState, useEffect } from 'react';
-
 import { Title, Heading1, Heading3 } from '../../Headings/Heading';
+import { useAuth } from '../../../context/AuthContext';
 import { LinkButton } from '../../LinkButton/LinkButton';
-import { getSupabaseClient } from '../../../api/supabase';
 import style from './Welcome.module.scss';
 
-export const Welcome = () => {
-  const [name, setName] = useState<string>('');
+export const Welcome: React.FC = () => {
+  const { user } = useAuth();
 
-  useEffect(() => {
-    const supabase = getSupabaseClient();
-
-    supabase.auth.getUser().then(({ data }) => {
-      setName(data.user?.user_metadata.first_name || '');
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setName(session?.user.user_metadata.first_name || '');
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const firstName = user?.user_metadata?.first_name || '';
 
   return (
     <section className={style.welcome}>
       <div className={style.container}>
         <div className={style.leftSection}>
           <div className={style.elementsSection}>
-            {name ? (
+            {user ? (
               <>
                 <Heading3>Welcome back,</Heading3>
-                <Title>{name}</Title>
+                <Title>{firstName}</Title>
               </>
             ) : (
               <>

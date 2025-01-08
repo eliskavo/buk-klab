@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import clsx from 'clsx';
 
-import { getSupabaseClient } from '../../api/supabase';
+import { useAuth } from '../../context/AuthContext';
 import { LinkButton } from '../LinkButton/LinkButton';
 import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const { signOut, user } = useAuth();
 
   const navigate = useNavigate();
 
@@ -17,29 +19,12 @@ export const Navbar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const supabase = getSupabaseClient();
-
-    supabase.auth.getUser().then(({ data }) => {
-      setIsLoggedIn(!!data.user);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLoggedIn(!!session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const signOut = async () => {
-    const supabase = getSupabaseClient();
-    await supabase.auth.signOut();
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error(error);
+  const handleSignOut = async () => {
+    try {
+      signOut();
       navigate('/');
+    } catch (error) {
+      console.error('Sign out error:', error);
     }
   };
 
@@ -51,14 +36,12 @@ export const Navbar: React.FC = () => {
       <button className={style.hamburger} onClick={toggleMenu}>
         {isOpen ? <CloseRoundedIcon /> : <MenuRoundedIcon />}
       </button>
-      <ul className={`${style.navbarList} ${isOpen ? style.open : ''}`}>
+      <ul className={clsx(style.navbarList, { [style.open]: isOpen })}>
         <li className={style.navbarItem}>
           <NavLink
             to="/books"
             className={({ isActive }) =>
-              isActive
-                ? `${style.navbarLink} ${style.active}`
-                : style.navbarLink
+              isActive ? clsx(style.navbarLink, style.active) : style.navbarLink
             }
           >
             books
@@ -68,9 +51,7 @@ export const Navbar: React.FC = () => {
           <NavLink
             to="/members"
             className={({ isActive }) =>
-              isActive
-                ? `${style.navbarLink} ${style.active}`
-                : style.navbarLink
+              isActive ? clsx(style.navbarLink, style.active) : style.navbarLink
             }
           >
             members
@@ -80,18 +61,16 @@ export const Navbar: React.FC = () => {
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              isActive
-                ? `${style.navbarLink} ${style.active}`
-                : style.navbarLink
+              isActive ? clsx(style.navbarLink, style.active) : style.navbarLink
             }
           >
             about
           </NavLink>
         </li>
         <li className={style.navbarItem}>
-          {isLoggedIn ? (
+          {user ? (
             <button
-              onClick={signOut}
+              onClick={handleSignOut}
               className={style.signOutButton}
               type="button"
             >
@@ -102,7 +81,7 @@ export const Navbar: React.FC = () => {
               to="/signin"
               className={({ isActive }) =>
                 isActive
-                  ? `${style.navbarLink} ${style.active}`
+                  ? clsx(style.navbarLink, style.active)
                   : style.navbarLink
               }
             >
@@ -113,7 +92,7 @@ export const Navbar: React.FC = () => {
         <li className={style.navbarItem}>
           <LinkButton
             to="/joinclub"
-            className={`${style.navbarLink} ${style.navbarButton}`}
+            className={clsx(style.navbarLink, style.navbarButton)}
           >
             join buk klab
           </LinkButton>

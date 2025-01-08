@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FormInput } from '../FormInput/FormInput';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
-import { getSupabaseClient } from '../../api/supabase';
+import { useAuth } from '../../context/AuthContext';
 
 const ERROR_MESSAGES = {
   email: 'Invalid e-mail or password',
@@ -12,6 +12,7 @@ const ERROR_MESSAGES = {
 export const LoginForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -25,34 +26,12 @@ export const LoginForm = () => {
     }
 
     try {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formRef.current.email.value,
-        password: formRef.current.password.value,
-      });
-
-      // eslint-disable-next-line no-console
-      console.log(data);
-
-      if (error) {
-        throw error;
-      }
-
+      signIn(formRef.current.email.value, formRef.current.password.value);
       navigate('/');
     } catch (error) {
       console.error('Sign in error:', error);
       setErrorMessage(ERROR_MESSAGES.email);
     }
-
-    const formData = new FormData(formRef.current);
-    const loginData = {
-      email: String(formData.get('email') || ''),
-      password: String(formData.get('password') || ''),
-    };
-
-    // eslint-disable-next-line no-console
-    console.log(loginData);
-    formRef.current.reset();
   };
 
   return (
