@@ -33,7 +33,7 @@ const ERROR_MESSAGES = {
   password:
     'Password must have at least 8 characters, 1 uppercase letter and 1 number',
   passwordMatch: "Passwords don't match",
-  emailExists: 'Email already exists',
+  emailExists: 'User with this email already exists',
 };
 
 const isNumber = (value: string) => value >= '0' && value <= '9';
@@ -150,6 +150,7 @@ export const RegistrationForm = () => {
 
       if (isUserDuplicate) {
         setEmailErrorMessage(ERROR_MESSAGES.emailExists);
+        setShakeAnimation(true);
 
         return;
       }
@@ -186,8 +187,6 @@ export const RegistrationForm = () => {
             redirectTo="/signin"
             submitText="register"
           >
-            {emailErrorMessage && <div>{emailErrorMessage}</div>}
-
             <FormInput
               type="text"
               name="firstName"
@@ -237,6 +236,10 @@ export const RegistrationForm = () => {
               errorMessage={ERROR_MESSAGES.passwordMatch}
               onChange={handleChange}
             />
+
+            {emailErrorMessage && (
+              <div className={style.emailExistsText}>{emailErrorMessage}</div>
+            )}
           </FormWrapper>
         )}
       </div>
