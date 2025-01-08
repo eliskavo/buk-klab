@@ -21,7 +21,9 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
     };
 
     fetchUserData();
+  }, []);
 
+  useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -38,6 +40,7 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }

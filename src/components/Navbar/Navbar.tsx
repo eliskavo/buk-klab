@@ -27,6 +27,9 @@ export const Navbar: React.FC = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const getNavLinkStyle = ({ isActive }: { isActive: boolean }) =>
+    isActive ? clsx(style.navbarLink, style.active) : style.navbarLink;
+
   const handleSignOut = async () => {
     try {
       const { error } = await getSupabaseClient().auth.signOut();
@@ -51,45 +54,23 @@ export const Navbar: React.FC = () => {
       </button>
       <ul className={clsx(style.navbarList, { [style.open]: isOpen })}>
         <li className={style.navbarItem}>
-          <NavLink
-            to="/books"
-            className={({ isActive }) =>
-              isActive ? clsx(style.navbarLink, style.active) : style.navbarLink
-            }
-          >
+          <NavLink to="/books" className={getNavLinkStyle}>
             books
           </NavLink>
         </li>
         <li className={style.navbarItem}>
-          <NavLink
-            to="/members"
-            className={({ isActive }) =>
-              isActive ? clsx(style.navbarLink, style.active) : style.navbarLink
-            }
-          >
+          <NavLink to="/members" className={getNavLinkStyle}>
             members
           </NavLink>
         </li>
         <li className={style.navbarItem}>
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive ? clsx(style.navbarLink, style.active) : style.navbarLink
-            }
-          >
+          <NavLink to="/about" className={getNavLinkStyle}>
             about
           </NavLink>
         </li>
         {user ? null : (
           <li className={style.navbarItem}>
-            <NavLink
-              to="/signin"
-              className={({ isActive }) =>
-                isActive
-                  ? clsx(style.navbarLink, style.active)
-                  : style.navbarLink
-              }
-            >
+            <NavLink to="/signin" className={getNavLinkStyle}>
               sign in
             </NavLink>
           </li>
@@ -125,14 +106,7 @@ export const Navbar: React.FC = () => {
         ) : (
           <>
             <li className={style.navbarItem}>
-              <NavLink
-                to="/register"
-                className={({ isActive }) =>
-                  isActive
-                    ? clsx(style.navbarLink, style.active)
-                    : style.navbarLink
-                }
-              >
+              <NavLink to="/register" className={getNavLinkStyle}>
                 sign up
               </NavLink>
             </li>
