@@ -6,6 +6,7 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import clsx from 'clsx';
 
 import { useAuth } from '../../context/AuthContext';
+import { getSupabaseClient } from '../../api/supabase';
 import { LinkButton } from '../LinkButton/LinkButton';
 import style from './Navbar.module.scss';
 
@@ -13,7 +14,7 @@ export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
 
   const navigate = useNavigate();
   const firstName = user?.user_metadata?.first_name || '';
@@ -28,7 +29,12 @@ export const Navbar: React.FC = () => {
 
   const handleSignOut = async () => {
     try {
-      signOut();
+      const { error } = await getSupabaseClient().auth.signOut();
+
+      if (error) {
+        throw error;
+      }
+
       navigate('/');
     } catch (error) {
       console.error('Sign out error:', error);

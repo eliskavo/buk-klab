@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import group_of_people from '../../assets/images/group_of_people.png';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
 import { FormInput } from '../FormInput/FormInput';
-import { useAuth } from '../../context/AuthContext';
+import { getSupabaseClient } from '../../api/supabase';
 import style from './RegistrationForm.module.scss';
 
 const INITIAL_FORM_DATA = {
@@ -86,8 +86,6 @@ export const RegistrationForm = () => {
   const [errors, setErrors] = useState<FormErrors>(INITIAL_ERRORS);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
-  const { signUp } = useAuth();
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -139,11 +137,15 @@ export const RegistrationForm = () => {
     }
 
     try {
-      const { data, error } = await signUp({
+      const { data, error } = await getSupabaseClient().auth.signUp({
         email: formData.email,
         password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+        options: {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+          },
+        },
       });
 
       const isUserDuplicate = data.user?.identities?.length === 0;

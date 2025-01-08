@@ -1,26 +1,11 @@
-import { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 
 import { ChildrenFC } from '../utils/type';
 import { getSupabaseClient } from '../api/supabase';
 
-type SignInParams = {
-  email: string;
-  password: string;
-};
-
-type SignUpParams = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-};
-
 type AuthContextType = {
   user: User | null;
-  signOut: () => void;
-  signIn: (params: SignInParams) => void;
-  signUp: (params: SignUpParams) => Promise<{ data: any; error: any }>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,55 +31,9 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async ({ email, password }: SignInParams) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      throw error;
-    }
-  };
-
-  const signUp = async ({
-    email,
-    password,
-    firstName,
-    lastName,
-  }: SignUpParams) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          },
-        },
-      });
-
-      return { data, error };
-    } catch (error) {
-      console.error('Sign up error:', error);
-
-      return { data: null, error };
-    }
-  };
-
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      throw error;
-    }
-  };
-
-  const value = useMemo(
-    () => ({ user, signOut, signIn, signUp }),
-    [user, signOut, signIn, signUp],
+  return (
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {

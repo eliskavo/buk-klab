@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FormInput } from '../FormInput/FormInput';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
-import { useAuth } from '../../context/AuthContext';
+import { getSupabaseClient } from '../../api/supabase';
 
 const ERROR_MESSAGES = {
   email: 'Invalid e-mail or password',
@@ -12,7 +12,6 @@ const ERROR_MESSAGES = {
 export const LoginForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
-  const { signIn } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,10 +25,14 @@ export const LoginForm = () => {
     }
 
     try {
-      signIn({
-        email: formRef.current.email.value as string,
-        password: formRef.current.password.value as string,
+      const { error } = await getSupabaseClient().auth.signInWithPassword({
+        email: formRef.current.email.value,
+        password: formRef.current.password.value,
       });
+
+      if (error) {
+        throw error;
+      }
 
       navigate('/');
     } catch (error) {
