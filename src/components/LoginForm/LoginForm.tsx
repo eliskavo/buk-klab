@@ -1,27 +1,44 @@
-import { useRef, FormEvent } from 'react';
+import { useRef, FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { FormInput } from '../FormInput/FormInput';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
+import { getSupabaseClient } from '../../api/supabase';
+
+const ERROR_MESSAGES = {
+  email: 'Invalid e-mail or password',
+};
 
 export const LoginForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setErrorMessage('');
 
     if (!formRef.current) {
       return;
     }
 
-    const formData = new FormData(formRef.current);
-    const loginData = {
-      email: String(formData.get('email') || ''),
-      password: String(formData.get('password') || ''),
-    };
+    try {
+      const { error } = await getSupabaseClient().auth.signInWithPassword({
+        email: formRef.current.email.value,
+        password: formRef.current.password.value,
+      });
 
-    // eslint-disable-next-line no-console
-    console.log(loginData);
-    formRef.current.reset();
+      if (error) {
+        throw error;
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error('Sign in error:', error);
+      setErrorMessage(ERROR_MESSAGES.email);
+    }
   };
 
   return (
@@ -34,7 +51,14 @@ export const LoginForm = () => {
       redirectLinkText="Sign up"
       submitText="sign in"
     >
-      <FormInput type="email" name="email" placeholder="email" required />
+      <FormInput
+        type="email"
+        name="email"
+        placeholder="email"
+        required
+        error={errorMessage !== ''}
+        errorMessage={errorMessage}
+      />
 
       <FormInput
         type="password"

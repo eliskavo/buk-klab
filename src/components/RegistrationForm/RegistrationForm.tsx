@@ -1,10 +1,10 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import group_of_people from '../../assets/images/group_of_people.png';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
 import { FormInput } from '../FormInput/FormInput';
+import { getSupabaseClient } from '../../api/supabase';
 import style from './RegistrationForm.module.scss';
 
 const INITIAL_FORM_DATA = {
@@ -33,6 +33,7 @@ const ERROR_MESSAGES = {
   password:
     'Password must have at least 8 characters, 1 uppercase letter and 1 number',
   passwordMatch: "Passwords don't match",
+  emailExists: 'User with this email already exists',
 };
 
 const isNumber = (value: string) => value >= '0' && value <= '9';
@@ -83,6 +84,7 @@ export const RegistrationForm = () => {
   const [shakeAnimation, setShakeAnimation] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<FormErrors>(INITIAL_ERRORS);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,8 +96,10 @@ export const RegistrationForm = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setEmailErrorMessage('');
 
     const newErrors = {
       firstName: isInputInvalid({
@@ -132,32 +136,52 @@ export const RegistrationForm = () => {
       return;
     }
 
-    setIsSubmitted(true);
+    try {
+      const { data, error } = await getSupabaseClient().auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+          },
+        },
+      });
 
-    // eslint-disable-next-line no-console
-    console.log('Form submitted:', formData);
+      const isUserDuplicate = data.user?.identities?.length === 0;
+
+      if (isUserDuplicate) {
+        setEmailErrorMessage(ERROR_MESSAGES.emailExists);
+        setShakeAnimation(true);
+
+        return;
+      }
+
+      if (error) {
+        throw error;
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Sign up error:', error);
+    }
   };
 
   return (
     <div className={style.registerPage}>
       <div className={style.illustrationSection}>
-        <img src={group_of_people} className={style.illustration} />
+        <img src={group_of_people} className={style.illustration} alt="" />
       </div>
       <div>
         {isSubmitted ? (
           <div className={style.successMessage}>
-            <h2>registration successful!</h2>
-            <p className={style.signInSection}>
-              you can now{' '}
-              <Link to="/signin" className={style.signInLink}>
-                sign in
-              </Link>{' '}
-              to your account
-            </p>
+            <h2>
+              Registration successful! Check your email for a verification link.
+            </h2>
           </div>
         ) : (
           <FormWrapper
-            title="register to buk klab"
+            title="sign up for your buk klab"
             onSubmit={handleSubmit}
             className={clsx({ [style.shakeAnimation]: shakeAnimation })}
             redirectLinkText="Sign in"
@@ -214,6 +238,10 @@ export const RegistrationForm = () => {
               errorMessage={ERROR_MESSAGES.passwordMatch}
               onChange={handleChange}
             />
+
+            {emailErrorMessage && (
+              <div className={style.emailExistsText}>{emailErrorMessage}</div>
+            )}
           </FormWrapper>
         )}
       </div>
