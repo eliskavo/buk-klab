@@ -4,8 +4,7 @@ import { LinkButton } from '../../LinkButton/LinkButton';
 import style from './Welcome.module.scss';
 
 export const Welcome: React.FC = () => {
-  const { user } = useAuth();
-
+  const user = useAuth();
   const firstName = user?.user_metadata?.first_name || '';
 
   return (

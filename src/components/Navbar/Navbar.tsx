@@ -14,7 +14,7 @@ export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { user } = useAuth();
+  const user = useAuth();
   const firstName = user?.user_metadata?.first_name || '';
 
   const navigate = useNavigate();

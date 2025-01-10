@@ -4,24 +4,13 @@ import { User } from '@supabase/supabase-js';
 import { ChildrenFC } from '../utils/type';
 import { getSupabaseClient } from '../api/supabase';
 
-type AuthContextType = {
-  user: User | null;
-};
+type AuthContextType = User | null;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: ChildrenFC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const supabase = getSupabaseClient();
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-    };
-
-    fetchUserData();
-  }, []);
 
   useEffect(() => {
     const {
@@ -33,9 +22,7 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {
