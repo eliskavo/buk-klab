@@ -1,0 +1,32 @@
+.clubDetailPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4rem;
+  gap: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.deleteButton {
+  padding: 0.8rem 2rem;
+  border: 2px solid $secondary-color;
+  border-radius: 2rem;
+  background: transparent;
+  cursor: pointer;
+  font-weight: $semibold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $secondary-color;
+    color: $white;
+  }
+}

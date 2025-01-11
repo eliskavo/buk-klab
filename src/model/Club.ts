@@ -4,4 +4,5 @@ export type ClubType = {
   description: string;
   clubImage: string;
   createdAt: string;
+  ownerId: string;
 };
