@@ -48,10 +48,10 @@ export const CreateClub: React.FC = () => {
     }
   };
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     }));
   };
 
