@@ -8,6 +8,8 @@ import { SignIn } from './pages/SignIn/SignIn';
 import { JoinClub } from './pages/JoinClub/JoinClub';
 import { BookDetail } from './pages/BookDetail/BookDetail';
 import { Register } from './pages/Register/Register';
+import { CreateClub } from './pages/CreateClub/CreateClub';
+import { ClubDetail } from './pages/ClubDetail/ClubDetail';
 
 import './styles/global.scss';
 
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
   { path: '/joinclub', element: <JoinClub /> },
   { path: '/books/:id', element: <BookDetail /> },
   { path: '/register', element: <Register /> },
+  { path: '/create-club', element: <CreateClub /> },
+  { path: '/clubs/:id', element: <ClubDetail /> },
 ]);
 
 export const App = () => <RouterProvider router={router} />;
