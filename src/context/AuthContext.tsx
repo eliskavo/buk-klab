@@ -10,9 +10,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: ChildrenFC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const supabase = getSupabaseClient();
 
   useEffect(() => {
+    const supabase = getSupabaseClient();
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {

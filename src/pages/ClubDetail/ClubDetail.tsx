@@ -9,11 +9,11 @@ import { ClubType } from '../../model/Club';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
-  const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const { id } = useParams<{ id: string }>();
-
   const navigate = useNavigate();
   const user = useAuth();
+
+  const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
 
   const handleDelete = async () => {
     try {

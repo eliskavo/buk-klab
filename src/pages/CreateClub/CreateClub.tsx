@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { Layout } from '../../components/Layout/Layout';
@@ -15,6 +15,9 @@ type FormData = {
 };
 
 export const CreateClub: React.FC = () => {
+  const user = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     description: '',
@@ -22,22 +25,21 @@ export const CreateClub: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [id, setId] = useState<number | null>(null);
 
-  const user = useAuth();
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate('/signin');
+    }
+  }, [user]);
 
   if (!user) {
-    navigate('/signin');
-
     return null;
   }
 
-  const ownerId = Number(user.id);
-
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      const newClub = await createClub(formData, ownerId);
+      const newClub = await createClub(formData, user.id);
 
       setIsSubmitted(true);
       setId(newClub.id);

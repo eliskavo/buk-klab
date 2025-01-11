@@ -11,7 +11,7 @@ export const getClubs = async () => {
 
 export const createClub = async (
   clubData: Pick<ClubType, 'name' | 'description'>,
-  ownerId: number,
+  ownerId: string,
 ) => {
   try {
     const { data, error } = await getSupabaseClient()
