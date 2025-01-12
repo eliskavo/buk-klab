@@ -1,46 +1,131 @@
 .clubDetailPage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 4rem;
-  gap: 2rem;
+  margin: 0 auto;
+}
+
+.clubBanner {
+  height: 12rem;
+  background-color: $light-grey;
+  margin-bottom: 7rem;
+
+  @media (min-width: $screen-sm-min) {
+    margin-bottom: 3rem;
+  }
 }
 
 .imageWrapper {
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%;
+  margin-top: -12rem;
+
+  @media (min-width: $screen-sm-min) {
+    justify-content: flex-start;
+    margin-left: 4rem;
+    margin-top: -9rem;
+  }
+}
+
+.clubImageCircle {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: $wow-grey;
+  border: 4px solid white;
 }
 
 .clubImage {
   width: 100%;
-  max-width: 300px;
-  object-fit: fill;
-  border: 2px solid $secondary-color;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (min-width: $screen-sm-min) {
+    flex-direction: row;
+    align-items: flex-start;
+    padding-right: 4rem;
+  }
+}
+
+.infoSection {
+  margin-bottom: 2rem;
+  text-align: center;
+
+  @media (min-width: $screen-sm-min) {
+    flex: 0 0 300px;
+    margin: 1rem 2rem 1rem 4rem;
+    text-align: left;
+  }
 }
 
 .title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: $extrabold;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 1.75rem;
+  }
 }
 
 .description {
-  font-size: 1.2rem;
+  font-size: 0.8rem;
+  color: $dark-grey;
+}
+
+.contentSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 3OOpx), 1fr));
+  gap: 1.5rem;
+
+  @media (min-width: $screen-sm-min) {
+    flex: 1;
+  }
+}
+
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
   margin-bottom: 1rem;
 }
 
-.deleteButton {
-  padding: 0.8rem 2rem;
-  border: 2px solid $secondary-color;
-  border-radius: 2rem;
-  background: transparent;
-  cursor: pointer;
-  font-weight: $semibold;
-  transition: all 0.3s ease;
+.cardText {
+  color: $dark-grey;
+}
 
-  &:hover {
-    background: $secondary-color;
-    color: $white;
-  }
+.inviteCard {
+  background-color: $primary-color;
+  color: white;
+}
+
+.inviteCardTitle {
+  color: white;
+}
+
+.inviteCardText {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.readingCard {
+  background: white;
+}
+
+.deleteButton {
+  margin-top: 4rem;
+  background-color: transparent;
+  color: $dark-grey;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
 }

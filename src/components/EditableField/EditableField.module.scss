@@ -1,0 +1,25 @@
+.editableField {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.editInput {
+  background: none;
+  border: 2px solid $light-grey;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.editButton {
+  border: none;
+  background-color: transparent;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  color: $dark-grey;
+
+  &:hover {
+    color: $secondary-color;
+  }
+}

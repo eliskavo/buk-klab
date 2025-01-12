@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import { Layout } from '../../components/Layout/Layout';
 import { Loading } from '../../components/Loading/Loading';
@@ -63,51 +64,71 @@ export const ClubDetail: React.FC = () => {
         <Loading message="Loading book club details..." />
       ) : (
         <div className={style.clubDetailPage}>
+          <div className={style.clubBanner} />
+
           <div className={style.imageWrapper}>
-            <img
-              src={clubDetail.clubImage || placeholder_club}
-              alt={`${clubDetail.name} club`}
-              className={style.clubImage}
-            />
+            <div className={style.clubImageCircle}>
+              <img
+                src={clubDetail.clubImage || placeholder_club}
+                alt={`${clubDetail.name} club`}
+                className={style.clubImage}
+              />
+            </div>
           </div>
 
-          {user?.id === clubDetail.ownerId ? (
-            <div>
-              <EditableField
-                value={clubDetail.name}
-                handleSave={(newValue) => {
-                  handleUpdate({ name: newValue });
-                }}
-              >
+          <div className={style.pageContent}>
+            {user?.id === clubDetail.ownerId ? (
+              <section className={style.infoSection}>
+                <EditableField
+                  value={clubDetail.name}
+                  handleSave={(newValue) => {
+                    handleUpdate({ name: newValue });
+                  }}
+                >
+                  <h1 className={style.title}>{clubDetail.name}</h1>
+                </EditableField>
+
+                <EditableField
+                  value={clubDetail.description}
+                  handleSave={(newValue) => {
+                    handleUpdate({ description: newValue });
+                  }}
+                >
+                  <p className={style.description}>{clubDetail.description}</p>
+                </EditableField>
+
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className={style.deleteButton}
+                  aria-label="delete club"
+                >
+                  <DeleteRoundedIcon />
+                </button>
+              </section>
+            ) : (
+              <section className={style.infoSection}>
                 <h1 className={style.title}>{clubDetail.name}</h1>
-              </EditableField>
-
-              <EditableField
-                value={clubDetail.description}
-                handleSave={(newValue) => {
-                  handleUpdate({ description: newValue });
-                }}
-              >
                 <p className={style.description}>{clubDetail.description}</p>
-              </EditableField>
-            </div>
-          ) : (
-            <div>
-              <h1 className={style.title}>{clubDetail.name}</h1>
-              <p className={style.description}>{clubDetail.description}</p>
-            </div>
-          )}
+              </section>
+            )}
 
-          <p>members: </p>
-          {user?.id === clubDetail.ownerId && (
-            <button
-              type="button"
-              onClick={handleDelete}
-              className={style.deleteButton}
-            >
-              delete
-            </button>
-          )}
+            <section className={style.contentSection}>
+              <div className={`${style.card} ${style.inviteCard}`}>
+                <h2 className={`${style.cardTitle} ${style.inviteCardTitle}`}>
+                  Invite Members
+                </h2>
+                <p className={`${style.cardText} ${style.inviteCardText}`}>
+                  Grow your book club by inviting new members
+                </p>
+              </div>
+
+              <div className={`${style.card} ${style.readingCard}`}>
+                <h2 className={style.cardTitle}>Currently Reading</h2>
+                <p className={style.cardText}>No book selected</p>
+              </div>
+            </section>
+          </div>
         </div>
       )}
     </Layout>

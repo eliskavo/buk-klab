@@ -3,6 +3,9 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 import { ChildrenFC } from '../../utils/type';
+import style from './EditableField.module.scss';
+
+const iconSx = { fontSize: 20 };
 
 type EditableFieldProps = {
   value: string;
@@ -33,19 +36,33 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
   return (
     <div>
       {isEditing ? (
-        <div>
-          <input type="text" defaultValue={value} ref={inputRef} />
-
-          <button type="button" onClick={handleSubmit}>
-            <CheckRoundedIcon />
+        <div className={style.editableField}>
+          <input
+            type="text"
+            defaultValue={value}
+            ref={inputRef}
+            className={style.editInput}
+          />
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className={style.editButton}
+            aria-label="save changes"
+          >
+            <CheckRoundedIcon sx={iconSx} />
           </button>
         </div>
       ) : (
-        <div>
-          <button type="button" onClick={handleEditClick}>
-            <EditRoundedIcon />
-          </button>
+        <div className={style.editableField}>
           {children}
+          <button
+            type="button"
+            onClick={handleEditClick}
+            className={style.editButton}
+            aria-label="edit"
+          >
+            <EditRoundedIcon sx={iconSx} />
+          </button>
         </div>
       )}
     </div>
