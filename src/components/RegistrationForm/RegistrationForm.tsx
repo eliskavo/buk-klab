@@ -86,8 +86,9 @@ export const RegistrationForm = () => {
   const [errors, setErrors] = useState<FormErrors>(INITIAL_ERRORS);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     setErrors((prev) => ({

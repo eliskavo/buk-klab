@@ -6,3 +6,8 @@ export type ClubType = {
   createdAt: string;
   ownerId: string;
 };
+
+export type UpdateClubType = {
+  name?: string;
+  description?: string;
+};

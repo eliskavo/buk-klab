@@ -2,7 +2,7 @@ import { BookType } from '../model/Book';
 import { DocType, SearchResponse } from '../model/Doc';
 import { parseItemIdFromUri } from '../utils/parseItemIdFromUri';
 import { getFetch } from './base';
-import placeholder_book from '../assets/images/placeholder_book.png';
+import placeholder_book from '../assets/images/placeholder_club.png';
 
 export const fetchRecommendedBooks = async ({
   editionId,

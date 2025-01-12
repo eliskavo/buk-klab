@@ -1,4 +1,4 @@
-import { ClubType } from '../model/Club';
+import { ClubType, UpdateClubType } from '../model/Club';
 import { getSupabaseClient } from './supabase';
 
 export const getClubs = async () => {
@@ -61,9 +61,21 @@ export const deleteClub = async (id: number) => {
     if (error) {
       throw error;
     }
-
-    return true;
   } catch (error) {
     console.error('Error deleting club:', error);
+  }
+};
+
+export const updateClub = async (id: number, updatedData: UpdateClubType) => {
+  const supabase = getSupabaseClient();
+
+  const { error } = await supabase
+    .from('clubs')
+    .update(updatedData)
+    .eq('id', id);
+
+  if (error) {
+    console.error('Update error:', error);
+    throw error;
   }
 };
