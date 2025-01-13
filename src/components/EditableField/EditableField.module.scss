@@ -10,6 +10,19 @@
   border: 2px solid $light-grey;
   border-radius: 4px;
   width: 100%;
+  font-size: 1.8rem;
+  font-weight: $extrabold;
+}
+
+.editTextarea {
+  background: none;
+  border: 2px solid $light-grey;
+  border-radius: 4px;
+  width: 100%;
+  min-height: 200px;
+  resize: vertical;
+  line-height: 1.4;
+  font-size: 0.8rem;
 }
 
 .editButton {

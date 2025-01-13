@@ -58,28 +58,55 @@
 
   @media (min-width: $screen-sm-min) {
     flex: 0 0 300px;
+    min-width: 300px;
+    max-width: 300px;
     margin: 1rem 2rem 1rem 4rem;
     text-align: left;
   }
 }
 
+.editableContent {
+  width: 100%;
+  max-width: 300px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 .title {
   font-size: 1.5rem;
   font-weight: $extrabold;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 
   @media (min-width: $screen-md-min) {
     font-size: 1.75rem;
   }
 }
 
+.notEditableTitle {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: $extrabold;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 .description {
   font-size: 0.8rem;
   color: $dark-grey;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .contentSection {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 3OOpx), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 1.5rem;
 
   @media (min-width: $screen-sm-min) {

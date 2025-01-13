@@ -8,16 +8,19 @@ import style from './EditableField.module.scss';
 const iconSx = { fontSize: 20 };
 
 type EditableFieldProps = {
+  type?: 'text' | 'textarea';
   value: string;
   handleSave: (newValue: string) => void;
 };
 
 export const EditableField: ChildrenFC<EditableFieldProps> = ({
+  type = 'text',
   value,
   handleSave,
   children,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -30,6 +33,8 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
 
     if (inputRef.current) {
       handleSave(inputRef.current.value);
+    } else if (textareaRef.current) {
+      handleSave(textareaRef.current.value);
     }
   };
 
@@ -37,12 +42,21 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
     <div>
       {isEditing ? (
         <div className={style.editableField}>
-          <input
-            type="text"
-            defaultValue={value}
-            ref={inputRef}
-            className={style.editInput}
-          />
+          {type === 'textarea' ? (
+            <textarea
+              defaultValue={value}
+              ref={textareaRef}
+              className={style.editTextarea}
+              rows={4}
+            />
+          ) : (
+            <input
+              type="text"
+              defaultValue={value}
+              ref={inputRef}
+              className={style.editInput}
+            />
+          )}
           <button
             type="button"
             onClick={handleSubmit}

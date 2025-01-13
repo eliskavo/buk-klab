@@ -80,6 +80,7 @@ export const ClubDetail: React.FC = () => {
             {user?.id === clubDetail.ownerId ? (
               <section className={style.infoSection}>
                 <EditableField
+                  type="text"
                   value={clubDetail.name}
                   handleSave={(newValue) => {
                     handleUpdate({ name: newValue });
@@ -89,6 +90,7 @@ export const ClubDetail: React.FC = () => {
                 </EditableField>
 
                 <EditableField
+                  type="textarea"
                   value={clubDetail.description}
                   handleSave={(newValue) => {
                     handleUpdate({ description: newValue });
@@ -108,8 +110,10 @@ export const ClubDetail: React.FC = () => {
               </section>
             ) : (
               <section className={style.infoSection}>
-                <h1 className={style.title}>{clubDetail.name}</h1>
-                <p className={style.description}>{clubDetail.description}</p>
+                <div className={style.editableContent}>
+                  <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
+                  <p className={style.description}>{clubDetail.description}</p>
+                </div>
               </section>
             )}
 

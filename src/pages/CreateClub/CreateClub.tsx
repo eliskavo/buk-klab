@@ -24,6 +24,7 @@ export const CreateClub: React.FC = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [id, setId] = useState<number | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     if (!user) {
@@ -37,6 +38,12 @@ export const CreateClub: React.FC = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (currentStep === 1) {
+      setCurrentStep(currentStep + 1);
+
+      return;
+    }
 
     try {
       const newClub = await createClub(formData, user.id);
@@ -55,24 +62,18 @@ export const CreateClub: React.FC = () => {
     }));
   };
 
-  return (
-    <Layout>
-      <div className={style.createClubPage}>
-        {isSubmitted ? (
-          <div>
-            <h1>Club created successfully!</h1>
-            <p>
-              {' '}
-              view your brand new{' '}
-              <Link to={`/clubs/${id}`}>{formData.name}</Link>
+  const handleBack = () => {
+    setCurrentStep(1);
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <>
+            <p className={style.description}>
+              Every great chapter starts with a name! What's yours?
             </p>
-          </div>
-        ) : (
-          <FormWrapper
-            title="Create Club"
-            onSubmit={onSubmit}
-            submitText="Create"
-          >
             <FormInput
               type="text"
               name="name"
@@ -81,16 +82,64 @@ export const CreateClub: React.FC = () => {
               onChange={onChange}
               value={formData.name}
             />
-
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <p className={style.description}>
+              Give your club a plot twist! Share what makes it unique and why
+              others will want to join.
+            </p>
             <FormInput
-              type="text"
+              type="textarea"
               name="description"
               placeholder="Club Description"
               required
               onChange={onChange}
               value={formData.description}
+              rows={4}
             />
-          </FormWrapper>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Layout>
+      <div className={style.createClubPage}>
+        {isSubmitted ? (
+          <div>
+            <h1>Club created successfully!</h1>
+            <p className={style.description}>
+              view your brand new{' '}
+              <Link to={`/clubs/${id}`} className={style.link}>
+                {formData.name}
+              </Link>
+            </p>
+          </div>
+        ) : (
+          <div className={style.formSection}>
+            <FormWrapper
+              title="Create Club"
+              onSubmit={onSubmit}
+              submitText={currentStep === 1 ? 'Next' : 'Create'}
+            >
+              <div className={style.stepIndicator}>Step {currentStep}/2</div>
+              {renderStep()}
+              {currentStep === 2 && (
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className={style.backButton}
+                >
+                  Back
+                </button>
+              )}
+            </FormWrapper>
+          </div>
         )}
 
         <img
