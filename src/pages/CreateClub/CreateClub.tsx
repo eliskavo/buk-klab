@@ -27,7 +27,7 @@ export const CreateClub: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
-    if (!user) {
+    if (user === null) {
       navigate('/signin');
     }
   }, [user]);
