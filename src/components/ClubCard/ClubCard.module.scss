@@ -44,15 +44,12 @@
 }
 
 .description {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  line-clamp: 5;
   margin-bottom: 1.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2rem;
+  max-height: calc(1.2rem * 5);
   font-size: 0.8rem;
-  max-height: 7.5em;
 }
 
 .currentlyReading {

@@ -1,24 +1,23 @@
 import { ComponentProps } from 'react';
 import clsx from 'clsx';
 
-import style from './FormInput.module.scss';
+import style from './FormTextArea.module.scss';
 
-type InputProps = ComponentProps<'input'>;
+type TextAreaProps = ComponentProps<'textarea'>;
 
-type FormInputProps = {
-  type: InputProps['type'];
+type FormTextAreaProps = {
+  type: 'textarea';
   name: string;
   placeholder: string;
   value?: string;
   error?: boolean;
   errorMessage?: string;
-  onChange?: InputProps['onChange'];
+  onChange?: TextAreaProps['onChange'];
   required?: boolean;
   rows?: number;
 };
 
-export const FormInput: React.FC<FormInputProps> = ({
-  type,
+export const FormTextArea: React.FC<FormTextAreaProps> = ({
   name,
   placeholder,
   value,
@@ -26,16 +25,21 @@ export const FormInput: React.FC<FormInputProps> = ({
   errorMessage,
   onChange,
   required,
+  rows,
 }) => (
   <div className={style.inputWrapper}>
-    <input
-      type={type}
+    <textarea
       name={name}
       placeholder={placeholder}
-      className={clsx(style.input, error && style.error)}
+      className={clsx(
+        style.textAreaInput,
+        style.textArea,
+        error && style.error,
+      )}
       value={value}
       onChange={onChange}
       required={required}
+      rows={rows}
     />
 
     {error && <p className={style.errorText}>{errorMessage}</p>}

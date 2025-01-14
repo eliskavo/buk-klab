@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 import { Layout } from '../../components/Layout/Layout';
 import { FormInput } from '../../components/FormInput/FormInput';
+import { FormTextArea } from '../../components/FormTextArea/FormTextArea';
 import { FormWrapper } from '../../components/FormWrapper/FormWrapper';
 import community_girls from '../../assets/images/community_girls.png';
 import { createClub } from '../../api/clubsApi';
@@ -55,7 +56,9 @@ export const CreateClub: React.FC = () => {
     }
   };
 
-  const onChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+  const onChange = ({
+    target,
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
       [target.name]: target.value,
@@ -66,70 +69,65 @@ export const CreateClub: React.FC = () => {
     setCurrentStep(1);
   };
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <>
-            <p className={style.description}>
-              Every great chapter starts with a name! What's yours?
-            </p>
-            <FormInput
-              type="text"
-              name="name"
-              placeholder="Club Name"
-              required
-              onChange={onChange}
-              value={formData.name}
-            />
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <p className={style.description}>
-              Give your club a plot twist! Share what makes it unique and why
-              others will want to join.
-            </p>
-            <FormInput
-              type="textarea"
-              name="description"
-              placeholder="Club Description"
-              required
-              onChange={onChange}
-              value={formData.description}
-              rows={4}
-            />
-          </>
-        );
-      default:
-        return null;
-    }
-  };
+  if (isSubmitted) {
+    return (
+      <Layout>
+        <div>
+          <h1>Club created successfully!</h1>
+          <p className={style.description}>
+            view your brand new{' '}
+            <Link to={`/clubs/${id}`} className={style.link}>
+              {formData.name}
+            </Link>
+          </p>
+        </div>
+        ;
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <div className={style.createClubPage}>
-        {isSubmitted ? (
-          <div>
-            <h1>Club created successfully!</h1>
-            <p className={style.description}>
-              view your brand new{' '}
-              <Link to={`/clubs/${id}`} className={style.link}>
-                {formData.name}
-              </Link>
-            </p>
-          </div>
-        ) : (
-          <div className={style.formSection}>
-            <FormWrapper
-              title="Create Club"
-              onSubmit={onSubmit}
-              submitText={currentStep === 1 ? 'Next' : 'Create'}
-            >
-              <div className={style.stepIndicator}>Step {currentStep}/2</div>
-              {renderStep()}
-              {currentStep === 2 && (
+        <div className={style.formSection}>
+          <FormWrapper
+            title="Create Club"
+            onSubmit={onSubmit}
+            submitText={currentStep === 1 ? 'Next' : 'Create'}
+          >
+            <div className={style.stepIndicator}>Step {currentStep}/2</div>
+
+            {currentStep === 1 ? (
+              <>
+                <p className={style.description}>
+                  Every great chapter starts with a name! What's yours?
+                </p>
+                <FormInput
+                  type="text"
+                  name="name"
+                  placeholder="Club Name"
+                  required
+                  onChange={onChange}
+                  value={formData.name}
+                />
+              </>
+            ) : (
+              <>
+                <p className={style.description}>
+                  Give your club a plot twist! Share what makes it unique and
+                  why others will want to join.
+                </p>
+
+                <FormTextArea
+                  type="textarea"
+                  name="description"
+                  placeholder="Club Description"
+                  required
+                  onChange={onChange}
+                  value={formData.description}
+                  rows={4}
+                />
+
                 <button
                   type="button"
                   onClick={handleBack}
@@ -137,10 +135,10 @@ export const CreateClub: React.FC = () => {
                 >
                   Back
                 </button>
-              )}
-            </FormWrapper>
-          </div>
-        )}
+              </>
+            )}
+          </FormWrapper>
+        </div>
 
         <img
           src={community_girls}

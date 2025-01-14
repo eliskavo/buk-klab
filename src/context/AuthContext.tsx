@@ -4,7 +4,7 @@ import { User } from '@supabase/supabase-js';
 import { ChildrenFC } from '../utils/type';
 import { getSupabaseClient } from '../api/supabase';
 
-type AuthContextType = User | null;
+type AuthContextType = User | null | undefined;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

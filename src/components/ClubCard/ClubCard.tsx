@@ -11,19 +11,11 @@ type ClubProps = {
 export const ClubCard = ({ club }: ClubProps) => (
   <Link to={`/clubs/${club.id}`} className={style.link}>
     <div className={style.clubCard}>
-      {club.clubImage ? (
-        <img
-          src={club.clubImage}
-          alt={`${club.name} club`}
-          className={style.clubImage}
-        />
-      ) : (
-        <img
-          src={placeholder_club}
-          alt={`${club.name} club`}
-          className={style.clubImage}
-        />
-      )}
+      <img
+        src={club.clubImage || placeholder_club}
+        alt={`${club.name} club`}
+        className={style.clubImage}
+      />
       <div className={style.clubContent}>
         <h3 className={style.clubName}>{club.name}</h3>
         <p className={style.memberCount}>N/A members</p>

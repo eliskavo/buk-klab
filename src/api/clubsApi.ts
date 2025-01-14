@@ -38,13 +38,14 @@ export const getClubDetail = async (id: number) => {
     const { data, error } = await getSupabaseClient()
       .from('clubs')
       .select()
-      .eq('id', id);
+      .eq('id', id)
+      .single();
 
     if (error) {
       throw error;
     }
 
-    return data[0];
+    return data;
   } catch (error) {
     console.error('Error getting club detail:', error);
     throw error;
@@ -67,15 +68,16 @@ export const deleteClub = async (id: number) => {
 };
 
 export const updateClub = async (id: number, updatedData: UpdateClubType) => {
-  const supabase = getSupabaseClient();
+  try {
+    const { error } = await getSupabaseClient()
+      .from('clubs')
+      .update(updatedData)
+      .eq('id', id);
 
-  const { error } = await supabase
-    .from('clubs')
-    .update(updatedData)
-    .eq('id', id);
-
-  if (error) {
-    console.error('Update error:', error);
-    throw error;
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error updating club:', error);
   }
 };

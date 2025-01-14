@@ -19,8 +19,7 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
   handleSave,
   children,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<any>(null);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -33,52 +32,54 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
 
     if (inputRef.current) {
       handleSave(inputRef.current.value);
-    } else if (textareaRef.current) {
-      handleSave(textareaRef.current.value);
     }
   };
 
+  if (!isEditing) {
+    return (
+      <div className={style.editableField}>
+        {children}
+
+        <button
+          type="button"
+          onClick={handleEditClick}
+          className={style.editButton}
+          aria-label="edit"
+        >
+          <EditRoundedIcon sx={iconSx} />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {isEditing ? (
-        <div className={style.editableField}>
-          {type === 'textarea' ? (
-            <textarea
-              defaultValue={value}
-              ref={textareaRef}
-              className={style.editTextarea}
-              rows={4}
-            />
-          ) : (
-            <input
-              type="text"
-              defaultValue={value}
-              ref={inputRef}
-              className={style.editInput}
-            />
-          )}
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className={style.editButton}
-            aria-label="save changes"
-          >
-            <CheckRoundedIcon sx={iconSx} />
-          </button>
-        </div>
-      ) : (
-        <div className={style.editableField}>
-          {children}
-          <button
-            type="button"
-            onClick={handleEditClick}
-            className={style.editButton}
-            aria-label="edit"
-          >
-            <EditRoundedIcon sx={iconSx} />
-          </button>
-        </div>
-      )}
+    <div className={style.editableFieldContainer}>
+      <div className={style.editableField}>
+        {type === 'textarea' ? (
+          <textarea
+            defaultValue={value}
+            ref={inputRef}
+            className={style.editTextarea}
+            rows={4}
+          />
+        ) : (
+          <input
+            type="text"
+            defaultValue={value}
+            ref={inputRef}
+            className={style.editInput}
+          />
+        )}
+
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className={style.editButton}
+          aria-label="save changes"
+        >
+          <CheckRoundedIcon sx={iconSx} />
+        </button>
+      </div>
     </div>
   );
 };
