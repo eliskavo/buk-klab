@@ -19,7 +19,8 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
   handleSave,
   children,
 }) => {
-  const inputRef = useRef<any>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -30,9 +31,10 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
   const handleSubmit = () => {
     setIsEditing(false);
 
-    if (inputRef.current) {
-      handleSave(inputRef.current.value);
-    }
+    const inputValue = inputRef.current?.value;
+    const textAreaValue = textAreaRef.current?.value;
+
+    handleSave(inputValue ?? textAreaValue ?? '');
   };
 
   if (!isEditing) {
@@ -58,7 +60,7 @@ export const EditableField: ChildrenFC<EditableFieldProps> = ({
         {type === 'textarea' ? (
           <textarea
             defaultValue={value}
-            ref={inputRef}
+            ref={textAreaRef}
             className={style.editTextarea}
             rows={4}
           />

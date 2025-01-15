@@ -4,8 +4,8 @@
 
 .clubBanner {
   height: 12rem;
-  background-color: $light-grey;
   margin-bottom: 7rem;
+  background-color: $light-grey;
 
   @media (min-width: $screen-lg-min) {
     margin-bottom: 3rem;
@@ -28,9 +28,9 @@
 .clubImageCircle {
   width: 10rem;
   height: 10rem;
-  border-radius: 50%;
   overflow: hidden;
   background-color: $wow-grey;
+  border-radius: 50%;
   border: 4px solid $white;
 }
 
@@ -97,12 +97,8 @@
 }
 
 .notEditableTitle {
+  @extend .title;
   margin-bottom: 2rem;
-  font-size: 1.5rem;
-  font-weight: $extrabold;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
 }
 
 .description {
@@ -120,8 +116,8 @@
 
 .contentSection {
   display: grid;
-  gap: 1.5rem;
   margin: 0 2rem;
+  gap: 1.5rem;
 
   @media (min-width: $screen-lg-min) {
     flex: 1;
@@ -129,16 +125,16 @@
 }
 
 .card {
+  padding: 1.5rem;
   background: $white;
   border-radius: 8px;
-  padding: 1.5rem;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
 }
 
 .cardTitle {
-  font-size: 1.25rem;
   margin-bottom: 1rem;
+  font-size: 1.25rem;
 }
 
 .cardText {
@@ -150,10 +146,7 @@
   color: $white;
 }
 
-.inviteCardTitle {
-  color: $white;
-}
-
+.inviteCardTitle,
 .inviteCardText {
   color: $white;
 }
@@ -165,8 +158,8 @@
 .deleteButton {
   margin-top: 4rem;
   background-color: transparent;
-  color: $dark-grey;
   border: none;
   border-radius: 0.25rem;
+  color: $dark-grey;
   cursor: pointer;
 }

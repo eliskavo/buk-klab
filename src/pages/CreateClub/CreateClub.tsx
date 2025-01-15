@@ -41,7 +41,7 @@ export const CreateClub: React.FC = () => {
     e.preventDefault();
 
     if (currentStep === 1) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep(2);
 
       return;
     }
@@ -81,7 +81,6 @@ export const CreateClub: React.FC = () => {
             </Link>
           </p>
         </div>
-        ;
       </Layout>
     );
   }

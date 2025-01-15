@@ -41,9 +41,9 @@ export const ClubDetail: React.FC = () => {
   };
 
   const handleUpdate = async (updatedData: Partial<ClubType>) => {
-    await updateClub(Number(id), updatedData);
-    const clubData = await getClubDetail(Number(id));
-    setClubDetail(clubData);
+    const updatedClub = await updateClub(Number(id), updatedData);
+
+    setClubDetail(updatedClub);
   };
 
   if (!clubDetail) {

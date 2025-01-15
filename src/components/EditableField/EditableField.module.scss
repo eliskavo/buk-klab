@@ -11,30 +11,28 @@
 }
 
 .editInput {
+  width: 100%;
   background: none;
   border: 2px solid $light-grey;
   border-radius: 4px;
-  width: 100%;
   font-size: 1.8rem;
   font-weight: $extrabold;
 }
 
 .editTextarea {
-  background: none;
-  border: 2px solid $light-grey;
-  border-radius: 4px;
-  width: 100%;
+  @extend .editInput;
   min-height: 200px;
-  line-height: 1.4;
   font-size: 0.8rem;
+  font-weight: $regular;
+  line-height: 1.4;
 }
 
 .editButton {
+  margin-bottom: 1.25rem;
   border: none;
   background-color: transparent;
-  margin-bottom: 1.25rem;
-  cursor: pointer;
   color: $dark-grey;
+  cursor: pointer;
 
   &:hover {
     color: $secondary-color;

@@ -1,8 +1,8 @@
 .clubCard {
+  height: 550px;
+  overflow: hidden;
   background: $light-grey;
   border-radius: 16px;
-  overflow: hidden;
-  height: 550px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
   &:hover {
@@ -11,16 +11,16 @@
 }
 
 .link {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 
 .clubImage {
   flex-shrink: 0;
   width: 100%;
   height: 300px;
-  object-fit: cover;
   margin-bottom: 1rem;
+  object-fit: cover;
 }
 
 .clubContent {
@@ -39,16 +39,16 @@
 }
 
 .memberCount {
-  color: $dark-grey;
   margin-bottom: 1rem;
+  color: $dark-grey;
 }
 
 .description {
+  max-height: calc(1.2rem * 5);
   margin-bottom: 1.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.2rem;
-  max-height: calc(1.2rem * 5);
   font-size: 0.8rem;
 }
 

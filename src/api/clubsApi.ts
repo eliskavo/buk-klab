@@ -69,14 +69,18 @@ export const deleteClub = async (id: number) => {
 
 export const updateClub = async (id: number, updatedData: UpdateClubType) => {
   try {
-    const { error } = await getSupabaseClient()
+    const { data, error } = await getSupabaseClient()
       .from('clubs')
       .update(updatedData)
-      .eq('id', id);
+      .eq('id', id)
+      .select()
+      .single();
 
     if (error) {
       throw error;
     }
+
+    return data;
   } catch (error) {
     console.error('Error updating club:', error);
   }
