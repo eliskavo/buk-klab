@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import clsx from 'clsx';
 
 import { Layout } from '../../components/Layout/Layout';
 import { Loading } from '../../components/Loading/Loading';
-import { getClubDetail, deleteClub, updateClub } from '../../api/clubsApi';
+import {
+  getClubDetail,
+  deleteClub,
+  updateClub,
+  joinClub,
+  isUserClubMember,
+  leaveClub,
+  getClubMembers,
+} from '../../api/clubsApi';
 import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
@@ -19,6 +28,8 @@ export const ClubDetail: React.FC = () => {
 
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [memberCount, setMemberCount] = useState<number>(0);
 
   useEffect(() => {
     const fetchClubDetail = async () => {
@@ -38,6 +49,47 @@ export const ClubDetail: React.FC = () => {
     await deleteClub(Number(id));
     setIsDeleteDialogOpen(false);
     navigate('/joinclub');
+  };
+
+  useEffect(() => {
+    const fetchMemberCount = async () => {
+      if (id) {
+        const { count } = await getClubMembers(Number(id));
+        setMemberCount(count ?? 0);
+      }
+    };
+
+    fetchMemberCount();
+  }, [id]);
+
+  useEffect(() => {
+    const checkMembership = async () => {
+      if (user) {
+        const membershipStatus = await isUserClubMember(user.id, Number(id));
+        setIsMember(membershipStatus);
+      }
+    };
+
+    checkMembership();
+  }, [user, id]);
+
+  const handleMembership = async () => {
+    if (!user) {
+      return;
+    }
+
+    try {
+      await (isMember
+        ? leaveClub(user.id, Number(id))
+        : joinClub(user.id, Number(id)));
+
+      setIsMember(!isMember);
+
+      const { count } = await getClubMembers(Number(id));
+      setMemberCount(count ?? 0);
+    } catch (error) {
+      console.error('Error handling membership:', error);
+    }
   };
 
   const handleUpdate = async (updatedData: Partial<ClubType>) => {
@@ -88,6 +140,7 @@ export const ClubDetail: React.FC = () => {
                   handleUpdate({ description: newValue });
                 }}
               >
+                <p className={style.memberCount}>{memberCount} members</p>
                 <p className={style.description}>{clubDetail.description}</p>
               </EditableField>
 
@@ -104,6 +157,17 @@ export const ClubDetail: React.FC = () => {
             <section className={style.infoSection}>
               <div className={style.editableContent}>
                 <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
+                <p className={style.memberCount}>{memberCount} members</p>
+                <button
+                  onClick={handleMembership}
+                  type="button"
+                  className={clsx(style.joinButton, {
+                    [style.leaveButton]: isMember,
+                  })}
+                  aria-label={isMember ? 'leave club' : 'join club'}
+                >
+                  {isMember ? 'leave club' : 'join club'}
+                </button>
                 <p className={style.description}>{clubDetail.description}</p>
               </div>
             </section>
