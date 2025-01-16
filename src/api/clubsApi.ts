@@ -1,4 +1,4 @@
-import { ClubType } from '../model/Club';
+import { ClubType, UpdateClubType } from '../model/Club';
 import { getSupabaseClient } from './supabase';
 
 export const getClubs = async () => {
@@ -38,13 +38,14 @@ export const getClubDetail = async (id: number) => {
     const { data, error } = await getSupabaseClient()
       .from('clubs')
       .select()
-      .eq('id', id);
+      .eq('id', id)
+      .single();
 
     if (error) {
       throw error;
     }
 
-    return data[0];
+    return data;
   } catch (error) {
     console.error('Error getting club detail:', error);
     throw error;
@@ -61,9 +62,26 @@ export const deleteClub = async (id: number) => {
     if (error) {
       throw error;
     }
-
-    return true;
   } catch (error) {
     console.error('Error deleting club:', error);
+  }
+};
+
+export const updateClub = async (id: number, updatedData: UpdateClubType) => {
+  try {
+    const { data, error } = await getSupabaseClient()
+      .from('clubs')
+      .update(updatedData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error updating club:', error);
   }
 };

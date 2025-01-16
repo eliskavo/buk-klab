@@ -1,0 +1,41 @@
+.editableFieldContainer {
+  width: 100%;
+}
+
+.editableField {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.editInput {
+  width: 100%;
+  background: none;
+  border: 2px solid $light-grey;
+  border-radius: 4px;
+  font-size: 1.8rem;
+  font-weight: $extrabold;
+}
+
+.editTextarea {
+  @extend .editInput;
+
+  min-height: 200px;
+  font-size: 0.8rem;
+  font-weight: $regular;
+  line-height: 1.4;
+}
+
+.editButton {
+  margin-bottom: 1.25rem;
+  border: none;
+  background-color: transparent;
+  color: $dark-grey;
+  cursor: pointer;
+
+  &:hover {
+    color: $secondary-color;
+  }
+}

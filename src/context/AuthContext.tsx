@@ -4,12 +4,12 @@ import { User } from '@supabase/supabase-js';
 import { ChildrenFC } from '../utils/type';
 import { getSupabaseClient } from '../api/supabase';
 
-type AuthContextType = User | null;
+type AuthContextType = User | null | undefined;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: ChildrenFC = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null | undefined>();
 
   useEffect(() => {
     const supabase = getSupabaseClient();
@@ -26,12 +26,4 @@ export const AuthProvider: ChildrenFC = ({ children }) => {
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

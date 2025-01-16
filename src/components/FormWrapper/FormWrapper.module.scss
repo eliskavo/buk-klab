@@ -24,8 +24,8 @@
 }
 
 .title {
-  text-align: center;
   margin-bottom: 2rem;
+  text-align: center;
   font-size: 1.5rem;
   font-weight: $extrabold;
   color: $secondary-color;
@@ -36,9 +36,9 @@
 }
 
 .redirectText {
-  margin: 2rem 0;
   width: 100%;
   max-width: 300px;
+  margin: 2rem 0;
   text-align: center;
 
   @media (min-width: $screen-sm-min) {
