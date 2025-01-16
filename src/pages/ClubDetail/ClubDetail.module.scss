@@ -117,6 +117,7 @@
 .contentSection {
   display: grid;
   margin: 0 2rem;
+  padding-bottom: 4rem;
   gap: 1.5rem;
 
   @media (min-width: $screen-lg-min) {
