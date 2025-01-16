@@ -9,6 +9,7 @@ import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
 import { EditableField } from '../../components/EditableField/EditableField';
+import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -17,6 +18,7 @@ export const ClubDetail: React.FC = () => {
   const user = useAuth();
 
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchClubDetail = async () => {
@@ -28,16 +30,14 @@ export const ClubDetail: React.FC = () => {
     fetchClubDetail();
   }, [id]);
 
-  const handleDelete = async () => {
-    const isDeletionConfirmed = window.confirm(
-      'Are you sure you want to delete this club?',
-    );
+  const handleDelete = () => {
+    setIsDeleteDialogOpen(true);
+  };
 
-    if (isDeletionConfirmed) {
-      await deleteClub(Number(id));
-
-      navigate('/joinclub');
-    }
+  const handleConfirmDelete = async () => {
+    await deleteClub(Number(id));
+    setIsDeleteDialogOpen(false);
+    navigate('/joinclub');
   };
 
   const handleUpdate = async (updatedData: Partial<ClubType>) => {
@@ -125,6 +125,16 @@ export const ClubDetail: React.FC = () => {
           </section>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete club"
+        message="Are you sure you want to delete this club?"
+        closeButtonText="Cancel"
+        confirmButtonText="Delete"
+      />
     </Layout>
   );
 };
