@@ -21,6 +21,7 @@
 
 .editTextarea {
   @extend .editInput;
+
   min-height: 200px;
   font-size: 0.8rem;
   font-weight: $regular;
