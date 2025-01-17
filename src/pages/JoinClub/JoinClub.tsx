@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Layout } from '../../components/Layout/Layout';
-import { getClubs } from '../../api/clubsApi';
+import { getClubs, getClubMembers } from '../../api/clubsApi';
 import { ClubType } from '../../model/Club';
 import { ClubCard } from '../../components/ClubCard/ClubCard';
 import { LinkButton } from '../../components/LinkButton/LinkButton';
@@ -12,8 +12,16 @@ export const JoinClub = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getClubs();
-      setClubs(data);
+      const clubsData = await getClubs();
+
+      const clubsWithMembers = await Promise.all(
+        clubsData.map(async (club) => {
+          const { count } = await getClubMembers(club.id);
+
+          return { ...club, memberCount: count ?? 0 };
+        }),
+      );
+      setClubs(clubsWithMembers);
     };
 
     getData();

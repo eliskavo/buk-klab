@@ -83,6 +83,7 @@
   overflow-wrap: break-word;
 
   @media (min-width: $screen-lg-min) {
+    align-items: flex-start;
     max-width: 300px;
   }
 }
@@ -95,6 +96,7 @@
   hyphens: auto;
 
   @media (min-width: $screen-lg-min) {
+    max-width: 300px;
     font-size: 1.75rem;
   }
 }

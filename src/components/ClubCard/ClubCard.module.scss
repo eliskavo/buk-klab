@@ -28,9 +28,15 @@
 }
 
 .clubName {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   margin: 1rem 0 0.5rem;
   font-size: 1.5rem;
   font-weight: $extrabold;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-decoration: underline;
   text-decoration-color: $primary-color;
   text-decoration-thickness: 0.4rem;
@@ -40,10 +46,15 @@
 
 .memberCount {
   margin-bottom: 1rem;
+  font-size: 0.8rem;
   color: $dark-grey;
 }
 
 .description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $number-of-rows;
+  line-clamp: $number-of-rows;
   max-height: calc(1.2rem * $number-of-rows);
   margin-bottom: 1.5rem;
   overflow: hidden;

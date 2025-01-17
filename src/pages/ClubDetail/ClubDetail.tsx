@@ -140,7 +140,9 @@ export const ClubDetail: React.FC = () => {
                   handleUpdate({ description: newValue });
                 }}
               >
-                <p className={style.memberCount}>{memberCount} members</p>
+                <p className={style.memberCount}>
+                  {memberCount} {memberCount === 1 ? 'member' : 'members'}
+                </p>
                 <p className={style.description}>{clubDetail.description}</p>
               </EditableField>
 
