@@ -1,24 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import clsx from 'clsx';
 
 import { Layout } from '../../components/Layout/Layout';
 import { Loading } from '../../components/Loading/Loading';
+import { getClubDetail, deleteClub, updateClub } from '../../api/clubsApi';
 import {
-  getClubDetail,
-  deleteClub,
-  updateClub,
-  joinClub,
   isUserClubMember,
   leaveClub,
   getClubMembers,
-} from '../../api/clubsApi';
+} from '../../api/clubsMembers';
 import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
 import { EditableField } from '../../components/EditableField/EditableField';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
+import { InviteMemberCard } from '../../components/InviteMemberCard/InviteMemberCard';
+import { ClubMembersCard } from '../../components/ClubMembersCard/ClubMembersCard';
+import { CurrentlyReadingCard } from '../../components/CurrentlyReadingCard/CurrentlyReading';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -79,9 +78,9 @@ export const ClubDetail: React.FC = () => {
     }
 
     try {
-      await (isMember
-        ? leaveClub(user.id, Number(id))
-        : joinClub(user.id, Number(id)));
+      if (isMember) {
+        await leaveClub(user.id, Number(id));
+      }
 
       setIsMember(!isMember);
 
@@ -160,34 +159,43 @@ export const ClubDetail: React.FC = () => {
               <div className={style.editableContent}>
                 <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
                 <p className={style.memberCount}>{memberCount} members</p>
-                <button
-                  onClick={handleMembership}
-                  type="button"
-                  className={clsx(style.joinButton, {
-                    [style.leaveButton]: isMember,
-                  })}
-                  aria-label={isMember ? 'leave club' : 'join club'}
-                >
-                  {isMember ? 'leave club' : 'join club'}
-                </button>
-                <p className={style.description}>{clubDetail.description}</p>
+                <p className={style.description}>
+                  {clubDetail.description}
+                </p>{' '}
+                {isMember && (
+                  <button
+                    onClick={handleMembership}
+                    type="button"
+                    className={style.leaveButton}
+                    aria-label="leave club"
+                  >
+                    leave club
+                  </button>
+                )}
               </div>
             </section>
           )}
 
           <section className={style.contentSection}>
-            <div className={`${style.card} ${style.inviteCard}`}>
-              <h2 className={`${style.cardTitle} ${style.inviteCardTitle}`}>
-                Invite Members
-              </h2>
-              <p className={`${style.cardText} ${style.inviteCardText}`}>
-                Grow your book club by inviting new members
-              </p>
-            </div>
-            <div className={`${style.card} ${style.readingCard}`}>
-              <h2 className={style.cardTitle}>Currently Reading</h2>
-              <p className={style.cardText}>No book selected</p>
-            </div>
+            {isMember && (
+              <InviteMemberCard
+                title="Invite Members"
+                text="Invite your friends to join your book club and share your reading adventures with them."
+                clubId={Number(id)}
+              />
+            )}
+
+            <CurrentlyReadingCard
+              title="Currently Reading"
+              text="No book selected"
+            />
+
+            <ClubMembersCard
+              title="Members"
+              clubId={Number(id)}
+              isOwner={user?.id === clubDetail.ownerId}
+              ownerId={clubDetail.ownerId}
+            />
           </section>
         </div>
       </div>

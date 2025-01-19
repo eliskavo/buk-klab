@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { Layout } from '../../components/Layout/Layout';
-import { getClubs, getClubMembers } from '../../api/clubsApi';
+import { getClubs } from '../../api/clubsApi';
+import { getClubMembers } from '../../api/clubsMembers';
 import { ClubType } from '../../model/Club';
 import { ClubCard } from '../../components/ClubCard/ClubCard';
 import { LinkButton } from '../../components/LinkButton/LinkButton';

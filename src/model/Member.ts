@@ -1,7 +1,7 @@
 export type MemberType = {
   id: number;
-  firstName: string;
-  lastName: string;
-  profileImage: string;
-  createdAt: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  profile_image: string;
 };

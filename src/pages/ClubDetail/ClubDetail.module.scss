@@ -89,6 +89,7 @@
 }
 
 .title {
+  width: 100%;
   font-size: 1.5rem;
   font-weight: $extrabold;
   word-wrap: break-word;
@@ -111,7 +112,7 @@
   width: 100%;
   max-width: 300px;
   height: 2.5rem;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
   border-radius: 40px;
   font-weight: $semibold;
   background-color: $white;
@@ -161,37 +162,6 @@
   @media (min-width: $screen-lg-min) {
     flex: 1;
   }
-}
-
-.card {
-  padding: 1.5rem;
-  background: $white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-}
-
-.cardTitle {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-}
-
-.cardText {
-  color: $dark-grey;
-}
-
-.inviteCard {
-  background-color: $primary-color;
-  color: $white;
-}
-
-.inviteCardTitle,
-.inviteCardText {
-  color: $white;
-}
-
-.readingCard {
-  background: $white;
 }
 
 .deleteButton {
