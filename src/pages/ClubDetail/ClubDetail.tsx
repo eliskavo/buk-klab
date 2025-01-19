@@ -15,9 +15,9 @@ import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
 import { EditableField } from '../../components/EditableField/EditableField';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
-import { InviteMemberCard } from '../../components/InviteMemberCard/InviteMemberCard';
-import { ClubMembersCard } from '../../components/ClubMembersCard/ClubMembersCard';
-import { CurrentlyReadingCard } from '../../components/CurrentlyReadingCard/CurrentlyReading';
+import { InviteMemberCard } from '../../clubdetail/InviteMemberCard/InviteMemberCard';
+import { ClubMembersCard } from '../../clubdetail/ClubMembersCard/ClubMembersCard';
+import { CurrentlyReadingCard } from '../../clubdetail/CurrentlyReadingCard/CurrentlyReading';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -29,6 +29,7 @@ export const ClubDetail: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [memberCount, setMemberCount] = useState<number>(0);
+  const [membersRefresh, setMembersRefresh] = useState<number>(0);
 
   useEffect(() => {
     const fetchClubDetail = async () => {
@@ -182,6 +183,8 @@ export const ClubDetail: React.FC = () => {
                 title="Invite Members"
                 text="Invite your friends to join your book club and share your reading adventures with them."
                 clubId={Number(id)}
+                onMemberUpdate={() => setMembersRefresh((prev) => prev + 1)}
+                // memberId={memberId}
               />
             )}
 
@@ -195,6 +198,7 @@ export const ClubDetail: React.FC = () => {
               clubId={Number(id)}
               isOwner={user?.id === clubDetail.ownerId}
               ownerId={clubDetail.ownerId}
+              refreshTrigger={membersRefresh}
             />
           </section>
         </div>

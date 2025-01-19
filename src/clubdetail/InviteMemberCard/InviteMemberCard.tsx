@@ -8,16 +8,23 @@ type InviteMemberCardProps = {
   title: string;
   text: string;
   clubId: number;
+  onMemberUpdate: () => void;
+  // memberId: string;
 };
 
 export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
   title,
   text,
   clubId,
+  onMemberUpdate,
+  // memberId,
 }) => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  const validateEmail = (emailValidation: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValidation);
 
   const handleInvite = async () => {
     if (!email) {
@@ -26,11 +33,23 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
       return;
     }
 
-    setErrorMessage('');
+    if (!validateEmail(email)) {
+      setErrorMessage('Please enter a valid email');
+
+      return;
+    }
 
     await inviteMemberByEmail(clubId, email);
+
+    // const isMember = await isUserClubMember(memberId, clubId);
+    // if (isMember) {
+    //   setErrorMessage('User is already a member of this club');
+
+    //   return;
+    // }
     setEmail('');
     setSuccessMessage('User added to the club successfully!');
+    onMemberUpdate();
   };
 
   return (

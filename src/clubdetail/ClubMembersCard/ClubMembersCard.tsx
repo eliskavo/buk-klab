@@ -3,7 +3,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import { deleteMember, viewClubMembers } from '../../api/clubsMembers';
 import { MemberType } from '../../model/Member';
-import { ConfirmDialog } from '../ConfirmDialog/ConfirmDialog';
+import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import style from './ClubMembersCard.module.scss';
 
 type ClubMembersCardProps = {
@@ -11,6 +11,7 @@ type ClubMembersCardProps = {
   clubId: number;
   isOwner: boolean;
   ownerId: string;
+  refreshTrigger: number;
 };
 
 export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
@@ -18,38 +19,33 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
   clubId,
   isOwner,
   ownerId,
+  refreshTrigger,
 }) => {
   const [members, setMembers] = useState<MemberType[]>([]);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [memberToDelete, setMemberToDelete] = useState<string | null>(null);
+  const [memberToDelete, setMemberToDelete] = useState<MemberType | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      if (!clubId) {
-        return;
-      }
+  const loadClubMembers = async () => {
+    const membersData = await viewClubMembers(clubId);
+    setMembers(membersData);
+  };
 
-      const membersData = await viewClubMembers(clubId);
-      setMembers(membersData);
-    };
-
-    getData();
-  }, [clubId]);
-
-  const handleDeleteMember = async (memberId: string) => {
-    setMemberToDelete(memberId);
+  const handleDeleteMember = (member: MemberType) => {
+    setMemberToDelete(member);
     setIsDeleteDialogOpen(true);
   };
+
+  useEffect(() => {
+    loadClubMembers();
+  }, [clubId, refreshTrigger]);
 
   const handleConfirmDelete = async () => {
     try {
       if (!memberToDelete) {
         return;
       }
-
-      await deleteMember(memberToDelete, clubId);
-      const updatedMembers = await viewClubMembers(clubId);
-      setMembers(updatedMembers);
+      await deleteMember(String(memberToDelete.id), clubId);
+      await loadClubMembers();
       setIsDeleteDialogOpen(false);
       setMemberToDelete(null);
     } catch (error) {
@@ -76,7 +72,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
 
             {isOwner && String(member.id) !== ownerId && (
               <button
-                onClick={() => handleDeleteMember(String(member.id))}
+                onClick={() => handleDeleteMember(member)}
                 className={style.deleteButton}
                 type="button"
                 aria-label="delete member"
@@ -93,7 +89,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Delete member"
-        message="Are you sure you want to delete this member?"
+        message={`Are you sure you want to delete ${memberToDelete?.firstname ?? ''} ${memberToDelete?.lastname ?? ''}?`}
         closeButtonText="Cancel"
         confirmButtonText="Delete"
       />
