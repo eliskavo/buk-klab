@@ -4,9 +4,18 @@ import { getSupabaseClient } from './supabase';
 export const getClubs = async () => {
   const { data } = await getSupabaseClient()
     .from('clubs')
-    .select<string, ClubType>();
+    .select(
+      `
+      *,
+      members:clubs_members(count)
+    `,
+    )
+    .returns<Array<ClubType & { members: { count: number }[] }>>();
 
-  return data || [];
+  return (data || []).map((club) => ({
+    ...club,
+    memberCount: club.members[0].count,
+  }));
 };
 
 export const createClub = async (
@@ -38,6 +47,7 @@ export const createClub = async (
   }
 };
 
+// TODO: Type it
 export const getClubDetail = async (id: number) => {
   try {
     const { data, error } = await getSupabaseClient()

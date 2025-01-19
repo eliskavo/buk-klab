@@ -8,7 +8,7 @@ type InviteMemberCardProps = {
   title: string;
   text: string;
   clubId: number;
-  onMemberUpdate: () => void;
+  loadClubMembers: () => Promise<void>;
   // memberId: string;
 };
 
@@ -16,7 +16,7 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
   title,
   text,
   clubId,
-  onMemberUpdate,
+  loadClubMembers,
   // memberId,
 }) => {
   const [email, setEmail] = useState('');
@@ -49,7 +49,7 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
     // }
     setEmail('');
     setSuccessMessage('User added to the club successfully!');
-    onMemberUpdate();
+    loadClubMembers();
   };
 
   return (

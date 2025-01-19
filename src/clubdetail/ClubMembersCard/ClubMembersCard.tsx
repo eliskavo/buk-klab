@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-import { deleteMember, viewClubMembers } from '../../api/clubsMembers';
+import { deleteMember } from '../../api/clubsMembers';
 import { MemberType } from '../../model/Member';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import style from './ClubMembersCard.module.scss';
@@ -11,7 +11,8 @@ type ClubMembersCardProps = {
   clubId: number;
   isOwner: boolean;
   ownerId: string;
-  refreshTrigger: number;
+  members: MemberType[];
+  loadClubMembers: () => Promise<void>;
 };
 
 export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
@@ -19,25 +20,16 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
   clubId,
   isOwner,
   ownerId,
-  refreshTrigger,
+  members,
+  loadClubMembers,
 }) => {
-  const [members, setMembers] = useState<MemberType[]>([]);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<MemberType | null>(null);
-
-  const loadClubMembers = async () => {
-    const membersData = await viewClubMembers(clubId);
-    setMembers(membersData);
-  };
 
   const handleDeleteMember = (member: MemberType) => {
     setMemberToDelete(member);
     setIsDeleteDialogOpen(true);
   };
-
-  useEffect(() => {
-    loadClubMembers();
-  }, [clubId, refreshTrigger]);
 
   const handleConfirmDelete = async () => {
     try {

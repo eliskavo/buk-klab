@@ -52,11 +52,9 @@ export const inviteMemberByEmail = async (clubId: number, email: string) => {
   }
 };
 
-export const viewClubMembers = async (
-  clubId: number,
-): Promise<MemberType[]> => {
+export const getClubMembers = async (clubId: number) => {
   try {
-    const { data: membershipData, error: membershipError } =
+    const { data: memberShipData, error: membershipError } =
       await getSupabaseClient()
         .from('clubs_members')
         .select('memberId')
@@ -68,17 +66,21 @@ export const viewClubMembers = async (
       return [];
     }
 
-    const memberIds = membershipData.map((item) => item.memberId);
+    const memberIds = memberShipData.map((item) => item.memberId);
 
     const { data: membersData, error: membersError } = await getSupabaseClient()
       .from('members')
-      .select('id, firstname, lastname, email, profile_image')
+      .select<string, MemberType>(
+        `id,
+      firstname,
+      lastname,
+      email,
+      profile_image`,
+      )
       .in('id', memberIds);
 
     if (membersError) {
-      console.error('Error getting members:', membersError);
-
-      return [];
+      throw membersError;
     }
 
     return membersData;
@@ -86,24 +88,6 @@ export const viewClubMembers = async (
     console.error('Error getting members:', error);
 
     return [];
-  }
-};
-
-export const getClubMembers = async (clubId: number) => {
-  try {
-    const { data, count, error } = await getSupabaseClient()
-      .from('clubs_members')
-      .select('*', { count: 'exact' })
-      .eq('clubId', clubId);
-
-    if (error) {
-      throw error;
-    }
-
-    return { members: data, count };
-  } catch (error) {
-    console.error('Error getting member count:', error);
-    throw error;
   }
 };
 

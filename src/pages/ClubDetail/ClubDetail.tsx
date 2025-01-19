@@ -5,11 +5,6 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { Layout } from '../../components/Layout/Layout';
 import { Loading } from '../../components/Loading/Loading';
 import { getClubDetail, deleteClub, updateClub } from '../../api/clubsApi';
-import {
-  isUserClubMember,
-  leaveClub,
-  getClubMembers,
-} from '../../api/clubsMembers';
 import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
@@ -18,6 +13,7 @@ import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import { InviteMemberCard } from '../../clubdetail/InviteMemberCard/InviteMemberCard';
 import { ClubMembersCard } from '../../clubdetail/ClubMembersCard/ClubMembersCard';
 import { CurrentlyReadingCard } from '../../clubdetail/CurrentlyReadingCard/CurrentlyReading';
+import { useClubMembers } from '../../clubdetail/useClubMembers';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -27,13 +23,15 @@ export const ClubDetail: React.FC = () => {
 
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isMember, setIsMember] = useState(false);
-  const [memberCount, setMemberCount] = useState<number>(0);
-  const [membersRefresh, setMembersRefresh] = useState<number>(0);
+
+  const clubId = Number(id);
+
+  const { members, isMember, handleMembership, loadClubMembers } =
+    useClubMembers(clubId, user?.id);
 
   useEffect(() => {
     const fetchClubDetail = async () => {
-      const clubData = await getClubDetail(Number(id));
+      const clubData = await getClubDetail(clubId);
 
       setClubDetail(clubData);
     };
@@ -46,54 +44,13 @@ export const ClubDetail: React.FC = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteClub(Number(id));
+    await deleteClub(clubId);
     setIsDeleteDialogOpen(false);
     navigate('/joinclub');
   };
 
-  useEffect(() => {
-    const fetchMemberCount = async () => {
-      if (id) {
-        const { count } = await getClubMembers(Number(id));
-        setMemberCount(count ?? 0);
-      }
-    };
-
-    fetchMemberCount();
-  }, [id]);
-
-  useEffect(() => {
-    const checkMembership = async () => {
-      if (user) {
-        const membershipStatus = await isUserClubMember(user.id, Number(id));
-        setIsMember(membershipStatus);
-      }
-    };
-
-    checkMembership();
-  }, [user, id]);
-
-  const handleMembership = async () => {
-    if (!user) {
-      return;
-    }
-
-    try {
-      if (isMember) {
-        await leaveClub(user.id, Number(id));
-      }
-
-      setIsMember(!isMember);
-
-      const { count } = await getClubMembers(Number(id));
-      setMemberCount(count ?? 0);
-    } catch (error) {
-      console.error('Error handling membership:', error);
-    }
-  };
-
   const handleUpdate = async (updatedData: Partial<ClubType>) => {
-    const updatedClub = await updateClub(Number(id), updatedData);
+    const updatedClub = await updateClub(clubId, updatedData);
 
     setClubDetail(updatedClub);
   };
@@ -105,6 +62,8 @@ export const ClubDetail: React.FC = () => {
       </Layout>
     );
   }
+
+  const memberCount = members.length;
 
   return (
     <Layout>
@@ -160,9 +119,8 @@ export const ClubDetail: React.FC = () => {
               <div className={style.editableContent}>
                 <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
                 <p className={style.memberCount}>{memberCount} members</p>
-                <p className={style.description}>
-                  {clubDetail.description}
-                </p>{' '}
+                <p className={style.description}>{clubDetail.description}</p>
+
                 {isMember && (
                   <button
                     onClick={handleMembership}
@@ -182,8 +140,8 @@ export const ClubDetail: React.FC = () => {
               <InviteMemberCard
                 title="Invite Members"
                 text="Invite your friends to join your book club and share your reading adventures with them."
-                clubId={Number(id)}
-                onMemberUpdate={() => setMembersRefresh((prev) => prev + 1)}
+                clubId={clubId}
+                loadClubMembers={loadClubMembers}
                 // memberId={memberId}
               />
             )}
@@ -195,10 +153,11 @@ export const ClubDetail: React.FC = () => {
 
             <ClubMembersCard
               title="Members"
-              clubId={Number(id)}
+              clubId={clubId}
               isOwner={user?.id === clubDetail.ownerId}
               ownerId={clubDetail.ownerId}
-              refreshTrigger={membersRefresh}
+              members={members}
+              loadClubMembers={loadClubMembers}
             />
           </section>
         </div>
