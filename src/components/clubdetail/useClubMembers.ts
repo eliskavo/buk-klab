@@ -4,8 +4,8 @@ import {
   getClubMembers,
   isUserClubMember,
   leaveClub,
-} from '../api/clubsMembers';
-import { MemberType } from '../model/Member';
+} from '../../api/clubsMembers';
+import { MemberType } from '../../model/Member';
 
 export const useClubMembers = (clubId: number, userId: string | undefined) => {
   const [isMember, setIsMember] = useState(false);
@@ -32,26 +32,21 @@ export const useClubMembers = (clubId: number, userId: string | undefined) => {
     checkMembership();
   }, [userId]);
 
-  // TODO: Change to leave only
-  const handleMembership = async () => {
+  const handleLeaveClub = async () => {
     if (!userId) {
       return;
     }
 
-    try {
-      await leaveClub(userId, clubId);
-      setIsMember(!isMember);
+    await leaveClub(userId, clubId);
+    setIsMember(!isMember);
 
-      setMembers(members.filter((member) => member.id !== userId));
-    } catch (error) {
-      console.error('Error handling membership:', error);
-    }
+    setMembers(members.filter((member) => member.id !== userId));
   };
 
   return {
     members,
     isMember,
-    handleMembership,
+    handleLeaveClub,
     loadClubMembers,
   };
 };

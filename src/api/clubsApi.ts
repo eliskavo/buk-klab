@@ -47,12 +47,11 @@ export const createClub = async (
   }
 };
 
-// TODO: Type it
-export const getClubDetail = async (id: number) => {
+export const getClubDetail = async (id: number): Promise<ClubType> => {
   try {
     const { data, error } = await getSupabaseClient()
       .from('clubs')
-      .select()
+      .select<string, ClubType>()
       .eq('id', id)
       .single();
 

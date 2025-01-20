@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-import { deleteMember } from '../../api/clubsMembers';
-import { MemberType } from '../../model/Member';
-import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
+import { deleteMember } from '../../../api/clubsMembers';
+import { MemberType } from '../../../model/Member';
+import { ConfirmDialog } from '../../../components/ConfirmDialog/ConfirmDialog';
+import { ClubDetailCardWrapper } from '../ClubDetailCardWrapper/ClubDetailCardWrapper';
 import style from './ClubMembersCard.module.scss';
 
 type ClubMembersCardProps = {
@@ -46,8 +47,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
   };
 
   return (
-    <div className={`${style.card} ${style.memberCard}`}>
-      <h2 className={`${style.cardTitle} ${style.memberCardTitle}`}>{title}</h2>
+    <ClubDetailCardWrapper title={title}>
       <ul className={style.membersList}>
         {members.map((member) => (
           <li key={member.id} className={style.memberItem}>
@@ -85,6 +85,6 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
         closeButtonText="Cancel"
         confirmButtonText="Delete"
       />
-    </div>
+    </ClubDetailCardWrapper>
   );
 };

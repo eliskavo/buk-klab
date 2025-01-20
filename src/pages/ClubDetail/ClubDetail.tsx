@@ -10,10 +10,10 @@ import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
 import { EditableField } from '../../components/EditableField/EditableField';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
-import { InviteMemberCard } from '../../clubdetail/InviteMemberCard/InviteMemberCard';
-import { ClubMembersCard } from '../../clubdetail/ClubMembersCard/ClubMembersCard';
-import { CurrentlyReadingCard } from '../../clubdetail/CurrentlyReadingCard/CurrentlyReading';
-import { useClubMembers } from '../../clubdetail/useClubMembers';
+import { InviteMemberCard } from '../../components/clubdetail/InviteMemberCard/InviteMemberCard';
+import { ClubMembersCard } from '../../components/clubdetail/ClubMembersCard/ClubMembersCard';
+import { CurrentlyReadingCard } from '../../components/clubdetail/CurrentlyReadingCard/CurrentlyReadingCard';
+import { useClubMembers } from '../../components/clubdetail/useClubMembers';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -25,8 +25,9 @@ export const ClubDetail: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const clubId = Number(id);
+  const isOwner = user?.id === clubDetail?.ownerId;
 
-  const { members, isMember, handleMembership, loadClubMembers } =
+  const { members, isMember, handleLeaveClub, loadClubMembers } =
     useClubMembers(clubId, user?.id);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export const ClubDetail: React.FC = () => {
         </div>
 
         <div className={style.pageContent}>
-          {user?.id === clubDetail.ownerId ? (
+          {isOwner ? (
             <section className={style.infoSection}>
               <EditableField
                 type="text"
@@ -123,7 +124,7 @@ export const ClubDetail: React.FC = () => {
 
                 {isMember && (
                   <button
-                    onClick={handleMembership}
+                    onClick={handleLeaveClub}
                     type="button"
                     className={style.leaveButton}
                     aria-label="leave club"
@@ -136,13 +137,12 @@ export const ClubDetail: React.FC = () => {
           )}
 
           <section className={style.contentSection}>
-            {isMember && (
+            {clubDetail.ownerId === user?.id && (
               <InviteMemberCard
                 title="Invite Members"
                 text="Invite your friends to join your book club and share your reading adventures with them."
                 clubId={clubId}
                 loadClubMembers={loadClubMembers}
-                // memberId={memberId}
               />
             )}
 
@@ -154,7 +154,7 @@ export const ClubDetail: React.FC = () => {
             <ClubMembersCard
               title="Members"
               clubId={clubId}
-              isOwner={user?.id === clubDetail.ownerId}
+              isOwner={isOwner}
               ownerId={clubDetail.ownerId}
               members={members}
               loadClubMembers={loadClubMembers}

@@ -1,7 +1,8 @@
 import { useState, ChangeEvent } from 'react';
 import clsx from 'clsx';
 
-import { inviteMemberByEmail } from '../../api/clubsMembers';
+import { inviteMemberByEmail } from '../../../api/clubsMembers';
+import { ClubDetailCardWrapper } from '../ClubDetailCardWrapper/ClubDetailCardWrapper';
 import style from './InviteMemberCard.module.scss';
 
 type InviteMemberCardProps = {
@@ -9,7 +10,6 @@ type InviteMemberCardProps = {
   text: string;
   clubId: number;
   loadClubMembers: () => Promise<void>;
-  // memberId: string;
 };
 
 export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
@@ -17,7 +17,6 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
   text,
   clubId,
   loadClubMembers,
-  // memberId,
 }) => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -40,22 +39,13 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
     }
 
     await inviteMemberByEmail(clubId, email);
-
-    // const isMember = await isUserClubMember(memberId, clubId);
-    // if (isMember) {
-    //   setErrorMessage('User is already a member of this club');
-
-    //   return;
-    // }
     setEmail('');
     setSuccessMessage('User added to the club successfully!');
     loadClubMembers();
   };
 
   return (
-    <div className={`${style.card} ${style.inviteCard}`}>
-      <h2 className={`${style.cardTitle} ${style.inviteCardTitle}`}>{title}</h2>
-      <p className={`${style.cardText} ${style.inviteCardText}`}>{text}</p>
+    <ClubDetailCardWrapper title={title} text={text}>
       <input
         type="email"
         placeholder="Email"
@@ -76,6 +66,6 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
       >
         {errorMessage || successMessage}
       </p>
-    </div>
+    </ClubDetailCardWrapper>
   );
 };
