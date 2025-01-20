@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import { Layout } from '../../components/Layout/Layout';
 import { Loading } from '../../components/Loading/Loading';
@@ -8,12 +7,12 @@ import { getClubDetail, deleteClub, updateClub } from '../../api/clubsApi';
 import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
 import placeholder_club from '../../assets/images/placeholder_club.png';
-import { EditableField } from '../../components/EditableField/EditableField';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import { InviteMemberCard } from '../../components/clubdetail/InviteMemberCard/InviteMemberCard';
 import { ClubMembersCard } from '../../components/clubdetail/ClubMembersCard/ClubMembersCard';
 import { CurrentlyReadingCard } from '../../components/clubdetail/CurrentlyReadingCard/CurrentlyReadingCard';
 import { useClubMembers } from '../../components/clubdetail/useClubMembers';
+import { ClubDetailInfo } from '../../components/clubdetail/ClubDetailInfo/ClubDetailInfo';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -81,60 +80,15 @@ export const ClubDetail: React.FC = () => {
         </div>
 
         <div className={style.pageContent}>
-          {isOwner ? (
-            <section className={style.infoSection}>
-              <EditableField
-                type="text"
-                value={clubDetail.name}
-                handleSave={(newValue) => {
-                  handleUpdate({ name: newValue });
-                }}
-              >
-                <h1 className={style.title}>{clubDetail.name}</h1>
-              </EditableField>
-
-              <EditableField
-                type="textarea"
-                value={clubDetail.description}
-                handleSave={(newValue) => {
-                  handleUpdate({ description: newValue });
-                }}
-              >
-                <p className={style.memberCount}>
-                  {memberCount} {memberCount === 1 ? 'member' : 'members'}
-                </p>
-                <p className={style.description}>{clubDetail.description}</p>
-              </EditableField>
-
-              <button
-                type="button"
-                onClick={handleDelete}
-                className={style.deleteButton}
-                aria-label="delete club"
-              >
-                <DeleteRoundedIcon />
-              </button>
-            </section>
-          ) : (
-            <section className={style.infoSection}>
-              <div className={style.editableContent}>
-                <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
-                <p className={style.memberCount}>{memberCount} members</p>
-                <p className={style.description}>{clubDetail.description}</p>
-
-                {isMember && (
-                  <button
-                    onClick={handleLeaveClub}
-                    type="button"
-                    className={style.leaveButton}
-                    aria-label="leave club"
-                  >
-                    leave club
-                  </button>
-                )}
-              </div>
-            </section>
-          )}
+          <ClubDetailInfo
+            clubDetail={clubDetail}
+            isOwner={isOwner}
+            isMember={isMember}
+            memberCount={memberCount}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            onLeaveClub={handleLeaveClub}
+          />
 
           <section className={style.contentSection}>
             {clubDetail.ownerId === user?.id && (
