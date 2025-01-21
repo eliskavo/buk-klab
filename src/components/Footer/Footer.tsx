@@ -11,7 +11,7 @@ export const Footer: React.FC = () => (
 
       <section>
         <h3 className={style.sectionTitle}>navigation</h3>
-        <nav>
+        <nav aria-label="Footer navigation">
           <ul className={style.linkList}>
             <li>
               <Link to="/books" className={style.link}>
