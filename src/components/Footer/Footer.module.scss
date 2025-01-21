@@ -1,9 +1,104 @@
 .footer {
   position: relative;
-  flex-shrink: 0;
   padding: 1rem;
   background-color: $primary-color;
+  color: $secondary-color;
+  overflow: hidden;
+
+  @media (min-width: $screen-sm-min) {
+    padding: 4rem 2rem 2rem;
+  }
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 2rem;
   text-align: center;
-  font-weight: $semibold;
-  font-size: 1.125rem;
+
+  @media (min-width: $screen-sm-min) {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    text-align: left;
+  }
+}
+
+.logo {
+  font-size: 2rem;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 2.5rem;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 0.5rem;
+  font-weight: $extrabold;
+  font-size: 1rem;
+  opacity: 0.8;
+
+  @media (min-width: $screen-sm-min) {
+    margin-bottom: 1rem;
+  }
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  gap: 0.5rem;
+
+  @media (min-width: $screen-sm-min) {
+    align-items: flex-start;
+  }
+}
+
+.link {
+  color: $secondary-color;
+  text-decoration: none;
+  font-size: 0.9rem;
+
+  &:hover {
+    font-weight: $semibold;
+  }
+}
+
+.bottomBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  gap: 1rem;
+  font-size: 0.9rem;
+
+  @media (min-width: $screen-sm-min) {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
+.profileLink {
+  color: $secondary-color;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.image {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100px;
+  transform: rotate(-50deg);
+
+  @media (min-width: $screen-sm-min) {
+    height: 150px;
+  }
 }

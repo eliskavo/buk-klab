@@ -5,5 +5,14 @@
 }
 
 .content {
-  flex: 1;
+  flex: 1 0 auto;
+}
+
+.mainContent {
+  min-height: calc(100vh - 4rem);
+  padding: 1rem;
+
+  @media (min-width: $screen-sm-min) {
+    padding: 2rem;
+  }
 }
