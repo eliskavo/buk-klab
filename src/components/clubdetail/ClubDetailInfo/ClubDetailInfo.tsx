@@ -65,7 +65,9 @@ export const ClubDetailInfo: React.FC<ClubDetailInfoProps> = ({
     <section className={style.infoSection}>
       <div className={style.editableContent}>
         <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
-        <p className={style.memberCount}>{memberCount} members</p>
+        <p className={style.memberCount}>
+          {memberCount} {memberCount === 1 ? 'member' : 'members'}
+        </p>
         <p className={style.description}>{clubDetail.description}</p>
 
         {isMember && (

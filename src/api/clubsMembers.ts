@@ -6,8 +6,7 @@ export const isUserClubMember = async (userId: string, clubId: number) => {
     const { data, error } = await getSupabaseClient()
       .from('clubs_members')
       .select<string, MembershipType>()
-      .eq('memberId', userId)
-      .eq('clubId', clubId);
+      .match({ memberId: userId, clubId });
 
     if (error) {
       throw error;
@@ -54,7 +53,7 @@ export const inviteMemberByEmail = async (clubId: number, email: string) => {
 
 export const getClubMembers = async (clubId: number) => {
   try {
-    const { data: memberShipData, error: membershipError } =
+    const { data: clubMembersData, error: membershipError } =
       await getSupabaseClient()
         .from('clubs_members')
         .select<string, MembershipType>('memberId')
@@ -64,11 +63,11 @@ export const getClubMembers = async (clubId: number) => {
       throw membershipError;
     }
 
-    if (memberShipData.length === 0) {
+    if (clubMembersData.length === 0) {
       return [];
     }
 
-    const memberIds = memberShipData.map((item) => item.memberId);
+    const memberIds = clubMembersData.map((item) => item.memberId);
 
     const { data: membersData, error: membersError } = await getSupabaseClient()
       .from('members')
@@ -97,8 +96,7 @@ export const leaveClub = async (userId: string, clubId: number) => {
     const { error } = await getSupabaseClient()
       .from('clubs_members')
       .delete()
-      .eq('memberId', userId)
-      .eq('clubId', clubId);
+      .match({ memberId: userId, clubId });
 
     if (error) {
       throw error;

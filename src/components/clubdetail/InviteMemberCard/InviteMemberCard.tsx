@@ -22,22 +22,24 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const validateEmail = (emailValidation: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValidation);
-
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setErrorMessage('');
+    setSuccessMessage('');
   };
 
   const handleInvite = async () => {
     setErrorMessage('');
+    setSuccessMessage('');
+
     if (!email.trim()) {
       setErrorMessage('Please enter an email');
 
       return;
     }
 
+    const validateEmail = (emailValidation: string) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValidation);
     if (!validateEmail(email.trim())) {
       setErrorMessage('Please enter a valid email');
 
@@ -46,11 +48,13 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
 
     try {
       await inviteMemberByEmail(clubId, email.trim());
-      setEmail('');
-      setSuccessMessage('User added to the club successfully!');
       await loadClubMembers();
+      setSuccessMessage('User added to the club successfully!');
+      setEmail('');
     } catch (error: any) {
-      setErrorMessage(error.message);
+      setErrorMessage(
+        error.message || 'Something went wrong while adding the user',
+      );
     }
   };
 

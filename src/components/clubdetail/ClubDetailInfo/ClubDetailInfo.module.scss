@@ -38,9 +38,6 @@
   width: 100%;
   font-size: 1.5rem;
   font-weight: $extrabold;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
 
   @media (min-width: $screen-lg-min) {
     max-width: 300px;

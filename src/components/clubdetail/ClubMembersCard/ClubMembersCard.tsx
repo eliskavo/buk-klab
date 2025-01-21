@@ -27,14 +27,6 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<MemberType | null>(null);
 
-  const getDeleteMessage = () => {
-    if (!memberToDelete) {
-      return '';
-    }
-
-    return `Are you sure you want to remove ${memberToDelete.firstname} ${memberToDelete.lastname}?`;
-  };
-
   const handleDeleteMember = (member: MemberType) => {
     setMemberToDelete(member);
     setIsDeleteDialogOpen(true);
@@ -89,7 +81,11 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Remove member"
-        message={getDeleteMessage()}
+        message={
+          memberToDelete
+            ? `Are you sure you want to remove ${memberToDelete.firstname} ${memberToDelete.lastname}?`
+            : ''
+        }
         closeButtonText="Cancel"
         confirmButtonText="Remove"
       />

@@ -1,16 +1,15 @@
-import { ClubType, UpdateClubType } from '../model/Club';
+import { ClubType, ClubWithMemberCount, UpdateClubType } from '../model/Club';
 import { getSupabaseClient } from './supabase';
 
 export const getClubs = async () => {
   const { data } = await getSupabaseClient()
     .from('clubs')
-    .select(
+    .select<string, ClubWithMemberCount>(
       `
       *,
       members:clubs_members(count)
     `,
-    )
-    .returns<Array<ClubType & { members: { count: number }[] }>>();
+    );
 
   return (data || []).map((club) => ({
     ...club,
