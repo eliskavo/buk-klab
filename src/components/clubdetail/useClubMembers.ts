@@ -18,6 +18,9 @@ export const useClubMembers = (clubId: number, userId: string | undefined) => {
   };
 
   useEffect(() => {
+    if (!clubId) {
+      return;
+    }
     loadClubMembers();
   }, [clubId]);
 
@@ -30,17 +33,17 @@ export const useClubMembers = (clubId: number, userId: string | undefined) => {
     };
 
     checkMembership();
-  }, [userId]);
+  }, [userId, clubId]);
 
   const handleLeaveClub = async () => {
-    if (!userId) {
+    if (!userId || !clubId) {
       return;
     }
 
     await leaveClub(userId, clubId);
-    setIsMember(!isMember);
+    setIsMember(false);
 
-    setMembers(members.filter((member) => member.id !== userId));
+    setMembers((prev) => prev.filter((member) => member.id !== userId));
   };
 
   return {

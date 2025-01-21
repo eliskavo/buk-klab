@@ -5,3 +5,7 @@ export type MemberType = {
   email: string;
   profile_image: string;
 };
+
+export type MembershipType = {
+  memberId: string;
+};

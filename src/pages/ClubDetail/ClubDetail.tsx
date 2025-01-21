@@ -6,13 +6,13 @@ import { Loading } from '../../components/Loading/Loading';
 import { getClubDetail, deleteClub, updateClub } from '../../api/clubsApi';
 import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
-import placeholder_club from '../../assets/images/placeholder_club.png';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import { InviteMemberCard } from '../../components/clubdetail/InviteMemberCard/InviteMemberCard';
 import { ClubMembersCard } from '../../components/clubdetail/ClubMembersCard/ClubMembersCard';
 import { CurrentlyReadingCard } from '../../components/clubdetail/CurrentlyReadingCard/CurrentlyReadingCard';
 import { useClubMembers } from '../../components/clubdetail/useClubMembers';
 import { ClubDetailInfo } from '../../components/clubdetail/ClubDetailInfo/ClubDetailInfo';
+import placeholder_club from '../../assets/images/placeholder_club.png';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -91,7 +91,7 @@ export const ClubDetail: React.FC = () => {
           />
 
           <section className={style.contentSection}>
-            {clubDetail.ownerId === user?.id && (
+            {isOwner && (
               <InviteMemberCard
                 title="Invite Members"
                 text="Invite your friends to join your book club and share your reading adventures with them."

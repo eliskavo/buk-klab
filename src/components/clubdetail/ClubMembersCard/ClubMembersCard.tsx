@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-import { deleteMember } from '../../../api/clubsMembers';
+import { leaveClub } from '../../../api/clubsMembers';
 import { MemberType } from '../../../model/Member';
 import { ConfirmDialog } from '../../../components/ConfirmDialog/ConfirmDialog';
 import { ClubDetailCardWrapper } from '../ClubDetailCardWrapper/ClubDetailCardWrapper';
@@ -27,6 +27,14 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<MemberType | null>(null);
 
+  const getDeleteMessage = () => {
+    if (!memberToDelete) {
+      return '';
+    }
+
+    return `Are you sure you want to remove ${memberToDelete.firstname} ${memberToDelete.lastname}?`;
+  };
+
   const handleDeleteMember = (member: MemberType) => {
     setMemberToDelete(member);
     setIsDeleteDialogOpen(true);
@@ -37,7 +45,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
       if (!memberToDelete) {
         return;
       }
-      await deleteMember(String(memberToDelete.id), clubId);
+      await leaveClub(String(memberToDelete.id), clubId);
       await loadClubMembers();
       setIsDeleteDialogOpen(false);
       setMemberToDelete(null);
@@ -80,10 +88,10 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Delete member"
-        message={`Are you sure you want to delete ${memberToDelete?.firstname ?? ''} ${memberToDelete?.lastname ?? ''}?`}
+        title="Remove member"
+        message={getDeleteMessage()}
         closeButtonText="Cancel"
-        confirmButtonText="Delete"
+        confirmButtonText="Remove"
       />
     </ClubDetailCardWrapper>
   );

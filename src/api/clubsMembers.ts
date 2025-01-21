@@ -1,11 +1,11 @@
-import { MemberType } from '../model/Member';
+import { MemberType, MembershipType } from '../model/Member';
 import { getSupabaseClient } from './supabase';
 
 export const isUserClubMember = async (userId: string, clubId: number) => {
   try {
     const { data, error } = await getSupabaseClient()
       .from('clubs_members')
-      .select()
+      .select<string, MembershipType>()
       .eq('memberId', userId)
       .eq('clubId', clubId);
 
@@ -24,7 +24,7 @@ export const inviteMemberByEmail = async (clubId: number, email: string) => {
   try {
     const { data: userData } = await getSupabaseClient()
       .from('members')
-      .select('id')
+      .select<string, MemberType>('id')
       .eq('email', email)
       .single();
 
@@ -57,12 +57,14 @@ export const getClubMembers = async (clubId: number) => {
     const { data: memberShipData, error: membershipError } =
       await getSupabaseClient()
         .from('clubs_members')
-        .select('memberId')
+        .select<string, MembershipType>('memberId')
         .eq('clubId', clubId);
 
     if (membershipError) {
-      console.error('Error getting memberships:', membershipError);
+      throw membershipError;
+    }
 
+    if (memberShipData.length === 0) {
       return [];
     }
 
@@ -86,8 +88,7 @@ export const getClubMembers = async (clubId: number) => {
     return membersData;
   } catch (error) {
     console.error('Error getting members:', error);
-
-    return [];
+    throw error;
   }
 };
 
@@ -104,23 +105,6 @@ export const leaveClub = async (userId: string, clubId: number) => {
     }
   } catch (error) {
     console.error('Error leaving club:', error);
-    throw error;
-  }
-};
-
-export const deleteMember = async (userId: string, clubId: number) => {
-  try {
-    const { error } = await getSupabaseClient()
-      .from('clubs_members')
-      .delete()
-      .eq('memberId', userId)
-      .eq('clubId', clubId);
-
-    if (error) {
-      throw error;
-    }
-  } catch (error) {
-    console.error('Error deleting member:', error);
     throw error;
   }
 };

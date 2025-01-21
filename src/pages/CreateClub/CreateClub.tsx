@@ -72,14 +72,21 @@ export const CreateClub: React.FC = () => {
   if (isSubmitted) {
     return (
       <Layout>
-        <div>
-          <h1>Club created successfully!</h1>
-          <p className={style.description}>
-            view your brand new{' '}
-            <Link to={`/clubs/${id}`} className={style.link}>
-              {formData.name}
-            </Link>
-          </p>
+        <div className={style.createClubPage}>
+          <div className={style.createdSection}>
+            <h1 className={style.title}>Club created successfully!</h1>
+            <p className={style.description}>
+              view your brand new{' '}
+              <Link to={`/clubs/${id}`} className={style.link}>
+                {formData.name}
+              </Link>
+            </p>
+          </div>
+          <img
+            src={community_girls}
+            alt="Create Club"
+            className={style.illustrationSection}
+          />
         </div>
       </Layout>
     );

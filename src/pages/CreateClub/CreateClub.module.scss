@@ -22,6 +22,15 @@
   }
 }
 
+.createdSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+  gap: 2rem;
+}
+
 .description {
   max-width: 100%;
   margin-bottom: 0.8rem;
@@ -62,4 +71,8 @@
 .link {
   text-decoration: underline $primary-color 0.2rem;
   color: inherit;
+}
+
+.title {
+  text-align: center;
 }

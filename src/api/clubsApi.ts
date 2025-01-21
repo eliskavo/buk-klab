@@ -29,7 +29,7 @@ export const createClub = async (
         ...clubData,
         ownerId,
       })
-      .select();
+      .select<string, ClubType>();
 
     if (error) {
       throw error;
@@ -47,7 +47,7 @@ export const createClub = async (
   }
 };
 
-export const getClubDetail = async (id: number): Promise<ClubType> => {
+export const getClubDetail = async (id: number) => {
   try {
     const { data, error } = await getSupabaseClient()
       .from('clubs')
@@ -87,7 +87,7 @@ export const updateClub = async (id: number, updatedData: UpdateClubType) => {
       .from('clubs')
       .update(updatedData)
       .eq('id', id)
-      .select()
+      .select<string, ClubType>()
       .single();
 
     if (error) {
@@ -97,5 +97,6 @@ export const updateClub = async (id: number, updatedData: UpdateClubType) => {
     return data;
   } catch (error) {
     console.error('Error updating club:', error);
+    throw error;
   }
 };

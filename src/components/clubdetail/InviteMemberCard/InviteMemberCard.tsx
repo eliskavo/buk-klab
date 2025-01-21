@@ -25,23 +25,33 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
   const validateEmail = (emailValidation: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValidation);
 
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setErrorMessage('');
+  };
+
   const handleInvite = async () => {
-    if (!email) {
+    setErrorMessage('');
+    if (!email.trim()) {
       setErrorMessage('Please enter an email');
 
       return;
     }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail(email.trim())) {
       setErrorMessage('Please enter a valid email');
 
       return;
     }
 
-    await inviteMemberByEmail(clubId, email);
-    setEmail('');
-    setSuccessMessage('User added to the club successfully!');
-    loadClubMembers();
+    try {
+      await inviteMemberByEmail(clubId, email.trim());
+      setEmail('');
+      setSuccessMessage('User added to the club successfully!');
+      await loadClubMembers();
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -50,22 +60,23 @@ export const InviteMemberCard: React.FC<InviteMemberCardProps> = ({
         type="email"
         placeholder="Email"
         className={style.input}
-        value={email}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setEmail(e.target.value)
-        }
+        value={email.trim()}
+        onChange={handleEmailChange}
       />
       <button type="button" onClick={handleInvite} className={style.button}>
         Invite
       </button>
-      <p
-        className={clsx({
-          [style.errorMessage]: errorMessage,
-          [style.successMessage]: successMessage,
-        })}
-      >
-        {errorMessage || successMessage}
-      </p>
+
+      {(errorMessage || successMessage) && (
+        <p
+          className={clsx({
+            [style.errorMessage]: errorMessage,
+            [style.successMessage]: successMessage,
+          })}
+        >
+          {errorMessage || successMessage}
+        </p>
+      )}
     </ClubDetailCardWrapper>
   );
 };
