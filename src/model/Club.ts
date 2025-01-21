@@ -5,6 +5,7 @@ export type ClubType = {
   clubImage: string;
   createdAt: string;
   ownerId: string;
+  memberCount: number;
   members: [{ count: number }];
 };
 
