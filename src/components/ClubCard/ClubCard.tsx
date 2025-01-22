@@ -18,7 +18,9 @@ export const ClubCard = ({ club }: ClubProps) => (
       />
       <div className={style.clubContent}>
         <h3 className={style.clubName}>{club.name}</h3>
-        <p className={style.memberCount}>N/A members</p>
+        <p className={style.memberCount}>
+          {club.memberCount} {club.memberCount === 1 ? 'member' : 'members'}
+        </p>
         <p className={style.description}>{club.description}</p>
 
         <div className={style.currentlyReading}>

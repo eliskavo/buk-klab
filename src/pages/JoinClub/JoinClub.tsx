@@ -12,8 +12,9 @@ export const JoinClub = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getClubs();
-      setClubs(data);
+      const clubsData = await getClubs();
+
+      setClubs(clubsData);
     };
 
     getData();

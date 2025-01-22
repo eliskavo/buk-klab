@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import { Layout } from '../../components/Layout/Layout';
 import { Loading } from '../../components/Loading/Loading';
 import { getClubDetail, deleteClub, updateClub } from '../../api/clubsApi';
 import { useAuth } from '../../context/AuthContext';
 import { ClubType } from '../../model/Club';
-import placeholder_club from '../../assets/images/placeholder_club.png';
-import { EditableField } from '../../components/EditableField/EditableField';
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
+import { InviteMemberCard } from '../../components/clubdetail/InviteMemberCard/InviteMemberCard';
+import { ClubMembersCard } from '../../components/clubdetail/ClubMembersCard/ClubMembersCard';
+import { CurrentlyReadingCard } from '../../components/clubdetail/CurrentlyReadingCard/CurrentlyReadingCard';
+import { useClubMembers } from '../../components/clubdetail/useClubMembers';
+import { ClubDetailInfo } from '../../components/clubdetail/ClubDetailInfo/ClubDetailInfo';
+import placeholder_club from '../../assets/images/placeholder_club.png';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -20,9 +23,15 @@ export const ClubDetail: React.FC = () => {
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
+  const clubId = Number(id);
+  const isOwner = user?.id === clubDetail?.ownerId;
+
+  const { members, isMember, handleLeaveClub, loadClubMembers } =
+    useClubMembers(clubId, user?.id);
+
   useEffect(() => {
     const fetchClubDetail = async () => {
-      const clubData = await getClubDetail(Number(id));
+      const clubData = await getClubDetail(clubId);
 
       setClubDetail(clubData);
     };
@@ -35,13 +44,13 @@ export const ClubDetail: React.FC = () => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteClub(Number(id));
+    await deleteClub(clubId);
     setIsDeleteDialogOpen(false);
     navigate('/joinclub');
   };
 
   const handleUpdate = async (updatedData: Partial<ClubType>) => {
-    const updatedClub = await updateClub(Number(id), updatedData);
+    const updatedClub = await updateClub(clubId, updatedData);
 
     setClubDetail(updatedClub);
   };
@@ -53,6 +62,8 @@ export const ClubDetail: React.FC = () => {
       </Layout>
     );
   }
+
+  const memberCount = members.length;
 
   return (
     <Layout>
@@ -69,59 +80,39 @@ export const ClubDetail: React.FC = () => {
         </div>
 
         <div className={style.pageContent}>
-          {user?.id === clubDetail.ownerId ? (
-            <section className={style.infoSection}>
-              <EditableField
-                type="text"
-                value={clubDetail.name}
-                handleSave={(newValue) => {
-                  handleUpdate({ name: newValue });
-                }}
-              >
-                <h1 className={style.title}>{clubDetail.name}</h1>
-              </EditableField>
-
-              <EditableField
-                type="textarea"
-                value={clubDetail.description}
-                handleSave={(newValue) => {
-                  handleUpdate({ description: newValue });
-                }}
-              >
-                <p className={style.description}>{clubDetail.description}</p>
-              </EditableField>
-
-              <button
-                type="button"
-                onClick={handleDelete}
-                className={style.deleteButton}
-                aria-label="delete club"
-              >
-                <DeleteRoundedIcon />
-              </button>
-            </section>
-          ) : (
-            <section className={style.infoSection}>
-              <div className={style.editableContent}>
-                <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
-                <p className={style.description}>{clubDetail.description}</p>
-              </div>
-            </section>
-          )}
+          <ClubDetailInfo
+            clubDetail={clubDetail}
+            isOwner={isOwner}
+            isMember={isMember}
+            memberCount={memberCount}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            onLeaveClub={handleLeaveClub}
+          />
 
           <section className={style.contentSection}>
-            <div className={`${style.card} ${style.inviteCard}`}>
-              <h2 className={`${style.cardTitle} ${style.inviteCardTitle}`}>
-                Invite Members
-              </h2>
-              <p className={`${style.cardText} ${style.inviteCardText}`}>
-                Grow your book club by inviting new members
-              </p>
-            </div>
-            <div className={`${style.card} ${style.readingCard}`}>
-              <h2 className={style.cardTitle}>Currently Reading</h2>
-              <p className={style.cardText}>No book selected</p>
-            </div>
+            {isOwner && (
+              <InviteMemberCard
+                title="Invite Members"
+                text="Invite your friends to join your book club and share your reading adventures with them."
+                clubId={clubId}
+                loadClubMembers={loadClubMembers}
+              />
+            )}
+
+            <CurrentlyReadingCard
+              title="Currently Reading"
+              text="No book selected"
+            />
+
+            <ClubMembersCard
+              title="Members"
+              clubId={clubId}
+              isOwner={isOwner}
+              ownerId={clubDetail.ownerId}
+              members={members}
+              loadClubMembers={loadClubMembers}
+            />
           </section>
         </div>
       </div>

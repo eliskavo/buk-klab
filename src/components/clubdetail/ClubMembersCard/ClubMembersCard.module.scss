@@ -1,0 +1,52 @@
+.membersList {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.memberImage {
+  width: 60px;
+  height: 60px;
+
+  @media (min-width: $screen-sm-min) {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.memberInfo {
+  display: flex;
+  align-items: center;
+
+  @media (min-width: $screen-sm-min) {
+    gap: 2rem;
+  }
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid $light-grey;
+}
+
+.deleteButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: $dark-grey;
+  cursor: pointer;
+
+  &:hover {
+    color: $boomers-red;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    margin-right: 3rem;
+  }
+}

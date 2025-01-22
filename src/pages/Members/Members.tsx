@@ -41,11 +41,11 @@ export const Members: React.FC = () => {
             <li key={member.id} className={style.member}>
               <img
                 className={style.memberImg}
-                src={member.profileImage}
-                alt={member.firstName}
+                src={member.profile_image}
+                alt={member.firstname}
               />
               <p className={style.memberName}>
-                {`${member.firstName} ${member.lastName.charAt(0)}.`}
+                {`${member.firstname} ${member.lastname.charAt(0)}.`}
               </p>
             </li>
           ))}

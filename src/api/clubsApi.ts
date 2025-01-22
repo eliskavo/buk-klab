@@ -1,12 +1,20 @@
-import { ClubType, UpdateClubType } from '../model/Club';
+import { ClubType, ClubWithMemberCount, UpdateClubType } from '../model/Club';
 import { getSupabaseClient } from './supabase';
 
 export const getClubs = async () => {
   const { data } = await getSupabaseClient()
     .from('clubs')
-    .select<string, ClubType>();
+    .select<string, ClubWithMemberCount>(
+      `
+      *,
+      members:clubs_members(count)
+    `,
+    );
 
-  return data || [];
+  return (data || []).map((club) => ({
+    ...club,
+    memberCount: club.members[0].count,
+  }));
 };
 
 export const createClub = async (
@@ -20,11 +28,16 @@ export const createClub = async (
         ...clubData,
         ownerId,
       })
-      .select();
+      .select<string, ClubType>();
 
     if (error) {
       throw error;
     }
+
+    await getSupabaseClient().from('clubs_members').insert({
+      memberId: ownerId,
+      clubId: data[0].id,
+    });
 
     return data[0];
   } catch (error) {
@@ -37,7 +50,7 @@ export const getClubDetail = async (id: number) => {
   try {
     const { data, error } = await getSupabaseClient()
       .from('clubs')
-      .select()
+      .select<string, ClubType>()
       .eq('id', id)
       .single();
 
@@ -73,7 +86,7 @@ export const updateClub = async (id: number, updatedData: UpdateClubType) => {
       .from('clubs')
       .update(updatedData)
       .eq('id', id)
-      .select()
+      .select<string, ClubType>()
       .single();
 
     if (error) {
@@ -83,5 +96,6 @@ export const updateClub = async (id: number, updatedData: UpdateClubType) => {
     return data;
   } catch (error) {
     console.error('Error updating club:', error);
+    throw error;
   }
 };
