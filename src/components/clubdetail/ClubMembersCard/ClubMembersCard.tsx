@@ -75,7 +75,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
           </li>
         ))}
       </ul>
-      {members.length === 0 && <p>No members found in this book club</p>}
+
       <ConfirmDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}

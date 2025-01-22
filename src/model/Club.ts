@@ -6,7 +6,6 @@ export type ClubType = {
   createdAt: string;
   ownerId: string;
   memberCount: number;
-  members: [{ count: number }];
 };
 
 export type ClubWithMemberCount = ClubType & {
