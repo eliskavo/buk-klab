@@ -102,7 +102,7 @@ export const ClubDetail: React.FC = () => {
 
             <CurrentlyReadingCard
               title="Currently Reading"
-              text="No book selected"
+              clubId={Number(id)}
             />
 
             <ClubMembersCard

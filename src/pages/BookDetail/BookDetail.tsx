@@ -10,6 +10,8 @@ import { fetchRecommendedBooks } from '../../api/recommendedBooksApi';
 import { Loading } from '../../components/Loading/Loading';
 import { RecommendedBooks } from './RecommendedBooks';
 import { getDescriptionValue } from '../../utils/getDescriptionValue';
+import { SecondaryButton } from '../../components/Button/SecondaryButton';
+import { SelectClubDialog } from '../../components/ConfirmDialog/SelectClubDialog';
 import style from './BookDetail.module.scss';
 
 const iconSx = { fontSize: 16 };
@@ -25,6 +27,7 @@ export const BookDetail: React.FC = () => {
     null,
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -127,6 +130,24 @@ export const BookDetail: React.FC = () => {
               <span className={style.metaItem}>First published: {year}</span>
               <span className={style.metaItem}>{pages} pages</span>
             </div>
+            <section className={style.buttonSection}>
+              <SecondaryButton
+                type="button"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                set as currently reading
+              </SecondaryButton>
+
+              <SelectClubDialog
+                isOpen={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                title="Select club"
+                message="Choose a club to set this book as currently reading"
+                closeButtonText="Cancel"
+                confirmButtonText="Select"
+                bookId={editionId ?? ''}
+              />
+            </section>
           </div>
         </div>
 

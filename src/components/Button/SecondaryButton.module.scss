@@ -1,0 +1,17 @@
+.button {
+  width: 100%;
+  max-width: 250px;
+  height: 2.5rem;
+  margin-top: 2rem;
+  border-radius: 40px;
+  font-weight: $semibold;
+  border: 2px solid $secondary-color;
+  background-color: $white;
+  cursor: pointer;
+
+  &:hover {
+    border: none;
+    background-color: $secondary-color;
+    color: $white;
+  }
+}

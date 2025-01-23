@@ -15,3 +15,8 @@ export type BookType = {
   recommendedBooks?: BookType[];
   editionKey?: string;
 };
+
+export type ClubCurrentBookType = {
+  clubId: number;
+  currentBookId: string;
+};
