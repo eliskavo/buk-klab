@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { ClubType } from '../../model/Club';
@@ -11,10 +11,12 @@ type SelectClubDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  message: string;
+  message: string | ReactNode;
   closeButtonText: string;
   confirmButtonText: string;
   bookId: string;
+  authorKey?: string | null;
+  onConfirm?: () => void;
 };
 
 export const SelectClubDialog: React.FC<SelectClubDialogProps> = ({
@@ -22,9 +24,11 @@ export const SelectClubDialog: React.FC<SelectClubDialogProps> = ({
   onClose,
   title,
   bookId,
+  authorKey,
   message,
   closeButtonText,
   confirmButtonText,
+  onConfirm,
 }) => {
   const [clubs, setClubs] = useState<ClubType[]>([]);
   const [selectedClubId, setSelectedClubId] = useState<number | null>(null);
@@ -50,12 +54,15 @@ export const SelectClubDialog: React.FC<SelectClubDialogProps> = ({
   };
 
   const handleConfirm = async () => {
+    if (onConfirm) {
+      onConfirm();
+    }
     if (!selectedClubId) {
       return;
     }
 
     try {
-      await setClubsCurrentBook(selectedClubId, bookId);
+      await setClubsCurrentBook(selectedClubId, bookId, authorKey);
       onClose();
     } catch (error) {
       console.error('Error:', error);

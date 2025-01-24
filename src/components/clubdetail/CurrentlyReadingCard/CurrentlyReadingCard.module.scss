@@ -16,6 +16,7 @@
   width: 200px;
   object-fit: cover;
   border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .bookTitle {
@@ -31,4 +32,27 @@
 
 .description {
   font-size: 0.8rem;
+}
+
+.booksList {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 2rem;
+}
+
+.bookItem {
+  list-style: none;
+}
+
+.bookContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.removeButton {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 }

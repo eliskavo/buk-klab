@@ -12,6 +12,8 @@ import { RecommendedBooks } from './RecommendedBooks';
 import { getDescriptionValue } from '../../utils/getDescriptionValue';
 import { SecondaryButton } from '../../components/Button/SecondaryButton';
 import { SelectClubDialog } from '../../components/ConfirmDialog/SelectClubDialog';
+import { useAuth } from '../../context/AuthContext';
+import { getClubs } from '../../api/clubsApi';
 import style from './BookDetail.module.scss';
 
 const iconSx = { fontSize: 16 };
@@ -28,6 +30,23 @@ export const BookDetail: React.FC = () => {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+
+  const user = useAuth();
+
+  useEffect(() => {
+    const checkOwnership = async () => {
+      if (!user) {
+        return;
+      }
+
+      const clubs = await getClubs();
+      const ownsClubs = clubs.some((club) => club.ownerId === user.id);
+      setIsOwner(ownsClubs);
+    };
+
+    checkOwnership();
+  }, [user]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -142,10 +161,21 @@ export const BookDetail: React.FC = () => {
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 title="Select club"
-                message="Choose a club to set this book as currently reading"
+                message={
+                  isOwner ? (
+                    'Choose a club to set this book as currently reading'
+                  ) : (
+                    <>
+                      You need to create a club first to set books as currently
+                      reading
+                    </>
+                  )
+                }
                 closeButtonText="Cancel"
-                confirmButtonText="Select"
+                confirmButtonText={isOwner ? 'Select' : 'Create club'}
                 bookId={editionId ?? ''}
+                authorKey={authorKey}
+                onConfirm={isOwner ? undefined : () => navigate('/create-club')}
               />
             </section>
           </div>

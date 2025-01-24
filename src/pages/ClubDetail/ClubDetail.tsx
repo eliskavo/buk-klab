@@ -103,6 +103,7 @@ export const ClubDetail: React.FC = () => {
             <CurrentlyReadingCard
               title="Currently Reading"
               clubId={Number(id)}
+              isOwner={isOwner}
             />
 
             <ClubMembersCard

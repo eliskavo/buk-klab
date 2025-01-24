@@ -19,4 +19,5 @@ export type BookType = {
 export type ClubCurrentBookType = {
   clubId: number;
   currentBookId: string;
+  authorKey?: string;
 };
