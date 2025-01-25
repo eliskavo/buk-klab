@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   padding: 1rem 2rem;
 
   @media (min-width: $screen-lg-min) {
@@ -21,7 +21,6 @@
   @media (min-width: $screen-lg-min) {
     justify-content: space-between;
     flex-direction: row;
-    height: unset;
   }
 }
 
@@ -35,7 +34,7 @@
   @media (min-width: $screen-lg-min) {
     display: block;
     max-width: 40%;
-    padding-left: 8rem;
+    padding-left: 4rem;
   }
 }
 
@@ -54,11 +53,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
   font-weight: $extrabold;
   font-size: 3rem;
+
+  @media (min-width: $screen-lg-min) {
+    width: 50%;
+  }
 }
 
 .ctaButton {
   margin: 2rem 0;
+}
+
+.illustration {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  transform: scaleX(-1);
 }

@@ -1,6 +1,7 @@
-import { Title, Heading1, Heading3 } from '../../Headings/Heading';
+import { Title, Heading3 } from '../../Headings/Heading';
 import { useAuth } from '../../../context/AuthContext';
 import { LinkButton } from '../../LinkButton/LinkButton';
+import group_of_people from '../../../assets/images/group_of_people.png';
 import style from './Welcome.module.scss';
 
 export const Welcome: React.FC = () => {
@@ -37,7 +38,7 @@ export const Welcome: React.FC = () => {
         </div>
 
         <div className={style.rightSection}>
-          <Heading1>písmenka</Heading1>
+          <img src={group_of_people} alt="" className={style.illustration} />
         </div>
       </div>
     </section>
