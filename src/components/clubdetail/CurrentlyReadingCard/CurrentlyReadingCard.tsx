@@ -101,7 +101,7 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
                       onClick={() => handleRemoveClick(book.id)}
                       className={style.removeButton}
                     >
-                      Remove
+                      remove
                     </SecondaryButton>
                   )}
                 </div>

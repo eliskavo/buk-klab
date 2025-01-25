@@ -16,7 +16,6 @@ export const fetchRecommendedBooks = async ({
       author: authorName,
       fields: 'key,title,author_name,cover_i,editions',
       limit: '6',
-      lang: 'eng,cze',
     });
 
     const data = await getFetch<SearchResponse>(
