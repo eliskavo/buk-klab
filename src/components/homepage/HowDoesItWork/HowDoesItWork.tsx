@@ -14,6 +14,16 @@ type Step = {
   description: string;
 };
 
+const StepCard: React.FC<Step> = ({ number, title, description }) => (
+  <div className={style.stepCard}>
+    <span className={style.stepNumber}>{number}</span>
+    <div className={style.stepContent}>
+      <h3 className={style.stepTitle}>{title}</h3>
+      <p className={style.stepDescription}>{description}</p>
+    </div>
+  </div>
+);
+
 const steps: (Step & { image: string })[] = [
   {
     number: '01',
@@ -51,24 +61,19 @@ const steps: (Step & { image: string })[] = [
   },
 ];
 
-const StepCard: React.FC<Step> = ({ number, title, description }) => (
-  <div className={style.stepCard}>
-    <span className={style.stepNumber}>{number}</span>
-    <div className={style.stepContent}>
-      <h3 className={style.stepTitle}>{title}</h3>
-      <p className={style.stepDescription}>{description}</p>
-    </div>
-  </div>
-);
-
 export const HowDoesItWork: React.FC = () => (
   <HomepageSection>
     <div className={style.section}>
       <h1 className={style.sectionTitle}>how does it work?</h1>
-      <div className={style.stepsContainer}>
+
+      <ol className={style.stepsContainer}>
         {steps.map((step) => (
-          <div key={step.number} className={style.row}>
-            <StepCard {...step} />
+          <li key={step.number} className={style.row}>
+            <StepCard
+              number={step.number}
+              title={step.title}
+              description={step.description}
+            />
             <div className={style.illustration}>
               <img
                 src={step.image}
@@ -76,9 +81,9 @@ export const HowDoesItWork: React.FC = () => (
                 className={style.illustrationImage}
               />
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   </HomepageSection>
 );
