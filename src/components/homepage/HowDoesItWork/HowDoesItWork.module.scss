@@ -1,3 +1,129 @@
 .section {
-  background-color: $primary-color;
+  background-color: $white;
+  min-height: 100vh;
+}
+
+.sectionTitle {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: $extrabold;
+  color: $secondary-color;
+  text-decoration: underline;
+  text-decoration-color: $primary-color;
+  text-decoration-thickness: 0.8rem;
+  text-decoration-skip-ink: none;
+  text-underline-offset: -8px;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 2.5rem;
+  }
+}
+
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  gap: 2rem;
+
+  @media (min-width: $screen-md-min) {
+    max-width: $container-width;
+    margin: 3rem auto;
+    gap: 4rem;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  @media (min-width: $screen-md-min) {
+    flex-direction: row;
+    text-align: left;
+
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+.stepCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media (min-width: $screen-md-min) {
+    flex: 1;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: flex-start;
+    max-width: 500px;
+  }
+}
+
+.stepNumber {
+  font-size: 2.5rem;
+  font-weight: $extrabold;
+  color: $primary-color;
+  line-height: 1.2;
+
+  @media (min-width: $screen-md-min) {
+    font-size: 3rem;
+  }
+}
+
+.stepContent {
+  @media (min-width: $screen-md-min) {
+    flex: 1;
+  }
+}
+
+.stepTitle {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: $extrabold;
+  color: $secondary-color;
+
+  @media (min-width: $screen-md-min) {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+.stepDescription {
+  color: $dark-grey;
+  line-height: 1.5;
+
+  @media (min-width: $screen-md-min) {
+    line-height: 1.6;
+  }
+}
+
+.illustration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  margin: 2rem 0;
+
+  @media (min-width: $screen-lg-min) {
+    width: auto;
+    height: 300px;
+    margin: 0;
+  }
+}
+
+.illustrationImage {
+  width: 100%;
+  height: auto;
+
+  @media (min-width: $screen-md-min) {
+    width: auto;
+    height: 100%;
+  }
 }

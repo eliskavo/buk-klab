@@ -1,11 +1,15 @@
-import { Title, Heading1, Heading3 } from '../../Headings/Heading';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+
+import { Title, Heading3 } from '../../Headings/Heading';
 import { useAuth } from '../../../context/AuthContext';
 import { LinkButton } from '../../LinkButton/LinkButton';
+import group_of_people from '../../../assets/images/group_of_people.png';
 import style from './Welcome.module.scss';
 
 export const Welcome: React.FC = () => {
   const user = useAuth();
   const firstName = user?.user_metadata?.first_name || '';
+  const iconSx = { fontSize: 32 };
 
   return (
     <section className={style.welcome}>
@@ -41,8 +45,11 @@ export const Welcome: React.FC = () => {
         </div>
 
         <div className={style.rightSection}>
-          <Heading1>písmenka</Heading1>
+          <img src={group_of_people} alt="" className={style.illustration} />
         </div>
+      </div>
+      <div className={style.scrollIndicator}>
+        <KeyboardArrowDownRoundedIcon sx={iconSx} />
       </div>
     </section>
   );
