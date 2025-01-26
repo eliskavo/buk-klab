@@ -1,0 +1,65 @@
+.bookInfo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+
+  @media (min-width: $screen-xl-min) {
+    flex-direction: row;
+    padding: 1rem;
+  }
+}
+
+.bookCover {
+  height: 100%;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bookTitle {
+  margin-bottom: 0.5rem;
+  font-weight: $extrabold;
+}
+
+.bookAuthor {
+  margin-bottom: 0.5rem;
+  font-weight: $semibold;
+  font-size: 1rem;
+}
+
+.description {
+  font-size: 0.8rem;
+}
+
+.booksList {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 2rem;
+}
+
+.bookItem {
+  list-style: none;
+}
+
+.bookContent {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.removeButton {
+  display: block;
+  margin-left: auto;
+
+  @media (min-width: $screen-xl-min) {
+    margin-top: 0;
+  }
+}

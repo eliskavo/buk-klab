@@ -99,3 +99,20 @@ export const updateClub = async (id: number, updatedData: UpdateClubType) => {
     throw error;
   }
 };
+
+export const isOwnerOfClub = async (userId: string) => {
+  try {
+    const { data, error } = await getSupabaseClient()
+      .from('clubs')
+      .select<string, ClubType>('id')
+      .eq('ownerId', userId);
+
+    if (error) {
+      throw error;
+    }
+
+    return data.length > 0;
+  } catch (error) {
+    console.error('Error checking ownership:', error);
+  }
+};

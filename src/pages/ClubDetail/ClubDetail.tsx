@@ -17,8 +17,8 @@ import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const user = useAuth();
+  const navigate = useNavigate();
 
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -102,7 +102,8 @@ export const ClubDetail: React.FC = () => {
 
             <CurrentlyReadingCard
               title="Currently Reading"
-              text="No book selected"
+              clubId={clubId}
+              isOwner={isOwner}
             />
 
             <ClubMembersCard

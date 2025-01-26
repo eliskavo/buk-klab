@@ -34,7 +34,11 @@ export const Welcome: React.FC = () => {
               who are passionate about reading and sharing our thoughts with
               others. Join us today and start your reading journey with us!
             </p>
-            <LinkButton to="/joinclub" className={style.ctaButton}>
+            <LinkButton
+              to="/joinclub"
+              className={style.ctaButton}
+              variant="primary"
+            >
               join buk klab
             </LinkButton>
           </div>

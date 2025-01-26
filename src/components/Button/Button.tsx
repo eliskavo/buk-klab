@@ -8,17 +8,26 @@ type ButtonProps = {
   onClick?: () => void;
   className?: string;
   type?: 'button' | 'submit';
+  variant: 'primary' | 'secondary';
 } & ComponentProps<'button'>;
 
 export const Button: ChildrenFC<ButtonProps> = ({
   children,
   onClick,
   className,
+  variant = 'primary',
   type = 'button',
   ...props
 }) => (
   <button
-    className={clsx(style.button, className)}
+    className={clsx(
+      style.base,
+      {
+        [style.primary]: variant === 'primary',
+        [style.secondary]: variant === 'secondary',
+      },
+      className,
+    )}
     onClick={onClick}
     type={type}
     {...props}
