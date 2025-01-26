@@ -10,10 +10,10 @@ import { fetchRecommendedBooks } from '../../api/recommendedBooksApi';
 import { Loading } from '../../components/Loading/Loading';
 import { RecommendedBooks } from './RecommendedBooks';
 import { getDescriptionValue } from '../../utils/getDescriptionValue';
-import { SecondaryButton } from '../../components/Button/SecondaryButton';
+import { Button } from '../../components/Button/Button';
 import { SelectClubDialog } from '../../components/ConfirmDialog/SelectClubDialog';
 import { useAuth } from '../../context/AuthContext';
-import { getClubs } from '../../api/clubsApi';
+import { isOwnerOfClub } from '../../api/clubsApi';
 import style from './BookDetail.module.scss';
 
 const iconSx = { fontSize: 16 };
@@ -21,6 +21,7 @@ const iconSx = { fontSize: 16 };
 export const BookDetail: React.FC = () => {
   const { id: editionId } = useParams();
   const [searchParams] = useSearchParams();
+  const user = useAuth();
   const authorKey = searchParams.get('authorKey');
   const navigate = useNavigate();
 
@@ -32,16 +33,12 @@ export const BookDetail: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
 
-  const user = useAuth();
-
   useEffect(() => {
     const checkOwnership = async () => {
       if (!user) {
         return;
       }
-
-      const clubs = await getClubs();
-      const ownsClubs = clubs.some((club) => club.ownerId === user.id);
+      const ownsClubs = await isOwnerOfClub(user.id);
       setIsOwner(ownsClubs);
     };
 
@@ -150,12 +147,13 @@ export const BookDetail: React.FC = () => {
               <span className={style.metaItem}>{pages} pages</span>
             </div>
             <section className={style.buttonSection}>
-              <SecondaryButton
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={() => setIsDialogOpen(true)}
               >
                 set as currently reading
-              </SecondaryButton>
+              </Button>
 
               <SelectClubDialog
                 isOpen={isDialogOpen}

@@ -15,7 +15,6 @@ export const getClubsCurrentBook = async (clubId: number) => {
     return data;
   } catch (error) {
     console.error('Error getting current book:', error);
-    throw error;
   }
 };
 
@@ -37,8 +36,6 @@ export const setClubsCurrentBook = async (
     return data;
   } catch (error) {
     console.error('Error setting current book:', error);
-
-    throw error;
   }
 };
 
@@ -57,6 +54,5 @@ export const removeClubsCurrentBook = async (
     }
   } catch (error) {
     console.error('Error removing current book:', error);
-    throw error;
   }
 };

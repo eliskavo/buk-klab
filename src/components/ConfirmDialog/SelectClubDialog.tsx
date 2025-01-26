@@ -11,7 +11,7 @@ type SelectClubDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  message: string | ReactNode;
+  message: ReactNode;
   closeButtonText: string;
   confirmButtonText: string;
   bookId: string;
@@ -30,16 +30,17 @@ export const SelectClubDialog: React.FC<SelectClubDialogProps> = ({
   confirmButtonText,
   onConfirm,
 }) => {
+  const user = useAuth();
+
   const [clubs, setClubs] = useState<ClubType[]>([]);
   const [selectedClubId, setSelectedClubId] = useState<number | null>(null);
-
-  const user = useAuth();
 
   useEffect(() => {
     const fetchClubs = async () => {
       if (!user) {
         return;
       }
+
       const allClubs = await getClubs();
       const ownerClubs = allClubs.filter((club) => club.ownerId === user.id);
       setClubs(ownerClubs);

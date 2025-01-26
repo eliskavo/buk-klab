@@ -62,7 +62,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
               <p className={style.memberName}>
                 {member.firstname} {member.lastname}
                 {member.id === ownerId && (
-                  <Tooltip title="Owner" placement="top">
+                  <Tooltip title="Owner">
                     <StarsRoundedIcon area-label="owner" />
                   </Tooltip>
                 )}

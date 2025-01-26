@@ -11,13 +11,12 @@ import { LinkButton } from '../LinkButton/LinkButton';
 import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const user = useAuth();
   const firstName = user?.user_metadata?.first_name || '';
-
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -116,6 +115,7 @@ export const Navbar: React.FC = () => {
           <LinkButton
             to="/joinclub"
             className={clsx(style.navbarLink, style.navbarButton)}
+            variant="primary"
           >
             join buk klab
           </LinkButton>

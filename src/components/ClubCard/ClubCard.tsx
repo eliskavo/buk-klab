@@ -20,7 +20,7 @@ export const ClubCard = ({ club }: ClubProps) => {
       try {
         const booksData = await getClubsCurrentBook(club.id);
 
-        if (booksData.length > 0) {
+        if (booksData?.length) {
           const bookPromises = booksData.map((bookData) =>
             fetchBookDetails({
               editionId: bookData.currentBookId,
