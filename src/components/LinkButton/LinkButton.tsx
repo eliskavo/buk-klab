@@ -8,16 +8,27 @@ import { ChildrenFC } from '../../utils/type';
 type ButtonProps = {
   onClick?: () => void;
   className?: string;
-  variant?: 'default' | 'form';
+  variant: 'primary' | 'secondary';
 } & ComponentProps<typeof Link>;
 
 export const LinkButton: ChildrenFC<ButtonProps> = ({
   children,
   onClick,
   className,
+  variant = 'primary',
   ...props
 }) => (
-  <Link className={clsx(style.button, className)} {...props}>
+  <Link
+    className={clsx(
+      style.base,
+      {
+        [style.primary]: variant === 'primary',
+        [style.secondary]: variant === 'secondary',
+      },
+      className,
+    )}
+    {...props}
+  >
     {children}
   </Link>
 );

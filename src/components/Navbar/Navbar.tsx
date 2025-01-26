@@ -11,13 +11,12 @@ import { LinkButton } from '../LinkButton/LinkButton';
 import style from './Navbar.module.scss';
 
 export const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const user = useAuth();
   const firstName = user?.user_metadata?.first_name || '';
-
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -76,33 +75,40 @@ export const Navbar: React.FC = () => {
           </li>
         )}
         {user ? (
-          <li className={style.navbarItem}>
-            <div className={style.userMenuWrapper}>
-              <button
-                className={style.userButton}
-                type="button"
-                onClick={toggleDropdown}
-              >
-                {firstName}
-                <ExpandMoreRoundedIcon
-                  className={clsx(style.dropdownIcon, {
-                    [style.dropdownIconOpen]: isDropdownOpen,
-                  })}
-                />
-              </button>
-              {isDropdownOpen && (
-                <div className={style.dropdownMenu}>
-                  <button
-                    onClick={handleSignOut}
-                    className={style.dropdownItem}
-                    type="button"
-                  >
-                    sign out
-                  </button>
-                </div>
-              )}
-            </div>
-          </li>
+          <>
+            <li className={style.navbarItem}>
+              <NavLink to="/joinclub" className={getNavLinkStyle}>
+                clubs
+              </NavLink>
+            </li>
+            <li className={style.navbarItem}>
+              <div className={style.userMenuWrapper}>
+                <button
+                  className={style.userButton}
+                  type="button"
+                  onClick={toggleDropdown}
+                >
+                  {firstName}
+                  <ExpandMoreRoundedIcon
+                    className={clsx(style.dropdownIcon, {
+                      [style.dropdownIconOpen]: isDropdownOpen,
+                    })}
+                  />
+                </button>
+                {isDropdownOpen && (
+                  <div className={style.dropdownMenu}>
+                    <button
+                      onClick={handleSignOut}
+                      className={style.dropdownItem}
+                      type="button"
+                    >
+                      sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            </li>
+          </>
         ) : (
           <>
             <li className={style.navbarItem}>
@@ -116,6 +122,7 @@ export const Navbar: React.FC = () => {
           <LinkButton
             to="/joinclub"
             className={clsx(style.navbarLink, style.navbarButton)}
+            variant="primary"
           >
             join buk klab
           </LinkButton>

@@ -9,7 +9,7 @@ export const fetchBookDetails = async ({
   authorKey,
 }: {
   editionId: string;
-  authorKey: string | null;
+  authorKey?: string | null;
 }) => {
   try {
     const [editionData, authorData] = await Promise.all([

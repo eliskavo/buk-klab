@@ -16,7 +16,6 @@ export const fetchSearchBooks = async ({
   const searchParams = new URLSearchParams({
     q: query ?? '',
     fields: 'key,title,author_name,cover_i,editions,author_key',
-    lang: 'eng,cze',
     limit: String(LIMIT),
     offset: String((page - 1) * LIMIT),
   });

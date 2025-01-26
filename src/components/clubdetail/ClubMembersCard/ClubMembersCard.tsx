@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
+import { Tooltip } from '@mui/material';
 
 import { leaveClub } from '../../../api/clubsMembers';
 import { MemberType } from '../../../model/Member';
@@ -57,8 +59,13 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
                 alt={member.firstname}
                 className={style.memberImage}
               />
-              <p>
+              <p className={style.memberName}>
                 {member.firstname} {member.lastname}
+                {member.id === ownerId && (
+                  <Tooltip title="Owner">
+                    <StarsRoundedIcon area-label="owner" />
+                  </Tooltip>
+                )}
               </p>
             </div>
 
