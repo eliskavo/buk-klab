@@ -75,33 +75,40 @@ export const Navbar: React.FC = () => {
           </li>
         )}
         {user ? (
-          <li className={style.navbarItem}>
-            <div className={style.userMenuWrapper}>
-              <button
-                className={style.userButton}
-                type="button"
-                onClick={toggleDropdown}
-              >
-                {firstName}
-                <ExpandMoreRoundedIcon
-                  className={clsx(style.dropdownIcon, {
-                    [style.dropdownIconOpen]: isDropdownOpen,
-                  })}
-                />
-              </button>
-              {isDropdownOpen && (
-                <div className={style.dropdownMenu}>
-                  <button
-                    onClick={handleSignOut}
-                    className={style.dropdownItem}
-                    type="button"
-                  >
-                    sign out
-                  </button>
-                </div>
-              )}
-            </div>
-          </li>
+          <>
+            <li className={style.navbarItem}>
+              <NavLink to="/joinclub" className={getNavLinkStyle}>
+                clubs
+              </NavLink>
+            </li>
+            <li className={style.navbarItem}>
+              <div className={style.userMenuWrapper}>
+                <button
+                  className={style.userButton}
+                  type="button"
+                  onClick={toggleDropdown}
+                >
+                  {firstName}
+                  <ExpandMoreRoundedIcon
+                    className={clsx(style.dropdownIcon, {
+                      [style.dropdownIconOpen]: isDropdownOpen,
+                    })}
+                  />
+                </button>
+                {isDropdownOpen && (
+                  <div className={style.dropdownMenu}>
+                    <button
+                      onClick={handleSignOut}
+                      className={style.dropdownItem}
+                      type="button"
+                    >
+                      sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            </li>
+          </>
         ) : (
           <>
             <li className={style.navbarItem}>

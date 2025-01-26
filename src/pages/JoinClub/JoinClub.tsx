@@ -23,7 +23,7 @@ export const JoinClub = () => {
   return (
     <Layout>
       <div className={style.joinHeader}>
-        <h1>Join a book club</h1>
+        <h1>join a book club</h1>
         <LinkButton to="/create-club" variant="primary">
           create a book club
         </LinkButton>

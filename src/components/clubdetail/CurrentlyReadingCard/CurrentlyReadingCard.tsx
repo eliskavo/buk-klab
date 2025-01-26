@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { ClubDetailCardWrapper } from '../ClubDetailCardWrapper/ClubDetailCardWrapper';
 import { BookType } from '../../../model/Book';
@@ -10,6 +10,7 @@ import {
 import { fetchBookDetails } from '../../../api/bookDetailApi';
 import { Button } from '../../Button/Button';
 import { ConfirmDialog } from '../../ConfirmDialog/ConfirmDialog';
+import { Loading } from '../../Loading/Loading';
 import style from './CurrentlyReadingCard.module.scss';
 
 type CurrentlyReadingCardProps = {
@@ -23,11 +24,16 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
   clubId,
   isOwner,
 }) => {
+  const { id } = useParams<{ id: string }>();
+
   const [currentBooks, setCurrentBooks] = useState<BookType[]>([]);
   const [bookToRemove, setBookToRemove] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchCurrentBooks = async () => {
+      setIsLoading(true);
+
       try {
         const booksData = await getClubsCurrentBook(clubId);
 
@@ -41,6 +47,7 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
 
           const books = await Promise.all(bookPromises);
           setCurrentBooks(books.filter((book) => book !== null));
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error fetching current books:', error);
@@ -71,13 +78,19 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
   return (
     <ClubDetailCardWrapper title={title}>
       <div>
+        {isLoading && <Loading message="loading books..." />}
+
         {!currentBooks.length && <p>No books selected</p>}
 
         {currentBooks.map((book) => (
           <ul key={book.id} className={style.booksList}>
             <li className={style.bookItem}>
               <div className={style.bookContent}>
-                <Link to={`/books/${book.id}`} className={style.bookInfo}>
+                <Link
+                  to={`/books/${book.id}?clubId=${id}`}
+                  className={style.bookInfo}
+                  state={{ fromClubs: true, clubId: id }}
+                >
                   <img
                     src={book.cover}
                     alt={book.title}

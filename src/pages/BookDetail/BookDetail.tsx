@@ -23,6 +23,7 @@ export const BookDetail: React.FC = () => {
   const [searchParams] = useSearchParams();
   const user = useAuth();
   const authorKey = searchParams.get('authorKey');
+  const clubId = searchParams.get('clubId');
   const navigate = useNavigate();
 
   const [book, setBook] = useState<BookType | null>(null);
@@ -48,10 +49,6 @@ export const BookDetail: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [editionId]);
-
-  const goBackToBooks = () => {
-    navigate('/books');
-  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -98,6 +95,8 @@ export const BookDetail: React.FC = () => {
     fetchRecommended();
   }, [book?.author, editionId]);
 
+  const handleBack = () => navigate(clubId ? `/clubs/${clubId}` : '/books');
+
   if (isLoading) {
     return (
       <Layout>
@@ -120,11 +119,12 @@ export const BookDetail: React.FC = () => {
     <Layout>
       <div className={style.bookDetailSection}>
         <button
-          onClick={goBackToBooks}
+          onClick={handleBack}
           className={style.backButton}
           aria-label="Back to books"
         >
-          <ArrowBackIosRoundedIcon sx={iconSx} /> back to books
+          <ArrowBackIosRoundedIcon sx={iconSx} /> back to{' '}
+          {clubId ? 'clubs' : 'books'}
         </button>
 
         <div className={style.bookInfo}>
