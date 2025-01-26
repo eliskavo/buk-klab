@@ -49,6 +49,10 @@
 .bookContent {
   width: 100%;
   margin-bottom: 2rem;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 
 .removeButton {

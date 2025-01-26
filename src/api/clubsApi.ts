@@ -114,6 +114,5 @@ export const isOwnerOfClub = async (userId: string) => {
     return data.length > 0;
   } catch (error) {
     console.error('Error checking ownership:', error);
-    throw error;
   }
 };

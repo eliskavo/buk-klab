@@ -21,9 +21,9 @@ const iconSx = { fontSize: 16 };
 export const BookDetail: React.FC = () => {
   const { id: editionId } = useParams();
   const [searchParams] = useSearchParams();
-  const user = useAuth();
   const authorKey = searchParams.get('authorKey');
   const clubId = searchParams.get('clubId');
+  const user = useAuth();
   const navigate = useNavigate();
 
   const [book, setBook] = useState<BookType | null>(null);
@@ -40,7 +40,7 @@ export const BookDetail: React.FC = () => {
         return;
       }
       const ownsClubs = await isOwnerOfClub(user.id);
-      setIsOwner(ownsClubs);
+      setIsOwner(ownsClubs || false);
     };
 
     checkOwnership();

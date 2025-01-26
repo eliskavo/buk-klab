@@ -34,23 +34,19 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
     const fetchCurrentBooks = async () => {
       setIsLoading(true);
 
-      try {
-        const booksData = await getClubsCurrentBook(clubId);
+      const booksData = await getClubsCurrentBook(clubId);
 
-        if (booksData?.length) {
-          const bookPromises = booksData.map((bookData) =>
-            fetchBookDetails({
-              editionId: bookData.currentBookId,
-              authorKey: bookData.authorKey,
-            }),
-          );
+      if (booksData?.length) {
+        const bookPromises = booksData.map((bookData) =>
+          fetchBookDetails({
+            editionId: bookData.currentBookId,
+            authorKey: bookData.authorKey,
+          }),
+        );
 
-          const books = await Promise.all(bookPromises);
-          setCurrentBooks(books.filter((book) => book !== null));
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Error fetching current books:', error);
+        const books = await Promise.all(bookPromises);
+        setCurrentBooks(books.filter((book) => book !== null));
+        setIsLoading(false);
       }
     };
 
@@ -63,15 +59,11 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
 
   const handleConfirmDelete = async () => {
     if (bookToRemove) {
-      try {
-        await removeClubsCurrentBook(clubId, bookToRemove);
-        setCurrentBooks((prev) =>
-          prev.filter((book) => book.id !== bookToRemove),
-        );
-        setBookToRemove(null);
-      } catch (error) {
-        console.error('Error removing book:', error);
-      }
+      await removeClubsCurrentBook(clubId, bookToRemove);
+      setCurrentBooks((prev) =>
+        prev.filter((book) => book.id !== bookToRemove),
+      );
+      setBookToRemove(null);
     }
   };
 

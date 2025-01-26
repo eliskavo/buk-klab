@@ -22,7 +22,10 @@ export const Button: ChildrenFC<ButtonProps> = ({
   <button
     className={clsx(
       style.base,
-      variant === 'primary' ? style.primary : style.secondary,
+      {
+        [style.primary]: variant === 'primary',
+        [style.secondary]: variant === 'secondary',
+      },
       className,
     )}
     onClick={onClick}
