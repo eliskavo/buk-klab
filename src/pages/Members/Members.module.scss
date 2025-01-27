@@ -120,6 +120,18 @@
 }
 
 .memberName {
+  margin-top: 1rem;
   font-size: 1rem;
   font-weight: $semibold;
+}
+
+.memberLink {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  list-style: none;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }

@@ -74,14 +74,13 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
 
         {!currentBooks.length && <p>No books selected</p>}
 
-        {currentBooks.map((book) => (
-          <ul key={book.id} className={style.booksList}>
-            <li className={style.bookItem}>
+        <ul className={style.booksList}>
+          {currentBooks.map((book) => (
+            <li key={book.id} className={style.bookItem}>
               <div className={style.bookContent}>
                 <Link
                   to={`/books/${book.id}?clubId=${id}`}
                   className={style.bookInfo}
-                  state={{ fromClubs: true, clubId: id }}
                 >
                   <img
                     src={book.cover}
@@ -110,8 +109,8 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
                 )}
               </div>
             </li>
-          </ul>
-        ))}
+          ))}
+        </ul>
       </div>
       <ConfirmDialog
         isOpen={!!bookToRemove}

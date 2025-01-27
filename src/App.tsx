@@ -10,7 +10,7 @@ import { BookDetail } from './pages/BookDetail/BookDetail';
 import { Register } from './pages/Register/Register';
 import { CreateClub } from './pages/CreateClub/CreateClub';
 import { ClubDetail } from './pages/ClubDetail/ClubDetail';
-
+import { UserProfile } from './pages/UserProfile/UserProfile';
 import './styles/global.scss';
 
 const router = createBrowserRouter([
@@ -24,6 +24,7 @@ const router = createBrowserRouter([
   { path: '/register', element: <Register /> },
   { path: '/create-club', element: <CreateClub /> },
   { path: '/clubs/:id', element: <ClubDetail /> },
+  { path: '/member/:id', element: <UserProfile /> },
 ]);
 
 export const App = () => <RouterProvider router={router} />;

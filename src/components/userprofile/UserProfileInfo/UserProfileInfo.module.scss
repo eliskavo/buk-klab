@@ -1,0 +1,62 @@
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+  text-align: center;
+
+  @media (min-width: $screen-lg-min) {
+    flex: 0 0 300px;
+    align-items: flex-start;
+    min-width: 300px;
+    max-width: 300px;
+    width: auto;
+    margin: 1rem 2rem 1rem 4rem;
+    padding: 0;
+    text-align: left;
+  }
+}
+
+.editableContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  @media (min-width: $screen-lg-min) {
+    align-items: flex-start;
+    max-width: 300px;
+  }
+}
+
+.title {
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: $extrabold;
+
+  @media (min-width: $screen-lg-min) {
+    max-width: 300px;
+    font-size: 1.75rem;
+  }
+}
+
+.notEditableTitle {
+  @extend .title;
+
+  margin-bottom: 2rem;
+}
+
+.description {
+  width: 100%;
+  font-size: 0.8rem;
+  color: $dark-grey;
+
+  @media (min-width: $screen-lg-min) {
+    max-width: 300px;
+  }
+}

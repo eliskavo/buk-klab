@@ -33,6 +33,16 @@
   border-bottom: 1px solid $light-grey;
 }
 
+.memberLink {
+  color: inherit;
+  list-style: none;
+  text-decoration: none;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
 .deleteButton {
   display: flex;
   justify-content: center;
