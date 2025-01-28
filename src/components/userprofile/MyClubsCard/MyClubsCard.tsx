@@ -20,12 +20,13 @@ export const MyClubsCard: React.FC<MyClubsCardProps> = ({ title, userId }) => {
   useEffect(() => {
     const fetchClubs = async () => {
       setIsLoading(true);
+
       try {
         const clubsData = await getClubsByMember(userId);
         setClubs(clubsData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching clubs:', error);
+      } catch {
+        setClubs([]);
+      } finally {
         setIsLoading(false);
       }
     };

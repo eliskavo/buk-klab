@@ -31,7 +31,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
             onUpdate({ bio: newValue });
           }}
         >
-          <p>About me</p>
+          <p className={style.about}>About me</p>
           <p className={style.description}>
             {memberDetails.bio || 'Still deciding what to write here...'}
           </p>
@@ -46,7 +46,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
         <h1 className={style.notEditableTitle}>
           {memberDetails.firstname} {memberDetails.lastname}
         </h1>
-        <p>About me</p>
+        <p className={style.about}>About me</p>
         <p className={style.description}>{memberDetails.bio}</p>
       </div>
     </section>

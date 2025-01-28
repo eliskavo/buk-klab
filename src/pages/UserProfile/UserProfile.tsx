@@ -25,10 +25,12 @@ export const UserProfile = () => {
   useEffect(() => {
     const getMemberData = async () => {
       setIsLoading(true);
+
       if (id) {
         const membersData = await getMemberDetail(id);
         setMemberDetail(membersData);
       }
+
       setIsLoading(false);
     };
 
