@@ -44,16 +44,15 @@ export const UserProfile = () => {
     }
   };
 
-  if (isLoading) {
+  if (!id) {
+    return <NotFound />;
+  }
+  if (isLoading || !memberDetail) {
     return (
       <Layout>
         <Loading message="loading user profile" />
       </Layout>
     );
-  }
-
-  if (!id || !memberDetail) {
-    return <NotFound />;
   }
 
   return (
