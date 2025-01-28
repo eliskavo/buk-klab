@@ -100,7 +100,7 @@ export const Navbar: React.FC = () => {
                     <NavLink
                       to={`/member/${user.id}`}
                       className={style.dropdownItem}
-                      onClick={() => setIsDropdownOpen(false)} // close dropdown after click
+                      onClick={() => setIsDropdownOpen(false)}
                     >
                       my profile
                     </NavLink>

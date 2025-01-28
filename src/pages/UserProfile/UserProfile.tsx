@@ -10,6 +10,7 @@ import { UserProfileInfo } from '../../components/userprofile/UserProfileInfo/Us
 import { useAuth } from '../../context/AuthContext';
 import { MemberCurrentlyReadingCard } from '../../components/userprofile/MembersCurrentlyReadingCard/MemberCurrentlyReadingCard';
 import { NotFound } from '../../components/NotFound/NotFound';
+import { Loading } from '../../components/Loading/Loading';
 import style from './UserProfile.module.scss';
 
 export const UserProfile = () => {
@@ -17,15 +18,18 @@ export const UserProfile = () => {
   const user = useAuth();
 
   const [memberDetail, setMemberDetail] = useState<MemberType | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isOwner = user?.id === memberDetail?.id;
 
   useEffect(() => {
     const getMemberData = async () => {
+      setIsLoading(true);
       if (id) {
         const membersData = await getMemberDetail(id);
-        setMemberDetail(membersData || null);
+        setMemberDetail(membersData);
       }
+      setIsLoading(false);
     };
 
     getMemberData();
@@ -34,11 +38,19 @@ export const UserProfile = () => {
   const handleUpdate = async (updatedData: Partial<MemberType>) => {
     if (id) {
       const updatedMember = await updateMember(id, updatedData);
-      setMemberDetail(updatedMember || null);
+      setMemberDetail(updatedMember);
     }
   };
 
-  if (!memberDetail) {
+  if (isLoading) {
+    return (
+      <Layout>
+        <Loading message="loading user profile" />
+      </Layout>
+    );
+  }
+
+  if (!id || !memberDetail) {
     return <NotFound />;
   }
 
@@ -50,7 +62,7 @@ export const UserProfile = () => {
           <div className={style.userImageCircle}>
             <img
               src={memberDetail.profile_image || placeholder_club}
-              alt={`${memberDetail.firstname} club`}
+              alt={`${memberDetail.firstname}'s profile'`}
               className={style.memberImage}
             />
           </div>
@@ -68,7 +80,6 @@ export const UserProfile = () => {
             <MemberCurrentlyReadingCard
               title="Currently reading"
               userId={memberDetail.id}
-              isOwner={isOwner}
             />
           </section>
         </div>

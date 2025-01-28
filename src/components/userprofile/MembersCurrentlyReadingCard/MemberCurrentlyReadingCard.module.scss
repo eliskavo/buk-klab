@@ -1,11 +1,11 @@
 .bookInfo {
   display: flex;
   flex-direction: column;
-  text-decoration: none;
-  width: 100%;
-  color: inherit;
   align-items: center;
+  width: 100%;
+  text-decoration: none;
   text-align: center;
+  color: inherit;
 }
 
 .bookCover {
@@ -32,8 +32,8 @@
 .booksList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 1rem;
   padding: 0;
+  gap: 1rem;
 
   @media (min-width: $screen-md-min) {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -46,8 +46,6 @@
 }
 
 .bookContent {
-  transition: transform 0.2s ease;
-
   &:hover {
     transform: scale(1.05);
   }

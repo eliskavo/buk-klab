@@ -12,7 +12,6 @@ import style from './MemberCurrentlyReadingCard.module.scss';
 type MemberCurrentlyReadingCardProps = {
   userId: string;
   title: string;
-  isOwner: boolean;
 };
 
 export const MemberCurrentlyReadingCard: React.FC<
@@ -73,8 +72,8 @@ export const MemberCurrentlyReadingCard: React.FC<
                     className={style.bookCover}
                   />
                   <div>
-                    <h1 className={style.bookTitle}>{book.title}</h1>
-                    <h2 className={style.bookAuthor}>{book.author}</h2>
+                    <h2 className={style.bookTitle}>{book.title}</h2>
+                    <p className={style.bookAuthor}>{book.author}</p>
                   </div>
                 </Link>
               </div>

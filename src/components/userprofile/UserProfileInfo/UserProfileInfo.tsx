@@ -19,9 +19,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
         <EditableField
           type="text"
           value={memberDetails.firstname}
-          handleSave={(newValue) => {
-            onUpdate({ firstname: newValue });
-          }}
+          handleSave={(newValue) => onUpdate({ firstname: newValue })}
         >
           <h1 className={style.title}>{memberDetails.firstname}</h1>
         </EditableField>
@@ -34,7 +32,9 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
           }}
         >
           <p>About me</p>
-          <p className={style.description}>{memberDetails.bio}</p>
+          <p className={style.description}>
+            {memberDetails.bio || 'Still deciding what to write here...'}
+          </p>
         </EditableField>
       </section>
     );

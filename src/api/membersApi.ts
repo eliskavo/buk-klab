@@ -26,6 +26,8 @@ export const getMemberDetail = async (id: string) => {
   } catch (error) {
     console.error('Error getting member detail:', error);
   }
+
+  return null;
 };
 
 export const updateMember = async (
@@ -48,6 +50,8 @@ export const updateMember = async (
   } catch (error) {
     console.error('Error updating member:', error);
   }
+
+  return null;
 };
 
 export const getClubsByMember = async (id: string) => {
@@ -63,16 +67,12 @@ export const getClubsByMember = async (id: string) => {
 
     const clubIds = data.map((club) => club.clubId);
 
-    const { data: clubs, error: clubsError } = await getSupabaseClient()
+    const { data: clubs } = await getSupabaseClient()
       .from('clubs')
       .select<string, ClubType>('name, description, clubImage, id')
       .in('id', clubIds);
 
-    if (clubsError) {
-      throw clubsError;
-    }
-
-    return clubs;
+    return clubs || [];
   } catch (error) {
     console.error('Error getting clubs by member:', error);
 
