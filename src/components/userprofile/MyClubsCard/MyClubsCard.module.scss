@@ -1,0 +1,55 @@
+.clubInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+
+  @media (min-width: $screen-xl-min) {
+    flex-direction: row;
+    padding: 1rem;
+  }
+}
+
+.clubImage {
+  flex-shrink: 0;
+  width: 250px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clubContent {
+  width: 100%;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.clubName {
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: $extrabold;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.description {
+  font-size: 0.8rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.clubsList {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 2rem;
+}
+
+.clubItem {
+  list-style: none;
+}

@@ -171,14 +171,15 @@
 }
 
 .dropdownItem {
+  display: block;
   width: 100%;
   padding: 0.5rem 0;
   background: none;
   text-align: center;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
-  color: $secondary-color;
+  text-decoration: none;
+  color: inherit;
   transition: background-color 0.2s ease;
 
   &:hover {

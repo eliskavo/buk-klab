@@ -5,7 +5,7 @@ export const isUserClubMember = async (userId: string, clubId: number) => {
   try {
     const { data, error } = await getSupabaseClient()
       .from('clubs_members')
-      .select<string, MembershipType>()
+      .select<string, MembershipType>(`memberId, clubId`)
       .match({ memberId: userId, clubId });
 
     if (error) {
@@ -75,7 +75,6 @@ export const getClubMembers = async (clubId: number) => {
         `id,
       firstname,
       lastname,
-      email,
       profile_image`,
       )
       .in('id', memberIds);

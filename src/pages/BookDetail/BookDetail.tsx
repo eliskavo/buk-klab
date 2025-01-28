@@ -23,6 +23,7 @@ export const BookDetail: React.FC = () => {
   const [searchParams] = useSearchParams();
   const authorKey = searchParams.get('authorKey');
   const clubId = searchParams.get('clubId');
+  const userId = searchParams.get('userId');
   const user = useAuth();
   const navigate = useNavigate();
 
@@ -95,7 +96,26 @@ export const BookDetail: React.FC = () => {
     fetchRecommended();
   }, [book?.author, editionId]);
 
-  const handleBack = () => navigate(clubId ? `/clubs/${clubId}` : '/books');
+  const handleBack = () => {
+    if (clubId) {
+      navigate(`/clubs/${clubId}`);
+    } else if (userId) {
+      navigate(`/member/${userId}`);
+    } else {
+      navigate('/books');
+    }
+  };
+
+  const getBackText = () => {
+    if (clubId) {
+      return 'clubs';
+    }
+    if (userId) {
+      return 'profile';
+    }
+
+    return 'books';
+  };
 
   if (isLoading) {
     return (
@@ -123,8 +143,7 @@ export const BookDetail: React.FC = () => {
           className={style.backButton}
           aria-label="Back to books"
         >
-          <ArrowBackIosRoundedIcon sx={iconSx} /> back to{' '}
-          {clubId ? 'clubs' : 'books'}
+          <ArrowBackIosRoundedIcon sx={iconSx} /> back to {getBackText()}
         </button>
 
         <div className={style.bookInfo}>

@@ -1,0 +1,57 @@
+.bookInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-decoration: none;
+  text-align: center;
+  color: inherit;
+}
+
+.bookCover {
+  width: 130px;
+  height: 200px;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bookTitle {
+  margin-bottom: 0.3rem;
+  font-weight: $semibold;
+  font-size: 0.9rem;
+}
+
+.bookAuthor {
+  font-weight: $regular;
+  font-size: 0.8rem;
+  color: $dark-grey;
+}
+
+.booksList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  padding: 0;
+  gap: 1rem;
+
+  @media (min-width: $screen-md-min) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 2rem;
+  }
+}
+
+.bookItem {
+  list-style: none;
+}
+
+.bookContent {
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.oopsIllustration {
+  width: 400px;
+  height: auto;
+}

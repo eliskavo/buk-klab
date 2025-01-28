@@ -1,4 +1,5 @@
 import { ClubCurrentBookType } from '../model/Book';
+import { getClubsByMember } from './membersApi';
 import { getSupabaseClient } from './supabase';
 
 export const getClubsCurrentBook = async (clubId: number) => {
@@ -54,5 +55,23 @@ export const removeClubsCurrentBook = async (
     }
   } catch (error) {
     console.error('Error removing current book:', error);
+  }
+};
+
+export const getMemberCurrentlyReadingBooks = async (userId: string) => {
+  try {
+    const userClubs = await getClubsByMember(userId);
+
+    const clubIds = userClubs.map((club) => club.id);
+    const { data: currentBooks } = await getSupabaseClient()
+      .from('clubs_currentbook')
+      .select()
+      .in('clubId', clubIds);
+
+    return currentBooks || [];
+  } catch (error) {
+    console.error('Error getting member currently reading books:', error);
+
+    return [];
   }
 };

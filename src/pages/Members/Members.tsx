@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Layout } from '../../components/Layout/Layout';
 import girlHoldingBooks from '../../assets/images/girl_holding_books.png';
@@ -39,14 +40,16 @@ export const Members: React.FC = () => {
         <ul className={style.sectionMembers} aria-label="Member list">
           {members.map((member) => (
             <li key={member.id} className={style.member}>
-              <img
-                className={style.memberImg}
-                src={member.profile_image}
-                alt={member.firstname}
-              />
-              <p className={style.memberName}>
-                {`${member.firstname} ${member.lastname.charAt(0)}.`}
-              </p>
+              <Link to={`/member/${member.id}`} className={style.memberLink}>
+                <img
+                  className={style.memberImg}
+                  src={member.profile_image}
+                  alt={member.firstname}
+                />
+                <p className={style.memberName}>
+                  {`${member.firstname} ${member.lastname.charAt(0)}.`}
+                </p>
+              </Link>
             </li>
           ))}
         </ul>

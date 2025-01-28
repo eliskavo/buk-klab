@@ -97,6 +97,13 @@ export const Navbar: React.FC = () => {
                 </button>
                 {isDropdownOpen && (
                   <div className={style.dropdownMenu}>
+                    <NavLink
+                      to={`/member/${user.id}`}
+                      className={style.dropdownItem}
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      my profile
+                    </NavLink>
                     <button
                       onClick={handleSignOut}
                       className={style.dropdownItem}
@@ -110,13 +117,11 @@ export const Navbar: React.FC = () => {
             </li>
           </>
         ) : (
-          <>
-            <li className={style.navbarItem}>
-              <NavLink to="/register" className={getNavLinkStyle}>
-                sign up
-              </NavLink>
-            </li>
-          </>
+          <li className={style.navbarItem}>
+            <NavLink to="/register" className={getNavLinkStyle}>
+              sign up
+            </NavLink>
+          </li>
         )}
         <li className={style.navbarItem}>
           <LinkButton

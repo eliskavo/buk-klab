@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import StarsRoundedIcon from '@mui/icons-material/StarsRounded';
 import { Tooltip } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { leaveClub } from '../../../api/clubsMembers';
 import { MemberType } from '../../../model/Member';
@@ -53,32 +54,34 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
       <ul className={style.membersList}>
         {members.map((member) => (
           <li key={member.id} className={style.memberItem}>
-            <div className={style.memberInfo}>
-              <img
-                src={member.profile_image}
-                alt={member.firstname}
-                className={style.memberImage}
-              />
-              <p className={style.memberName}>
-                {member.firstname} {member.lastname}
-                {member.id === ownerId && (
-                  <Tooltip title="Owner">
-                    <StarsRoundedIcon area-label="owner" />
-                  </Tooltip>
-                )}
-              </p>
-            </div>
+            <Link to={`/member/${member.id}`} className={style.memberLink}>
+              <div className={style.memberInfo}>
+                <img
+                  src={member.profile_image}
+                  alt={member.firstname}
+                  className={style.memberImage}
+                />
+                <p className={style.memberName}>
+                  {member.firstname} {member.lastname}
+                  {member.id === ownerId && (
+                    <Tooltip title="Owner">
+                      <StarsRoundedIcon area-label="owner" />
+                    </Tooltip>
+                  )}
+                </p>
+              </div>
 
-            {isOwner && String(member.id) !== ownerId && (
-              <button
-                onClick={() => handleDeleteMember(member)}
-                className={style.deleteButton}
-                type="button"
-                aria-label="delete member"
-              >
-                <DeleteRoundedIcon />
-              </button>
-            )}
+              {isOwner && String(member.id) !== ownerId && (
+                <button
+                  onClick={() => handleDeleteMember(member)}
+                  className={style.deleteButton}
+                  type="button"
+                  aria-label="delete member"
+                >
+                  <DeleteRoundedIcon />
+                </button>
+              )}
+            </Link>
           </li>
         ))}
       </ul>
