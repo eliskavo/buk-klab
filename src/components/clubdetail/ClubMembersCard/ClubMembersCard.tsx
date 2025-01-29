@@ -70,18 +70,18 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
                   )}
                 </p>
               </div>
-
-              {isOwner && String(member.id) !== ownerId && (
-                <button
-                  onClick={() => handleDeleteMember(member)}
-                  className={style.deleteButton}
-                  type="button"
-                  aria-label="delete member"
-                >
-                  <DeleteRoundedIcon />
-                </button>
-              )}
             </Link>
+
+            {isOwner && String(member.id) !== ownerId && (
+              <button
+                onClick={() => handleDeleteMember(member)}
+                className={style.deleteButton}
+                type="button"
+                aria-label="delete member"
+              >
+                <DeleteRoundedIcon />
+              </button>
+            )}
           </li>
         ))}
       </ul>

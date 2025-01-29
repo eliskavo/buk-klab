@@ -46,8 +46,8 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
 
         const books = await Promise.all(bookPromises);
         setCurrentBooks(books.filter((book) => book !== null));
-        setIsLoading(false);
       }
+      setIsLoading(false);
     };
 
     fetchCurrentBooks();
@@ -70,7 +70,7 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
   return (
     <ClubDetailCardWrapper title={title}>
       <div>
-        {isLoading && <Loading message="loading books..." />}
+        {isLoading && <Loading message="loading books" />}
 
         {!currentBooks.length && <p>No books selected</p>}
 
