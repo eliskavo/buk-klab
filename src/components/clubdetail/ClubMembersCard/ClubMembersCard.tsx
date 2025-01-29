@@ -72,7 +72,7 @@ export const ClubMembersCard: React.FC<ClubMembersCardProps> = ({
               </div>
             </Link>
 
-            {isOwner && String(member.id) !== ownerId && (
+            {isOwner && member.id !== ownerId && (
               <button
                 onClick={() => handleDeleteMember(member)}
                 className={style.deleteButton}
