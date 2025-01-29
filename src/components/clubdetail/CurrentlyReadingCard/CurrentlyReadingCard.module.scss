@@ -63,3 +63,19 @@
     margin-top: 0;
   }
 }
+
+.noBooksSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}

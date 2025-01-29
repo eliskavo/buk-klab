@@ -28,10 +28,12 @@ export const JoinClub: React.FC = () => {
             Build your own reading community{' '}
           </h1>
           <p className={style.bannerSubtitle}>
-            Manage, start, or join a book club with ease.
+            Whether you're a quote collector or just love the smell of fresh
+            pages, there's a spot for you here. Grab your favorite book and join
+            us on our next literary adventure!
           </p>
           <LinkButton
-            to="/signin"
+            to="/create-club"
             variant="primary"
             className={style.bannerButton}
           >
