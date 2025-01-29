@@ -11,6 +11,7 @@ import { fetchBookDetails } from '../../../api/bookDetailApi';
 import { Button } from '../../Button/Button';
 import { ConfirmDialog } from '../../ConfirmDialog/ConfirmDialog';
 import { Loading } from '../../Loading/Loading';
+import { LinkButton } from '../../LinkButton/LinkButton';
 import style from './CurrentlyReadingCard.module.scss';
 
 type CurrentlyReadingCardProps = {
@@ -46,8 +47,8 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
 
         const books = await Promise.all(bookPromises);
         setCurrentBooks(books.filter((book) => book !== null));
-        setIsLoading(false);
       }
+      setIsLoading(false);
     };
 
     fetchCurrentBooks();
@@ -70,9 +71,21 @@ export const CurrentlyReadingCard: React.FC<CurrentlyReadingCardProps> = ({
   return (
     <ClubDetailCardWrapper title={title}>
       <div>
-        {isLoading && <Loading message="loading books..." />}
+        {isLoading && <Loading message="loading books" />}
 
-        {!currentBooks.length && <p>No books selected</p>}
+        {!currentBooks.length && (
+          <div className={style.noBooksSection}>
+            <p>No books selected</p>
+
+            <LinkButton
+              variant="secondary"
+              to="/books"
+              className={style.addButton}
+            >
+              Add books
+            </LinkButton>
+          </div>
+        )}
 
         <ul className={style.booksList}>
           {currentBooks.map((book) => (
