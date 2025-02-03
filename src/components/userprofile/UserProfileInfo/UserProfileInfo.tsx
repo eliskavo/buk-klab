@@ -1,5 +1,7 @@
-import { EditableField } from '../../EditableField/EditableField';
+import { useState } from 'react';
+
 import { MemberType } from '../../../model/Member';
+import { Button } from '../../Button/Button';
 import style from './UserProfileInfo.module.scss';
 
 type UserProfileInfoProps = {
@@ -11,31 +13,38 @@ type UserProfileInfoProps = {
 export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
   memberDetails,
   isOwner,
-  onUpdate,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
   if (isOwner) {
     return (
       <section className={style.infoSection}>
-        <EditableField
-          type="text"
-          value={memberDetails.firstname}
-          handleSave={(newValue) => onUpdate({ firstname: newValue })}
+        <div className={style.editableContent}>
+          {isEditing ? (
+            <div>Editing mode</div>
+          ) : (
+            <>
+              <h1 className={style.notEditableTitle}>
+                {memberDetails.firstname} {memberDetails.lastname}
+              </h1>
+              <p className={style.about}>about me:</p>
+              <p className={style.description}>
+                {memberDetails.bio || 'Still deciding what to write here...'}
+              </p>
+            </>
+          )}
+        </div>
+        <Button
+          variant="secondary"
+          type="submit"
+          onClick={() => handleEditClick}
         >
-          <h1 className={style.title}>{memberDetails.firstname}</h1>
-        </EditableField>
-
-        <EditableField
-          type="textarea"
-          value={memberDetails.bio || ''}
-          handleSave={(newValue) => {
-            onUpdate({ bio: newValue });
-          }}
-        >
-          <p className={style.about}>About me</p>
-          <p className={style.description}>
-            {memberDetails.bio || 'Still deciding what to write here...'}
-          </p>
-        </EditableField>
+          edit profile
+        </Button>
       </section>
     );
   }
@@ -46,8 +55,10 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
         <h1 className={style.notEditableTitle}>
           {memberDetails.firstname} {memberDetails.lastname}
         </h1>
-        <p className={style.about}>About me</p>
-        <p className={style.description}>{memberDetails.bio}</p>
+        <p className={style.about}>about me:</p>
+        <p className={style.description}>
+          {memberDetails.bio || 'Still deciding what to write here...'}
+        </p>
       </div>
     </section>
   );
