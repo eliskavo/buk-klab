@@ -45,12 +45,6 @@
   }
 }
 
-.notEditableTitle {
-  @extend .title;
-
-  margin-bottom: 1rem;
-}
-
 .leaveButton {
   width: 100%;
   max-width: 300px;
@@ -83,13 +77,4 @@
   @media (min-width: $screen-lg-min) {
     max-width: 300px;
   }
-}
-
-.deleteButton {
-  margin-top: 4rem;
-  background-color: transparent;
-  border: none;
-  border-radius: 0.25rem;
-  color: $dark-grey;
-  cursor: pointer;
 }

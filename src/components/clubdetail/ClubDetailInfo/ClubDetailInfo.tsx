@@ -1,7 +1,8 @@
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { useState } from 'react';
 
-import { EditableField } from '../../EditableField/EditableField';
+import { EditableClubField } from '../../EditableField/EditableClubField';
 import { ClubType } from '../../../model/Club';
+import { Button } from '../../Button/Button';
 import style from './ClubDetailInfo.module.scss';
 
 type ClubDetailInfoProps = {
@@ -23,54 +24,49 @@ export const ClubDetailInfo: React.FC<ClubDetailInfoProps> = ({
   onDelete,
   onLeaveClub,
 }) => {
-  if (isOwner) {
-    return (
-      <section className={style.infoSection}>
-        <EditableField
-          type="text"
-          value={clubDetail.name}
-          handleSave={(newValue) => {
-            onUpdate({ name: newValue });
-          }}
-        >
-          <h1 className={style.title}>{clubDetail.name}</h1>
-        </EditableField>
+  const [isEditing, setIsEditing] = useState(false);
 
-        <EditableField
-          type="textarea"
-          value={clubDetail.description}
-          handleSave={(newValue) => {
-            onUpdate({ description: newValue });
-          }}
-        >
-          <p className={style.memberCount}>
-            {memberCount} {memberCount === 1 ? 'member' : 'members'}
-          </p>
-          <p className={style.description}>{clubDetail.description}</p>
-        </EditableField>
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
 
-        <button
-          type="button"
-          onClick={onDelete}
-          className={style.deleteButton}
-          aria-label="delete club"
-        >
-          <DeleteRoundedIcon />
-        </button>
-      </section>
-    );
-  }
+  const handleSave = (data: Partial<ClubType>) => {
+    onUpdate(data);
+    setIsEditing(false);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
 
   return (
     <section className={style.infoSection}>
       <div className={style.editableContent}>
-        <h1 className={style.notEditableTitle}>{clubDetail.name}</h1>
-        <p className={style.memberCount}>
-          {memberCount} {memberCount === 1 ? 'member' : 'members'}
-        </p>
-        <p className={style.description}>{clubDetail.description}</p>
+        <EditableClubField
+          clubDetails={clubDetail}
+          onSave={handleSave}
+          onCancel={handleCancel}
+          isEditing={isEditing}
+        >
+          <h1 className={style.title}>{clubDetail.name}</h1>
+          <p className={style.memberCount}>
+            {memberCount} {memberCount === 1 ? 'member' : 'members'}
+          </p>
+          <p className={style.description}>{clubDetail.description}</p>
+        </EditableClubField>
 
-        {isMember && (
+        {isMember && !isEditing && isOwner && (
+          <>
+            <Button variant="secondary" onClick={handleEditClick}>
+              edit
+            </Button>
+            <Button variant="secondary" onClick={onDelete}>
+              delete club
+            </Button>
+          </>
+        )}
+
+        {isMember && !isOwner && (
           <button
             onClick={onLeaveClub}
             type="button"

@@ -22,6 +22,7 @@ export const ClubDetail: React.FC = () => {
 
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
 
   const clubId = Number(id);
   const isOwner = user?.id === clubDetail?.ownerId;
@@ -46,6 +47,16 @@ export const ClubDetail: React.FC = () => {
   const handleConfirmDelete = async () => {
     await deleteClub(clubId);
     setIsDeleteDialogOpen(false);
+    navigate('/joinclub');
+  };
+
+  const handleLeave = () => {
+    setIsLeaveDialogOpen(true);
+  };
+
+  const handleConfirmLeave = async () => {
+    await handleLeaveClub();
+    setIsLeaveDialogOpen(false);
     navigate('/joinclub');
   };
 
@@ -87,7 +98,7 @@ export const ClubDetail: React.FC = () => {
             memberCount={memberCount}
             onUpdate={handleUpdate}
             onDelete={handleDelete}
-            onLeaveClub={handleLeaveClub}
+            onLeaveClub={handleLeave}
           />
 
           <section className={style.contentSection}>
@@ -123,9 +134,19 @@ export const ClubDetail: React.FC = () => {
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Delete club"
-        message="Are you sure you want to delete this club?"
+        message="Are you sure you want to delete this club? :("
         closeButtonText="Cancel"
         confirmButtonText="Delete"
+      />
+
+      <ConfirmDialog
+        isOpen={isLeaveDialogOpen}
+        onClose={() => setIsLeaveDialogOpen(false)}
+        onConfirm={handleConfirmLeave}
+        title="Leave club"
+        message="Are you sure you want to leave this club? :("
+        closeButtonText="Cancel"
+        confirmButtonText="Leave"
       />
     </Layout>
   );
