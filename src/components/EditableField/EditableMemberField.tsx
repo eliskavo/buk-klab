@@ -53,12 +53,14 @@ export const EditableMemberField: ChildrenFC<EditableMemberFieldProps> = ({
               onChange={handleChange}
               className={style.input}
             />
+
             <input
               name="lastname"
               value={formData.lastname}
               onChange={handleChange}
               className={style.input}
             />
+
             <textarea
               name="bio"
               value={formData.bio}

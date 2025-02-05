@@ -39,6 +39,36 @@ export const ClubDetailInfo: React.FC<ClubDetailInfoProps> = ({
     setIsEditing(true);
   };
 
+  const renderActionButtons = () => {
+    if (!isMember || isEditing) {
+      return null;
+    }
+
+    if (isOwner) {
+      return (
+        <div>
+          <Button variant="secondary" onClick={handleEditClick}>
+            edit
+          </Button>
+          <Button variant="secondary" onClick={onDelete}>
+            delete club
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <Button
+        variant="secondary"
+        onClick={onLeaveClub}
+        aria-label="leave club"
+        className={style.leaveButton}
+      >
+        leave club
+      </Button>
+    );
+  };
+
   return (
     <section className={style.infoSection}>
       <div className={style.editableContent}>
@@ -55,27 +85,7 @@ export const ClubDetailInfo: React.FC<ClubDetailInfoProps> = ({
           <p className={style.description}>{clubDetail.description}</p>
         </EditableClubField>
 
-        {isMember && !isEditing && isOwner && (
-          <>
-            <Button variant="secondary" onClick={handleEditClick}>
-              edit
-            </Button>
-            <Button variant="secondary" onClick={onDelete}>
-              delete club
-            </Button>
-          </>
-        )}
-
-        {isMember && !isOwner && (
-          <button
-            onClick={onLeaveClub}
-            type="button"
-            className={style.leaveButton}
-            aria-label="leave club"
-          >
-            leave club
-          </button>
-        )}
+        {renderActionButtons()}
       </div>
     </section>
   );
