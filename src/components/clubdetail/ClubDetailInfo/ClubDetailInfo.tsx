@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { EditableClubField } from '../../EditableField/EditableClubField';
-import { ClubType } from '../../../model/Club';
+import { ClubType, UpdateClubType } from '../../../model/Club';
 import { Button } from '../../Button/Button';
 import style from './ClubDetailInfo.module.scss';
 
@@ -10,7 +10,7 @@ type ClubDetailInfoProps = {
   isOwner: boolean;
   isMember: boolean;
   memberCount: number;
-  onUpdate: (data: Partial<ClubType>) => void;
+  onUpdate: (data: UpdateClubType) => void;
   onDelete: () => void;
   onLeaveClub: () => void;
 };

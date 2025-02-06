@@ -38,10 +38,6 @@ export const EditableMemberField: ChildrenFC<EditableMemberFieldProps> = ({
     onSave(formData);
   };
 
-  const handleCancel = () => {
-    onCancel();
-  };
-
   return (
     <div className={style.editableFieldContainer}>
       <div>
@@ -69,7 +65,7 @@ export const EditableMemberField: ChildrenFC<EditableMemberFieldProps> = ({
             />
 
             <div className={style.buttonGroup}>
-              <Button variant="secondary" onClick={handleCancel}>
+              <Button variant="secondary" onClick={() => onCancel()}>
                 Cancel
               </Button>
               <Button variant="secondary" type="submit">

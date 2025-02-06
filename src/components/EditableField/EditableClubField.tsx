@@ -37,42 +37,36 @@ export const EditableClubField: ChildrenFC<EditableClubFieldProps> = ({
     onSave(formData);
   };
 
-  const handleCancel = () => {
-    onCancel();
-  };
-
   return (
     <div className={style.editableFieldContainer}>
-      <div>
-        {isEditing ? (
-          <form onSubmit={handleSubmit} className={style.editableForm}>
-            <input
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className={style.input}
-            />
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className={style.editableForm}>
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className={style.input}
+          />
 
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className={style.textarea}
-            />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className={style.textarea}
+          />
 
-            <div className={style.buttonGroup}>
-              <Button variant="secondary" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button variant="secondary" type="submit">
-                Save
-              </Button>
-            </div>
-          </form>
-        ) : (
-          children
-        )}
-      </div>
+          <div className={style.buttonGroup}>
+            <Button variant="secondary" onClick={() => onCancel()}>
+              Cancel
+            </Button>
+            <Button variant="secondary" type="submit">
+              Save
+            </Button>
+          </div>
+        </form>
+      ) : (
+        children
+      )}
     </div>
   );
 };
