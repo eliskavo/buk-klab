@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Layout } from '../../components/Layout/Layout';
-import placeholder_club from '../../assets/images/placeholder_club.png';
+import placeholder_member from '../../assets/images/placeholder_member.png';
 import { MemberType } from '../../model/Member';
 import { getMemberDetail, updateMember } from '../../api/membersApi';
 import { MyClubsCard } from '../../components/userprofile/MyClubsCard/MyClubsCard';
@@ -62,7 +62,7 @@ export const UserProfile = () => {
         <div className={style.imageWrapper}>
           <div className={style.userImageCircle}>
             <img
-              src={memberDetail.profile_image || placeholder_club}
+              src={memberDetail.profile_image || placeholder_member}
               alt={`${memberDetail.firstname}'s profile'`}
               className={style.memberImage}
             />

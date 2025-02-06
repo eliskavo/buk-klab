@@ -1,5 +1,8 @@
-import { EditableField } from '../../EditableField/EditableField';
+import { useState } from 'react';
+
 import { MemberType } from '../../../model/Member';
+import { Button } from '../../Button/Button';
+import { EditableMemberField } from '../../EditableField/EditableMemberField';
 import style from './UserProfileInfo.module.scss';
 
 type UserProfileInfoProps = {
@@ -13,42 +16,45 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
   isOwner,
   onUpdate,
 }) => {
-  if (isOwner) {
-    return (
-      <section className={style.infoSection}>
-        <EditableField
-          type="text"
-          value={memberDetails.firstname}
-          handleSave={(newValue) => onUpdate({ firstname: newValue })}
-        >
-          <h1 className={style.title}>{memberDetails.firstname}</h1>
-        </EditableField>
+  const [isEditing, setIsEditing] = useState(false);
 
-        <EditableField
-          type="textarea"
-          value={memberDetails.bio || ''}
-          handleSave={(newValue) => {
-            onUpdate({ bio: newValue });
-          }}
-        >
-          <p className={style.about}>About me</p>
-          <p className={style.description}>
-            {memberDetails.bio || 'Still deciding what to write here...'}
-          </p>
-        </EditableField>
-      </section>
-    );
-  }
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = (data: Partial<MemberType>) => {
+    onUpdate(data);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
 
   return (
     <section className={style.infoSection}>
-      <div className={style.editableContent}>
-        <h1 className={style.notEditableTitle}>
-          {memberDetails.firstname} {memberDetails.lastname}
-        </h1>
-        <p className={style.about}>About me</p>
-        <p className={style.description}>{memberDetails.bio}</p>
-      </div>
+      <EditableMemberField
+        memberDetails={memberDetails}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        isEditing={isEditing}
+      >
+        <div className={style.editableContent}>
+          <h1 className={style.notEditableTitle}>
+            {memberDetails.firstname} {memberDetails.lastname}
+          </h1>
+          <p className={style.about}>about me:</p>
+          <p className={style.description}>
+            {memberDetails.bio || 'Still deciding what to write here...'}
+          </p>
+        </div>
+      </EditableMemberField>
+
+      {isOwner && !isEditing && (
+        <Button variant="secondary" type="button" onClick={handleEditClick}>
+          edit profile
+        </Button>
+      )}
     </section>
   );
 };

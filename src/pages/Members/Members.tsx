@@ -5,6 +5,7 @@ import { Layout } from '../../components/Layout/Layout';
 import girlHoldingBooks from '../../assets/images/girl_holding_books.png';
 import { getMembers } from '../../api/membersApi';
 import { MemberType } from '../../model/Member';
+import placeholder_member from '../../assets/images/placeholder_member.png';
 import style from './Members.module.scss';
 
 export const Members: React.FC = () => {
@@ -43,7 +44,7 @@ export const Members: React.FC = () => {
               <Link to={`/member/${member.id}`} className={style.memberLink}>
                 <img
                   className={style.memberImg}
-                  src={member.profile_image}
+                  src={member.profile_image || placeholder_member}
                   alt={member.firstname}
                 />
                 <p className={style.memberName}>
