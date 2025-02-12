@@ -48,12 +48,12 @@ export const Footer: React.FC = () => {
               {user ? (
                 <>
                   <li>
-                    <Link to="/profile" className={style.link}>
+                    <Link to={`/member/${user.id}`} className={style.link}>
                       profile
                     </Link>
                   </li>
                   <li>
-                    <Link to="/clubs" className={style.link}>
+                    <Link to="/joinclub" className={style.link}>
                       clubs
                     </Link>
                   </li>

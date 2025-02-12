@@ -54,7 +54,7 @@ export const LoginForm = () => {
       <FormInput
         type="email"
         name="email"
-        placeholder="email"
+        placeholder="Email"
         required
         error={errorMessage !== ''}
         errorMessage={errorMessage}
@@ -63,7 +63,7 @@ export const LoginForm = () => {
       <FormInput
         type="password"
         name="password"
-        placeholder="password"
+        placeholder="Password"
         required
       />
     </FormWrapper>

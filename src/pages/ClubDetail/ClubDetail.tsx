@@ -81,13 +81,24 @@ export const ClubDetail: React.FC = () => {
       <div className={style.clubDetailPage}>
         <div className={style.clubBanner} />
         <div className={style.imageWrapper}>
-          <div className={style.clubImageCircle}>
-            <img
-              src={clubDetail.clubImage || placeholder_club}
-              alt={`${clubDetail.name} club`}
-              className={style.clubImage}
-            />
-          </div>
+          {isOwner ? (
+            <div className={style.clubImageCircle}>
+              <img
+                src={clubDetail.clubImage || placeholder_club}
+                alt={`${clubDetail.name} club`}
+                className={style.editableClubImage}
+              />
+              <p className={style.edit}>edit</p>
+            </div>
+          ) : (
+            <div className={style.clubImageCircle}>
+              <img
+                src={clubDetail.clubImage || placeholder_club}
+                alt={`${clubDetail.name} club`}
+                className={style.clubImage}
+              />
+            </div>
+          )}
         </div>
 
         <div className={style.pageContent}>
