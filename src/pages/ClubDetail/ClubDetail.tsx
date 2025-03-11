@@ -13,6 +13,7 @@ import { CurrentlyReadingCard } from '../../components/clubdetail/CurrentlyReadi
 import { useClubMembers } from '../../components/clubdetail/useClubMembers';
 import { ClubDetailInfo } from '../../components/clubdetail/ClubDetailInfo/ClubDetailInfo';
 import placeholder_club from '../../assets/images/placeholder_club.png';
+import { ImageUploadDialog } from '../../components/ConfirmDialog/ImageUploadDialog';
 import style from './ClubDetail.module.scss';
 
 export const ClubDetail: React.FC = () => {
@@ -23,6 +24,7 @@ export const ClubDetail: React.FC = () => {
   const [clubDetail, setClubDetail] = useState<ClubType | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
+  const [isImageUploadOpen, setIsImageUploadOpen] = useState(false);
 
   const clubId = Number(id);
   const isOwner = user?.id === clubDetail?.ownerId;
@@ -66,6 +68,12 @@ export const ClubDetail: React.FC = () => {
     setClubDetail(updatedClub);
   };
 
+  const handleImageClick = () => {
+    if (isOwner) {
+      setIsImageUploadOpen(true);
+    }
+  };
+
   if (!clubDetail) {
     return (
       <Layout>
@@ -88,7 +96,13 @@ export const ClubDetail: React.FC = () => {
                 alt={`${clubDetail.name} club`}
                 className={style.editableClubImage}
               />
-              <p className={style.edit}>edit</p>
+              <button
+                onClick={handleImageClick}
+                className={style.edit}
+                aria-label="Edit club image"
+              >
+                edit
+              </button>
             </div>
           ) : (
             <div className={style.clubImageCircle}>
@@ -158,6 +172,15 @@ export const ClubDetail: React.FC = () => {
         message="Are you sure you want to leave this club? :("
         closeButtonText="Cancel"
         confirmButtonText="Leave"
+      />
+
+      <ImageUploadDialog
+        isOpen={isImageUploadOpen}
+        title="Upload Image"
+        message="Upload a new image for your book club"
+        onClose={() => setIsImageUploadOpen(false)}
+        onConfirm={() => setIsImageUploadOpen(false)}
+        confirmButtonText="Upload"
       />
     </Layout>
   );
